@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -9,11 +9,14 @@ LIBFT_DIR = ./libs/libft
 
 LIBFT = $(LIBFT_DIR)/libft.a
 
-SRC = 	$(SRC_DIR)/minishell.c
+SRC = 	$(SRC_DIR)/minishell.c \
+        $(SRC_DIR)/cmd_exec.c
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 
 INC = -I $(INC_DIR)
+
+READLINE = -lreadline -L /Users/shoogenb/.brew/opt/readline/lib -I /Users/shoogenb/.brew/opt/readline/include
 
 COM_COLOR   = \033[0;33m
 OBJ_COLOR   = \033[0;36m
@@ -31,7 +34,7 @@ COM_STRING   = "Compiling"
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJ)
-	@gcc $(FLAGS) $(OBJ) $(LIBFT) -lreadline -o $(NAME) 2> $@.log; \
+	@gcc $(FLAGS) $(OBJ) $(LIBFT) -o $(NAME) $(READLINE) 2> $@.log; \
         RESULT=$$?; \
         if [ $$RESULT -ne 0 ]; then \
             printf "%-60b%b" "$(COM_COLOR)$(COM_STRING)$(PRG_COLOR) $@" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"; \

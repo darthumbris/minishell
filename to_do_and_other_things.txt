@@ -15,6 +15,8 @@ Make the pipe stuff work (especially multiple pipes)
 
 Handle ctrl-\ (might need to properly lock the sigquit stuff)
 
+implent env (getenv?)
+
 implent the export unset
 
-implent env (getenv?)
+might need to do something for pwd when the directory has been changed (but not sure yet)

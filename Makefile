@@ -10,7 +10,8 @@ LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC = 	$(SRC_DIR)/minishell.c \
-        $(SRC_DIR)/cmd_exec.c
+        $(SRC_DIR)/cmd_exec.c \
+        $(SRC_DIR)/input_handling.c
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

@@ -1,0 +1,20 @@
+Probably need to change the whole check_input function to handle a lot of stuff below this.
+
+For cd might need the chdir function.
+
+For the history thing might also need to implement history -c to clear the history?
+
+Need to check in the check input for ./ for the relative path execution.
+
+Check how to handle quotations like " " and ' '
+Also handle the $ sign to get things like echo $? and echo $USER stuff
+
+redirections still needs to be done. need to check for that.
+
+Make the pipe stuff work (especially multiple pipes)
+
+Handle ctrl-\ (might need to properly lock the sigquit stuff)
+
+implent the export unset
+
+implent env (getenv?)

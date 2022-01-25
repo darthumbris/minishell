@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 14:11:55 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/25 14:16:07 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ char	**path_input(char *input)
  * The get_cmd_args that it uses also doesn't yet handle quotes
  * and other difficult stuff.
  * things like echo $? or echo $USER and other commands.
+ * will also give wrong error when doing absolute path stuff
+ * for example /bin/wc will give command not found
+ * instead of no such file or directory.
  */
 void	check_input(char *input, char **envp)
 {

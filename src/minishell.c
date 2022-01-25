@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 10:04:35 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/25 10:43:13 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ void	minishell_thing(char *input, char **envp)
 		return (perror("FORK: "));
 	if (child_pid == 0)
 		check_input(input, envp);
+	free(input);
 	waitpid(child_pid, &status, 0);
 	//exit(WEXITSTATUS(status));
 }
@@ -106,7 +107,10 @@ void	minishell_thing(char *input, char **envp)
 void signal_handle_function(int sig)
 {
 	if (sig == 2)
+	{
+		system("leaks minishell");
 		exit(0);
+	}
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -118,9 +122,12 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, signal_handle_function);
 	while (1)
 	{
-		input = readline("");
+		input = readline("$");
 		if (!input)
+		{
+			system("leaks minishell");
 			exit(0);
+		}
 		minishell_thing(input, envp);
 	}
 	return (0);

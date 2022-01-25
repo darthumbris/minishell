@@ -1,5 +1,8 @@
 Probably need to change the whole check_input function to handle a lot of stuff below this.
 
+
+IMPORTANT: implement our own echo cd pwd !!!!
+
 For cd might need the chdir function. Need to check if the command is cd for this. Execve does execute it but the change in directory
 is only for that process.
 cd also won't work do anything if you do for example : cd | ls . it will just do the ls on the current directory.

@@ -17,7 +17,8 @@ OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 
 INC = -I $(INC_DIR)
 
-READLINE = -lreadline -L /Users/shoogenb/.brew/opt/readline/lib -I /Users/shoogenb/.brew/opt/readline/include
+READLINE = -lreadline -lhistory -L /Users/shoogenb/.brew/opt/readline/lib
+READLINE_INC = -I /Users/shoogenb/.brew/opt/readline/include
 
 COM_COLOR   = \033[0;33m
 OBJ_COLOR   = \033[0;36m
@@ -51,7 +52,7 @@ $(NAME): $(LIBFT) $(OBJ)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
-	@gcc $(FLAGS) $(INC) -c -o $@ $< 2> $@.log; \
+	@gcc $(FLAGS) $(INC) $(READLINE_INC) -c -o $@ $< 2> $@.log; \
         RESULT=$$?; \
         if [ $$RESULT -ne 0 ]; then \
             printf "%-60b%b" "$(COM_COLOR)$(COM_STRING)$(OBJ_COLOR) $@" "$(ERROR_COLOR)$(ERROR_STRING)$(NO_COLOR)\n"; \

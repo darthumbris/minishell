@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 14:41:29 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/25 16:12:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ int	main(int argc, char **argv, char **envp)
 		if (input == NULL)
 		{
 			printf("exit\n");
+			system("leaks minishell");
 			exit(0);
 		}
 		if (input && *input)

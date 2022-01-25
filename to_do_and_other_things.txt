@@ -1,6 +1,8 @@
 Probably need to change the whole check_input function to handle a lot of stuff below this.
 
-For cd might need the chdir function.
+For cd might need the chdir function. Need to check if the command is cd for this. Execve does execute it but the change in directory
+is only for that process.
+cd also won't work do anything if you do for example : cd | ls . it will just do the ls on the current directory.
 
 For the history thing might also need to implement history -c to clear the history?
 
@@ -8,6 +10,7 @@ Need to check in the check input for ./ for the relative path execution.
 
 Check how to handle quotations like " " and ' '
 Also handle the $ sign to get things like echo $? and echo $USER stuff
+or for example: echo "The Computer Name is `scutil --get ComputerName`"
 
 redirections still needs to be done. need to check for that.
 

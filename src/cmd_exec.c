@@ -6,12 +6,16 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 13:41:02 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/25 14:13:34 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * This function will get all the paths
+ * located in the envp variable
+ */
 char	**get_path_str(char **envp)
 {
 	int		i;
@@ -26,6 +30,11 @@ char	**get_path_str(char **envp)
 	return (NULL);
 }
 
+/*
+ * This function splits the argument given on the space.
+ * so for example ls -l -a will be properly split. This 
+ * won't work in the more complex stuff.
+ */
 char	**get_cmd_arg(char *argv)
 {
 	char	**cmd_args;

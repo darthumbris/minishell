@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 10:43:13 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/25 11:07:54 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,9 @@ void signal_handle_function(int sig)
 {
 	if (sig == 2)
 	{
-		system("leaks minishell");
-		exit(0);
+		// system("leaks minishell");
+		// exit(0);
+		printf("how to properly clear the input with ctrl-c \n$");
 	}
 }
 
@@ -122,7 +123,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGINT, signal_handle_function);
 	while (1)
 	{
-		input = readline("$");
+		input = readline("minishell> ");
 		if (!input)
 		{
 			system("leaks minishell");

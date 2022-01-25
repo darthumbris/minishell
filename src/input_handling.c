@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:12:50 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/25 16:49:04 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	**path_input(char *input)
  * when needed (so no empty stuff).
  * It will also close when EOF (ctrl-D)
  * this might need some work for some cases.
+ * might need a check for echo cd pwd etc.
+ * need to see how to do this properly.
  */
 char	*get_input(char *input)
 {

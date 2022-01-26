@@ -6,18 +6,26 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 14:59:51 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 15:15:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * The cd function will check the input 
+ * and then try to change the directory with
+ * chdir.
+ */
 void	cd_function(char *input)
 {
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
 		if (*input == '\0')
-			chdir(getenv("HOME"));
+		{
+			if (chdir(getenv("HOME")) == -1)
+				perror("");
+		}
 		else
 		{
 			while (*input && *input == ' ')
@@ -34,7 +42,6 @@ void	pwd_function(char *input)
 
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
-		printf("entered pwd function\n");
 		pwd_str = getcwd(NULL, -1);
 		printf("%s\n", pwd_str);
 		free(pwd_str);
@@ -61,8 +68,20 @@ void	env_function(char *input)
 
 void	exit_function(char *input)
 {
-	if (input && *input == ' ')
-		printf("entered exit function\n");
+	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
+	{
+		//printf("entered exit function\n");
+		//free(input);
+		printf("exit\n");
+		system("leaks minishell");
+		exit(0);
+	}
+	else
+	{
+		ft_putstr_fd("exit", 2);
+		ft_putstr_fd(input, 2);
+		ft_putendl_fd(": command not found", 2);
+	}
 }
 
 void	echo_function(char *input)

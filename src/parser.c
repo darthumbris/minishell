@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 15:15:05 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 17:14:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	cd_function(char *input)
 {
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
+		while (*input == ' ')
+			input++;
 		if (*input == '\0')
 		{
 			if (chdir(getenv("HOME")) == -1)
@@ -28,8 +30,6 @@ void	cd_function(char *input)
 		}
 		else
 		{
-			while (*input && *input == ' ')
-				input++;
 			if (chdir(input) == -1)
 				perror("");
 		}

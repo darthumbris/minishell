@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 14:14:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 14:59:51 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,52 +14,61 @@
 
 void	cd_function(char *input)
 {
-	if (input && *input == ' ')
-		printf("entered cd function correctly\n");
-	printf("\n%d\n", ' ');
-	return ;
+	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
+	{
+		if (*input == '\0')
+			chdir(getenv("HOME"));
+		else
+		{
+			while (*input && *input == ' ')
+				input++;
+			if (chdir(input) == -1)
+				perror("");
+		}
+	}
 }
 
 void	pwd_function(char *input)
 {
-	if (input && *input == ' ')
+	char	*pwd_str;
+
+	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
+	{
 		printf("entered pwd function\n");
-	return ;
+		pwd_str = getcwd(NULL, -1);
+		printf("%s\n", pwd_str);
+		free(pwd_str);
+	}
 }
 
 void	export_function(char *input)
 {
 	if (input && *input == ' ')
 		printf("entered export function\n");
-	return ;
 }
 
 void	unset_function(char *input)
 {
 	if (input && *input == ' ')
 		printf("entered unset function\n");
-	return ;
 }
 
 void	env_function(char *input)
 {
 	if (input && *input == ' ')
 		printf("entered env function\n");
-	return ;
 }
 
 void	exit_function(char *input)
 {
 	if (input && *input == ' ')
 		printf("entered exit function\n");
-	return ;
 }
 
 void	echo_function(char *input)
 {
 	if (input && *input == ' ')
 		printf("entered echo function\n");
-	return ;
 }
 
 /*

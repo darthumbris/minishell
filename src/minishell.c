@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:12:33 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 14:04:28 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	main(int argc, char **argv, char **envp)
 			exit(0);
 		}
 		if (input && *input)
-			minishell_thing(input, envp);
+			parse_input(input, envp);
 	}
 	return (0);
 }

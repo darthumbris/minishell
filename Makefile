@@ -17,8 +17,8 @@ OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 
 INC = -I $(INC_DIR)
 
-READLINE_LIB = -lreadline -lhistory -L /Users/shoogenb/.brew/opt/readline/lib
-READLINE_INC = -I /Users/shoogenb/.brew/opt/readline/include
+READLINE_LIB = -lreadline -lhistory -L $$HOME/.brew/opt/readline/lib
+READLINE_INC = -I $$HOME/.brew/opt/readline/include
 
 COM_COLOR   = \033[0;33m
 OBJ_COLOR   = \033[0;36m

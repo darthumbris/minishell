@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:13:57 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:59:32 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*get_input(char *input);
 void	execute_input(char *input, char **envp);
 void	parse_input(char *input, char **envp);
 int		minishell_thing(char *input, char **envp);
+char	**envp_duplicate(char **envp);
+
 char	*ft_getenv(char *str, char **envp);
 void	change_pwd_in_envp(char **envp);
 

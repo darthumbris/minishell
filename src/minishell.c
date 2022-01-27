@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 14:08:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 11:52:06 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,13 @@ void	signal_handle_function(int sig)
 int	main(int argc, char **argv, char **envp)
 {
 	static char	*input;
+	char		**envp_dup;
 
 	input = NULL;
 	if (argc != 1 || !argv || !envp)
 		return (1);
 	signal(SIGINT, signal_handle_function);
+	envp_dup = envp_duplicate(envp);
 	while (1)
 	{
 		input = get_input(input);
@@ -72,7 +74,7 @@ int	main(int argc, char **argv, char **envp)
 			exit(0);
 		}
 		if (input && *input)
-			parse_input(input, envp);
+			parse_input(input, envp_dup);
 	}
 	return (0);
 }

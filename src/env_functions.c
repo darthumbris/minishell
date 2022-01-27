@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:19:57 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 14:02:52 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,19 @@ void	change_pwd_in_envp(char **envp)
 	free(pwd_change);
 	free(new_path);
 	free(old_pwd_change);
+}
+
+char	**envp_duplicate(char **envp)
+{
+	char	**tmp;
+	int		i;
+
+	i = 0;
+	tmp = ft_calloc(1024, sizeof(char *));
+	while (envp[i])
+	{
+		tmp[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:15:51 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 16:24:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,26 @@
 
 void	exit_function(char *input, char **envp)
 {
-	if (input && !ft_isalpha(*input) && !ft_isdigit(*input) && envp)
+	int	i;
+
+	i = 0;
+	input = ft_whitespaces(input);
+	while (input[i])
 	{
-		printf("exit\n");
-		system("leaks minishell");
-		exit(0);
+		if (!ft_isdigit(input[i]))
+		{
+			printf("exit\nminishell>: exit: %s: numeric argument required\n", \
+				input);
+			system("leaks minishell");
+			free(envp);
+			exit(255);
+		}
+		i++;
 	}
-	else
-	{
-		ft_putstr_fd("exit", 2);
-		ft_putstr_fd(input, 2);
-		ft_putendl_fd(": command not found", 2);
-	}
+	printf("exit\n");
+	system("leaks minishell");
+	free(envp);
+	exit(ft_atoi(input));
 }
 
 void	echo_function(char *input, char **envp)

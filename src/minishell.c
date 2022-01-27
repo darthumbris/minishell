@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 14:04:28 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 14:08:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	minishell_thing(char *input, char **envp)
 /*
  * This function handles the ctrl-c for now
  * it will make a new line and clear the input.
+ * need to figure out how to handle the ctr-\ thing
  */
 void	signal_handle_function(int sig)
 {
@@ -49,7 +50,7 @@ void	signal_handle_function(int sig)
 	}
 	if (sig == SIGQUIT)
 	{
-		printf("ctrl-c \n");
+		printf("ctrl-\\ \n");
 	}
 }
 

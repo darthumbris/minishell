@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 16:49:04 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 15:10:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,7 @@ char	*get_input(char *input)
 	}
 	input = readline("minishell> ");
 	if (input && *input)
-	{
-		if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
-		{
-			free(input);
-			printf("exit\n");
-			system("leaks minishell");
-			exit(0);
-		}
 		add_history(input);
-	}
 	return (input);
 }
 

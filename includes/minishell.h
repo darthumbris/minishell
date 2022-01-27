@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 14:03:51 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 18:49:10 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,6 @@
 # include "readline/history.h"
 # include "libft.h"
 # include <signal.h>
-
-enum e_builtins
-{
-	CMD_CD,
-	CMD_PWD,
-	CMD_EXPORT,
-	CMD_UNSET,
-	CMD_ENV,
-	CMD_EXIT,
-	CMD_ECHO
-};
-typedef void(*t_functionPointer)(char *input);
 
 void	free_cmd_args(char **cmd_args);
 void	command_exec(char **paths, char **cmd_args, char **envp);

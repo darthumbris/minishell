@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 10:20:42 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 10:58:34 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,30 @@
  * and then try to change the directory with
  * chdir.
  */
-void	cd_function(char *input)
+
+char	*get_home(char **envp)
+{
+	int			i;
+	const char	str[4] = "HOME";
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(str, envp[i], 4) == 0)
+			break ;
+		i++;
+	}
+	if (!envp[i])
+		return (NULL);
+	return (envp[i]);
+}
+
+void	cd_function(char *input, char **envp)
 {
 	input = ft_whitespaces(input);
 	if (!*input)
 	{
-		if (chdir(getenv("HOME")) == -1)
+		if (chdir(getenv(get_home(envp))) == -1)
 			perror("testing");
 	}
 	else
@@ -33,22 +51,21 @@ void	cd_function(char *input)
 	}
 }
 
-void	pwd_function(char *input)
+void	pwd_function(char *input, char **envp)
 {
 	char	*pwd_str;
 
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
 		pwd_str = getcwd(NULL, -1);
-		if (!pwd_str)
-			perror("");
-		else
-			printf("%s\n", pwd_str);
+    if (!pwd_str)
+			pwd_str = getenv("PWD");
+		printf("%s\n", pwd_str);
 		free(pwd_str);
 	}
 }
 
-void	export_function(char *input)
+void	export_function(char *input, char **envp)
 {
 	DIR				*dp;
 	struct dirent	*dirp;
@@ -70,20 +87,20 @@ void	export_function(char *input)
 		perror("");
 }
 
-void	unset_function(char *input)
+void	unset_function(char *input, char **envp)
 {
 	if (input && *input == ' ')
 		printf("entered unset function\n");
 }
 
-void	env_function(char *input)
+void	env_function(char *input, char **envp)
 {
 	if (input && *input == ' ')
 		printf("entered env function\n");
 	printf("entered env function\n");
 }
 
-void	exit_function(char *input)
+void	exit_function(char *input, char **envp)
 {
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
@@ -101,7 +118,7 @@ void	exit_function(char *input)
 	}
 }
 
-void	echo_function(char *input)
+void	echo_function(char *input, char **envp)
 {
 	if (input && *input == ' ')
 		printf("entered echo function\n");
@@ -138,7 +155,7 @@ void	parse_input(char *input, char **envp)
 	while (keys[i])
 	{
 		if (ft_strncmp(input, keys[i], ft_strlen(keys[i])) == 0)
-			return (function[i](input + ft_strlen(keys[i])));
+			return (function[i](input + ft_strlen(keys[i]), envp));
 		i++;
 	}
 	minishell_thing(input, envp);

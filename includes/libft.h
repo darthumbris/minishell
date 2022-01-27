@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/17 16:08:05 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/17 16:08:05 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/26 19:58:31 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+char	*ft_whitespaces(char *s);
+int		ft_strcmp(const char *str1, const char *str2);
+
 typedef struct s_list
 {
 	void			*content;

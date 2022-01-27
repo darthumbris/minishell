@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 20:27:32 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/27 10:00:54 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,31 @@ void	pwd_function(char *input)
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
 		pwd_str = getcwd(NULL, -1);
-		printf("%s.................\n", pwd_str);
+		if (!pwd_str)
+			perror("");
+		else
+			printf("%s\n", pwd_str);
 		free(pwd_str);
 	}
 }
 
 void	export_function(char *input)
 {
+	DIR				*dp;
+	struct dirent	*dirp;
+
 	if (input && *input == ' ')
 		printf("entered export function\n");
+	printf("testing opendir and readdir stuff here\n");
+	dp = opendir(input);
+	dirp = readdir(dp);
+	while (dirp != NULL)
+	{
+		if (dirp->d_type == 4)
+			printf("%s\n", dirp->d_name);
+		dirp = readdir(dp);
+	}
+	closedir(dp);
 }
 
 void	unset_function(char *input)

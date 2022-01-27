@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 18:49:10 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/27 12:01:28 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,6 @@ char	*get_input(char *input);
 void	execute_input(char *input, char **envp);
 void	parse_input(char *input, char **envp);
 int		minishell_thing(char *input, char **envp);
+char	**envp_duplicate(char **envp);
+
 #endif

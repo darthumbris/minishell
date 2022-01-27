@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 10:58:34 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/27 12:02:28 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,13 @@
  * chdir.
  */
 
-char	*get_home(char **envp)
-{
-	int			i;
-	const char	str[4] = "HOME";
-
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(str, envp[i], 4) == 0)
-			break ;
-		i++;
-	}
-	if (!envp[i])
-		return (NULL);
-	return (envp[i]);
-}
-
 void	cd_function(char *input, char **envp)
 {
+	(void)envp;
 	input = ft_whitespaces(input);
 	if (!*input)
 	{
-		if (chdir(getenv(get_home(envp))) == -1)
+		if (chdir(getenv("HOME")) == -1)
 			perror("testing");
 	}
 	else
@@ -55,6 +39,7 @@ void	pwd_function(char *input, char **envp)
 {
 	char	*pwd_str;
 
+	(void)envp;
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
 		pwd_str = getcwd(NULL, -1);
@@ -65,29 +50,33 @@ void	pwd_function(char *input, char **envp)
 
 void	export_function(char *input, char **envp)
 {
+	(void)envp;
 	if (input && *input == ' ')
 		printf("entered export function\n");
 }
 
 void	unset_function(char *input, char **envp)
 {
+	(void)envp;
 	if (input && *input == ' ')
 		printf("entered unset function\n");
 }
 
 void	env_function(char *input, char **envp)
 {
-	if (input && *input == ' ')
-		printf("entered env function\n");
-	printf("entered env function\n");
+	(void)input;
+	while (*envp)
+	{
+		printf("%s\n", *envp);
+		envp++;
+	}
 }
 
 void	exit_function(char *input, char **envp)
 {
+	(void)envp;
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
-		//printf("entered exit function\n");
-		//free(input);
 		printf("exit\n");
 		system("leaks minishell");
 		exit(0);
@@ -102,6 +91,7 @@ void	exit_function(char *input, char **envp)
 
 void	echo_function(char *input, char **envp)
 {
+	(void)envp;
 	if (input && *input == ' ')
 		printf("entered echo function\n");
 }

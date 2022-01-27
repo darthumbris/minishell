@@ -1,28 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   dispatch.h                                         :+:    :+:            */
+/*   envp_duplicate.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/26 12:14:52 by abba          #+#    #+#                 */
-/*   Updated: 2022/01/27 11:48:41 by abba          ########   odam.nl         */
+/*   Created: 2022/01/27 11:51:24 by abba          #+#    #+#                 */
+/*   Updated: 2022/01/27 12:04:23 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef DISPATCH_H
-# define DISPATCH_H
+#include "minishell.h"
 
-enum e_builtins
+int	envp_len(char **envp)
 {
-	CMD_CD,
-	CMD_PWD,
-	CMD_EXPORT,
-	CMD_UNSET,
-	CMD_ENV,
-	CMD_EXIT,
-	CMD_ECHO
-};
-typedef void(*t_functionPointer)(char *input, char **envp);
+	int	i;
 
-#endif
+	i = 0;
+	while (envp[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	**envp_duplicate(char **envp)
+{
+	int		len;
+	char	**tmp;
+	int		i;
+
+	i = 0;
+	len = envp_len(envp);
+	tmp = malloc((len + 1) * sizeof(char *));
+	while (i < len)
+	{
+		tmp[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	return (tmp);
+}

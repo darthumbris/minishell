@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:12:32 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:41:41 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,19 @@ void	parse_input(char *input, char **envp)
 	const char				*keys[] = {
 	[CMD_CD] = "cd", [CMD_PWD] = "pwd",
 	[CMD_EXPORT] = "export", [CMD_UNSET] = "unset",
-	[CMD_ENV] = "env", [CMD_EXIT] = "exit",
-	[CMD_ECHO] = "echo", NULL
+	[CMD_ENV] = "env", [CMD_EXIT] = "exit", [CMD_ECHO] = "echo", NULL
 	};
 	int						i;
+	int						len;
 
 	i = 0;
 	input = ft_whitespaces(input);
 	while (keys[i])
 	{
-		if (ft_strncmp(input, keys[i], ft_strlen(keys[i])) == 0)
-			return (function[i](input + ft_strlen(keys[i]), envp));
+		len = ft_strlen(keys[i]);
+		if (ft_strncmp(input, keys[i], len) == 0 && \
+			(input[len] == 0 || input[len] == 32))
+			return (function[i](input + len, envp));
 		i++;
 	}
 	minishell_thing(input, envp);

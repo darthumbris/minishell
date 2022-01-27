@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 12:11:01 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:19:57 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,20 @@ char	*ft_getenv(char *str, char **envp)
 	return (NULL);
 }
 
-void	change_pwd_in_envp(char *path, char **envp)
+void	change_pwd_in_envp(char **envp)
 {
-	if (path && envp)
-		printf("changing PWD value\n");
+	char	*pwd_change;
+	char	*old_pwd_change;
+	char	*new_path;
+
+	new_path = getcwd(NULL, -1);
+	pwd_change = ft_strjoin(" PWD=", new_path);
+	old_pwd_change = ft_strjoin(" OLDPWD=", ft_getenv("PWD", envp));
+	export_function(old_pwd_change, envp);
+	export_function(pwd_change, envp);
+	printf("in pwd change send this to export function: %s\n", pwd_change);
+	printf("in pwd change send this to export function: %s\n", old_pwd_change);
+	free(pwd_change);
+	free(new_path);
+	free(old_pwd_change);
 }

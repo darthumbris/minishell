@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:51:24 by abba          #+#    #+#                 */
-/*   Updated: 2022/01/27 12:04:23 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/27 12:12:27 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,6 @@ char	**envp_duplicate(char **envp)
 		tmp[i] = ft_strdup(envp[i]);
 		i++;
 	}
+	tmp[i] = NULL;
 	return (tmp);
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:40:27 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:50:26 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	export_function(char *input, char **envp)
 {
 	if (input && envp)
 		printf("entered export function\n");
+	printf("need to check if variable already there or not\n");
 }
 
 void	unset_function(char *input, char **envp)

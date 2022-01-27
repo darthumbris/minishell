@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:41:41 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 13:44:15 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	parse_input(char *input, char **envp)
 	{
 		len = ft_strlen(keys[i]);
 		if (ft_strncmp(input, keys[i], len) == 0 && \
-			(input[len] == 0 || input[len] == 32))
+			(input[len] == '\0' || input[len] == ' '))
 			return (function[i](input + len, envp));
 		i++;
 	}

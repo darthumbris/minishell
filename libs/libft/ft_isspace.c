@@ -3,19 +3,17 @@
 /*                                                        ::::::::            */
 /*   ft_isspace.c                                       :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: abba <abba@student.codam.nl>                 +#+                     */
+/*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/26 18:43:41 by abba          #+#    #+#                 */
-/*   Updated: 2022/01/26 18:45:57 by abba          ########   odam.nl         */
+/*   Created: 2022/01/27 13:22:32 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/01/27 13:23:20 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-
-char	*ft_whitespaces(char *s)
+int	ft_isspace(int c)
 {
-	while (*s == ' ' || *s == '\t' || *s == '\n' || \
-			*s == '\v' || *s == '\f' || *s == '\r')
-		s++;
-	return (s);
+	if (c == ' ' || c == '\t' || c == '\n' || \
+			c == '\v' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
 }

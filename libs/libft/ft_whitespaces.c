@@ -1,43 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   envp_duplicate.c                                   :+:    :+:            */
+/*   ft_isspace.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/01/27 11:51:24 by abba          #+#    #+#                 */
-/*   Updated: 2022/01/27 12:12:27 by abba          ########   odam.nl         */
+/*   Created: 2022/01/26 18:43:41 by abba          #+#    #+#                 */
+/*   Updated: 2022/01/26 18:45:57 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	envp_len(char **envp)
+char	*ft_whitespaces(char *s)
 {
-	int	i;
-
-	i = 0;
-	while (envp[i])
-	{
-		i++;
-	}
-	return (i);
-}
-
-char	**envp_duplicate(char **envp)
-{
-	int		len;
-	char	**tmp;
-	int		i;
-
-	i = 0;
-	len = envp_len(envp);
-	tmp = malloc((len + 1) * sizeof(char *));
-	while (i < len)
-	{
-		tmp[i] = ft_strdup(envp[i]);
-		i++;
-	}
-	tmp[i] = NULL;
-	return (tmp);
+	while (*s == ' ' || *s == '\t' || *s == '\n' || \
+			*s == '\v' || *s == '\f' || *s == '\r')
+		s++;
+	return (s);
 }

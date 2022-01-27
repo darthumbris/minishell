@@ -58,6 +58,8 @@ void	pwd_function(char *input, char **envp)
 	if (input && !ft_isalpha(*input) && !ft_isdigit(*input))
 	{
 		pwd_str = getcwd(NULL, -1);
+    if (!pwd_str)
+			pwd_str = getenv("PWD");
 		printf("%s\n", pwd_str);
 		free(pwd_str);
 	}
@@ -65,8 +67,24 @@ void	pwd_function(char *input, char **envp)
 
 void	export_function(char *input, char **envp)
 {
+	DIR				*dp;
+	struct dirent	*dirp;
+
 	if (input && *input == ' ')
 		printf("entered export function\n");
+	printf("testing opendir and readdir stuff here\n");
+	dp = opendir(input);
+	if (dp == NULL)
+		return (perror(""));
+	dirp = readdir(dp);
+	while (dirp != NULL)
+	{
+		if (dirp->d_type == 4)
+			printf("%s\n", dirp->d_name);
+		dirp = readdir(dp);
+	}
+	if (closedir(dp) == -1)
+		perror("");
 }
 
 void	unset_function(char *input, char **envp)

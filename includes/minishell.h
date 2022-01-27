@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 18:49:10 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/27 09:42:52 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "readline/history.h"
 # include "libft.h"
 # include <signal.h>
+# include <dirent.h>
 
 void	free_cmd_args(char **cmd_args);
 void	command_exec(char **paths, char **cmd_args, char **envp);

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 10:00:54 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 10:20:42 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	export_function(char *input)
 		printf("entered export function\n");
 	printf("testing opendir and readdir stuff here\n");
 	dp = opendir(input);
+	if (dp == NULL)
+		return (perror(""));
 	dirp = readdir(dp);
 	while (dirp != NULL)
 	{
@@ -64,7 +66,8 @@ void	export_function(char *input)
 			printf("%s\n", dirp->d_name);
 		dirp = readdir(dp);
 	}
-	closedir(dp);
+	if (closedir(dp) == -1)
+		perror("");
 }
 
 void	unset_function(char *input)

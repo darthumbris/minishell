@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 14:57:55 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 16:40:38 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,24 @@ void	export_function(char *input, char **envp)
 
 void	unset_function(char *input, char **envp)
 {
-	if (input && envp)
-		printf("entered unset function\n");
+	int		i;
+
+	i = 0;
+	input = ft_whitespaces(input);
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], input, ft_strlen(input)) == 0)
+		{
+			free(envp[i]);
+			while (envp[i + 1])
+			{
+				envp[i] = envp[i + 1];
+				i++;
+			}
+			envp[i] = NULL;
+		}
+		i++;
+	}
 }
 
 void	env_function(char *input, char **envp)

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 16:24:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 16:34:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ void	exit_function(char *input, char **envp)
 			printf("exit\nminishell>: exit: %s: numeric argument required\n", \
 				input);
 			system("leaks minishell");
-			free(envp);
+			free(envp); // this is not a proper free!!! just a temp thing.
 			exit(255);
 		}
 		i++;
 	}
 	printf("exit\n");
 	system("leaks minishell");
-	free(envp);
+	free(envp); // this is not a proper free!!! just a temp thing.
 	exit(ft_atoi(input));
 }
 

@@ -15,7 +15,8 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/parser.c \
         $(SRC_DIR)/env_functions.c \
         $(SRC_DIR)/built_in_functions1.c \
-        $(SRC_DIR)/built_in_functions2.c 
+        $(SRC_DIR)/built_in_functions2.c \
+        $(SRC_DIR)/quote_parser.c
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

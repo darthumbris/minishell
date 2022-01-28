@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 11:52:06 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/28 10:58:43 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ int	main(int argc, char **argv, char **envp)
 			exit(0);
 		}
 		if (input && *input)
+		{
+			//quote_parser(input);
 			parse_input(input, envp_dup);
+		}
 	}
 	return (0);
 }

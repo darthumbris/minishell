@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 14:56:26 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/28 11:04:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_getenv(char *str, char **envp)
 			i++;
 		}
 		if (envp[i])
-			return (envp[i] + len + 1);
+			return (envp[i] + len);
 	}
 	return (NULL);
 }

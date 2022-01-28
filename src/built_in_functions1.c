@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 16:40:38 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/28 11:04:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,17 @@
  * The cd function will check the input 
  * and then try to change the directory with
  * chdir.
+ * it should also handle cd - (go back to previous dir)
+ * and also cd ~ or cd ~/Documents (where ~ is home dir)
+ * or cd ~username (than it should move to homedir of other user)
  */
 void	cd_function(char *input, char **envp)
 {
 	input = ft_whitespaces(input);
 	if (!*input)
 	{
-		if (chdir(ft_getenv("HOME", envp)) == -1)
-			perror("testing");
+		if (chdir(ft_getenv("HOME=", envp)) == -1)
+			perror("");
 		else
 			change_pwd_in_envp(envp);
 	}
@@ -36,6 +39,10 @@ void	cd_function(char *input, char **envp)
 	}
 }
 
+/*
+ * the pwd function just needs to handle the pwd
+ * it doesn't need any arguments. (and won't complain if there are any in bash)
+ */
 void	pwd_function(char *input, char **envp)
 {
 	char	*pwd_str;
@@ -44,7 +51,7 @@ void	pwd_function(char *input, char **envp)
 	{
 		pwd_str = getcwd(NULL, -1);
 		if (!pwd_str)
-			printf("%s\n", ft_getenv("PWD", envp));
+			printf("%s\n", ft_getenv("PWD=", envp));
 		else
 		{
 			printf("%s\n", pwd_str);
@@ -53,6 +60,11 @@ void	pwd_function(char *input, char **envp)
 	}
 }
 
+/*
+ * This function handles the export function
+ * export can handle stuff like: export test=water like=bake
+ * and will do both arguments.
+ */
 void	export_function(char *input, char **envp)
 {
 	int		i;
@@ -76,6 +88,10 @@ void	export_function(char *input, char **envp)
 	free(export_var);
 }
 
+/*
+ * The unset function the same as the export function
+ * should accept multiple arguments to unset.
+ */
 void	unset_function(char *input, char **envp)
 {
 	int		i;
@@ -98,6 +114,12 @@ void	unset_function(char *input, char **envp)
 	}
 }
 
+/*
+ * The env doesn't need to accept any options or arguments.
+ * it will just print the env no matter what
+ * (in bash the argument needs to be an env variable and it will
+ * print only the value of that variable)
+ */
 void	env_function(char *input, char **envp)
 {
 	int	i;

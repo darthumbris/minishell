@@ -6,12 +6,18 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 16:34:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/28 11:13:19 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+ * exit function will exit the minishell
+ * with the exit value given as argument (or 255 if non numeric argument given)
+ * if there are too many arguments (more than 1) it will exit with 1.
+ * still need to free the envp and input.
+ */
 void	exit_function(char *input, char **envp)
 {
 	int	i;
@@ -36,6 +42,11 @@ void	exit_function(char *input, char **envp)
 	exit(ft_atoi(input));
 }
 
+/*
+ * echo command should check for the -n option
+ * and than just print all the arguments
+ * (-nnnnnn is also valid option or -nn -nn too)
+ */
 void	echo_function(char *input, char **envp)
 {
 	if (input && *input == ' ' && envp)

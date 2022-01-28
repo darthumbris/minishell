@@ -6,23 +6,17 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/26 12:14:52 by abba          #+#    #+#                 */
-/*   Updated: 2022/01/27 11:48:41 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/28 12:37:24 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DISPATCH_H
 # define DISPATCH_H
 
-enum e_builtins
+typedef struct s_cmd
 {
-	CMD_CD,
-	CMD_PWD,
-	CMD_EXPORT,
-	CMD_UNSET,
-	CMD_ENV,
-	CMD_EXIT,
-	CMD_ECHO
-};
-typedef void(*t_functionPointer)(char *input, char **envp);
+	char	*comand;
+	void	(*t_function_pointer)(char *input, char **envp);
+}			t_cmd;
 
 #endif

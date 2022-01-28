@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 11:13:19 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/28 12:51:27 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
  * if there are too many arguments (more than 1) it will exit with 1.
  * still need to free the envp and input.
  */
-void	exit_function(char *input, char **envp)
+void	exit_function(char **input, char **envp)
 {
 	int	i;
 
@@ -47,7 +47,7 @@ void	exit_function(char *input, char **envp)
  * and than just print all the arguments
  * (-nnnnnn is also valid option or -nn -nn too)
  */
-void	echo_function(char *input, char **envp)
+void	echo_function(char **input, char **envp)
 {
 	if (input && *input == ' ' && envp)
 		printf("entered echo function\n");

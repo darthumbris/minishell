@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 16:34:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/27 20:05:18 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ void	exit_function(char *input, char **envp)
 
 void	echo_function(char *input, char **envp)
 {
-	if (input && *input == ' ' && envp)
-		printf("entered echo function\n");
+	char	**echo_input;
+
+	(void)envp;
+	echo_input = ft_split(input, ' ');
+	while (*echo_input)
+	{
+		printf("test[%s]\n", *echo_input);
+		echo_input++;
+	}
 }

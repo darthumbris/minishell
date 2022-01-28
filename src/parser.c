@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/27 13:58:11 by abba          ########   odam.nl         */
+/*   Updated: 2022/01/28 12:40:30 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,28 @@
  */
 void	parse_input(char *input, char **envp)
 {
-	const t_functionPointer	function[] = {
-	[CMD_CD] = &cd_function, [CMD_PWD] = &pwd_function,
-	[CMD_EXPORT] = &export_function, [CMD_UNSET] = &unset_function,
-	[CMD_ENV] = &env_function, [CMD_EXIT] = &exit_function,
-	[CMD_ECHO] = &echo_function, NULL
-	};
-	const char				*keys[] = {
-	[CMD_CD] = "cd", [CMD_PWD] = "pwd",
-	[CMD_EXPORT] = "export", [CMD_UNSET] = "unset",
-	[CMD_ENV] = "env", [CMD_EXIT] = "exit", [CMD_ECHO] = "echo", NULL
-	};
 	int						i;
 	int						len;
+	const t_cmd				function[] = {
+	{"cd", &cd_function},
+	{"pwd", &pwd_function},
+	{"export", &export_function},
+	{"unset", &unset_function},
+	{"env", &env_function},
+	{"exit", &exit_function},
+	{"echo", &echo_function},
+	{0, NULL}
+	};
 
 	i = 0;
 	input = ft_whitespaces(input);
-	while (keys[i])
+	while (function[i].comand != 0)
 	{
-		len = ft_strlen(keys[i]);
-		if (ft_strncmp(input, keys[i], len) == 0 && \
+		len = ft_strlen(function[i].comand);
+		printf("len: %d\n", len);
+		if (ft_strncmp(input, function[i].comand, len) == 0 && \
 			(input[len] == '\0' || input[len] == ' '))
-			return (function[i](input + len, envp));
+			return (function[i].t_function_pointer(input, envp));
 		i++;
 	}
 	minishell_thing(input, envp);

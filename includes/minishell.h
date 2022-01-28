@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 10:31:42 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/28 17:01:27 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	change_pwd_in_envp(char **envp);
 char	**quote_parser(char *input);
 
 //---------Shell  Built-in-functions--------------
-void	cd_function(char *input, char **envp);
-void	pwd_function(char *input, char **envp);
-void	export_function(char *input, char **envp);
-void	unset_function(char *input, char **envp);
-void	env_function(char *input, char **envp);
-void	exit_function(char *input, char **envp);
-void	echo_function(char *input, char **envp);
+void	cd_function(char **input, char **envp);
+void	pwd_function(char **input, char **envp);
+void	export_function(char **input, char **envp);
+void	unset_function(char **input, char **envp);
+void	env_function(char **input, char **envp);
+void	exit_function(char **input, char **envp);
+void	echo_function(char **input, char **envp);
 #endif

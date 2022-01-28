@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 12:51:27 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/01/28 13:09:17 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	exit_function(char **input, char **envp)
  * echo command should check for the -n option
  * and than just print all the arguments
  * (-nnnnnn is also valid option or -nn -nn too)
+ * echo will print a space between each argument:
+ * echo asdf      fasdf (will print asdf fasdf)
  */
 void	echo_function(char **input, char **envp)
 {

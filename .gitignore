@@ -1,0 +1,5 @@
+*.o
+*.json
+*.a
+minishell
+.DS_Store

@@ -14,18 +14,26 @@
 
 void	exit_function(char *input, char **envp)
 {
-	if (input && !ft_isalpha(*input) && !ft_isdigit(*input) && envp)
+	int	i;
+
+	i = 0;
+	input = ft_whitespaces(input);
+	while (input[i])
 	{
-		printf("exit\n");
-		system("leaks minishell");
-		return ;
+		if (!ft_isdigit(input[i]))
+		{
+			printf("exit\nminishell>: exit: %s: numeric argument required\n", \
+				input);
+			system("leaks minishell");
+			free(envp); // this is not a proper free!!! just a temp thing.
+			exit(255);
+		}
+		i++;
 	}
-	else
-	{
-		ft_putstr_fd("exit", 2);
-		ft_putstr_fd(input, 2);
-		ft_putendl_fd(": command not found", 2);
-	}
+	printf("exit\n");
+	system("leaks minishell");
+	free(envp); // this is not a proper free!!! just a temp thing.
+	exit(ft_atoi(input));
 }
 
 void	echo_function(char *input, char **envp)

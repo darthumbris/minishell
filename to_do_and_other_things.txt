@@ -1,12 +1,5 @@
 Probably need to change the whole check_input function to handle a lot of stuff below this.
 
-
-IMPORTANT: implement our own echo cd pwd !!!!
-
-For cd might need the chdir function. Need to check if the command is cd for this. Execve does execute it but the change in directory
-is only for that process.
-cd also won't work do anything if you do for example : cd | ls . it will just do the ls on the current directory.
-
 For the history thing might also need to implement history -c to clear the history?
 
 Need to check in the check input for ./ for the relative path execution.
@@ -19,15 +12,6 @@ redirections still needs to be done. need to check for that.
 
 Make the pipe stuff work (especially multiple pipes)
 
-Handle ctrl-\ (might need to properly lock the sigquit stuff maybe sigaction needed)
-
-implent env (getenv?)
-
-implent the export unset
-
-might need to do something for pwd when the directory has been changed (but not sure yet)
-
-
 quotes:
 "ls -la" will be input as one string to command (in this case it should fail)
 '$USER' should be printed as just $USER
@@ -38,3 +22,5 @@ the options/arguments ?
 than it will just check the first string if it's one of the built ins.
 
 than with | and redirections (< << > >> stuff) we need to check this stuff first
+
+Need to handle the return values for the built-in functions (for echo $?)

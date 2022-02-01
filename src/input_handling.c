@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 17:09:38 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 17:10:23 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /*
  * This function will give the absolute path back
- * needed to execute things.
+ * needed to execute things. (might not be needed)
  */
 char	**path_input(char *input)
 {

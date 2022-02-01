@@ -24,3 +24,5 @@ than it will just check the first string if it's one of the built ins.
 than with | and redirections (< << > >> stuff) we need to check this stuff first
 
 Need to handle the return values for the built-in functions (for echo $?)
+
+Make sure that it executes ./minishell in minishell (or other programs)!!!!!

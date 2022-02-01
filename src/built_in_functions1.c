@@ -6,44 +6,17 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 12:51:00 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 14:53:41 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
- * The cd function will check the input 
- * and then try to change the directory with
- * chdir.
- * it should also handle cd - (go back to previous dir)
- * and also cd ~ or cd ~/Documents (where ~ is home dir)
- * or cd ~username (than it should move to homedir of other user)
- */
-void	cd_function(char **input, char **envp)
-{
-	input = ft_whitespaces(input);
-	if (!*input)
-	{
-		if (chdir(ft_getenv("HOME=", envp)) == -1)
-			perror("");
-		else
-			change_pwd_in_envp(envp);
-	}
-	else
-	{
-		if (chdir(input) == -1)
-			perror("");
-		else
-			change_pwd_in_envp(envp);
-	}
-}
-
-/*
  * the pwd function just needs to handle the pwd
  * it doesn't need any arguments. (and won't complain if there are any in bash)
  */
-void	pwd_function(char **input, char **envp)
+void	pwd_function(char *input, char **envp)
 {
 	char	*pwd_str;
 
@@ -65,7 +38,7 @@ void	pwd_function(char **input, char **envp)
  * export can handle stuff like: export test=water like=bake
  * and will do both arguments.
  */
-void	export_function(char **input, char **envp)
+void	export_function(char *input, char **envp)
 {
 	int		i;
 	char	*export_var;
@@ -92,7 +65,7 @@ void	export_function(char **input, char **envp)
  * The unset function the same as the export function
  * should accept multiple arguments to unset.
  */
-void	unset_function(char **input, char **envp)
+void	unset_function(char *input, char **envp)
 {
 	int		i;
 
@@ -120,7 +93,7 @@ void	unset_function(char **input, char **envp)
  * (in bash the argument needs to be an env variable and it will
  * print only the value of that variable)
  */
-void	env_function(char **input, char **envp)
+void	env_function(char *input, char **envp)
 {
 	int	i;
 

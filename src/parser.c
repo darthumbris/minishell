@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 12:49:00 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 12:15:32 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,9 @@ void	parse_input(char *input, char **envp)
 	while (function[i].comand != 0)
 	{
 		len = ft_strlen(function[i].comand);
-		printf("len: %d\n", len);
 		if (ft_strncmp(input, function[i].comand, len) == 0 && \
 			(input[len] == '\0' || input[len] == ' '))
-			return (function[i].t_function_pointer(input, envp));
+			return (function[i].t_function_pointer(input + len, envp));
 		i++;
 	}
 	minishell_thing(input, envp);

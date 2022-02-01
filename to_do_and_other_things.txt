@@ -26,3 +26,15 @@ implent env (getenv?)
 implent the export unset
 
 might need to do something for pwd when the directory has been changed (but not sure yet)
+
+
+quotes:
+"ls -la" will be input as one string to command (in this case it should fail)
+'$USER' should be printed as just $USER
+"$USER" should print the username
+
+parse_input maybe needs a char **input, where the first string is the command and the other strings are 
+the options/arguments ?
+than it will just check the first string if it's one of the built ins.
+
+than with | and redirections (< << > >> stuff) we need to check this stuff first

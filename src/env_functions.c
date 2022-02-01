@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 11:04:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 14:26:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	change_pwd_in_envp(char **envp)
 
 	new_path = getcwd(NULL, -1);
 	pwd_change = ft_strjoin("PWD=", new_path);
-	old_pwd_change = ft_strjoin("OLDPWD=", ft_getenv("PWD", envp));
+	old_pwd_change = ft_strjoin("OLDPWD=", ft_getenv("PWD=", envp));
 	export_function(old_pwd_change, envp);
 	export_function(pwd_change, envp);
 	free(pwd_change);

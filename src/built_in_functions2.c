@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 13:09:17 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 14:12:29 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,25 @@
  * if there are too many arguments (more than 1) it will exit with 1.
  * still need to free the envp and input.
  */
-void	exit_function(char **input, char **envp)
+void	exit_function(char *input, char **envp)
 {
 	int	i;
 
 	i = 0;
 	input = ft_whitespaces(input);
-	while (input[i])
+	while (input[i] && envp)
 	{
 		if (!ft_isdigit(input[i]))
 		{
 			printf("exit\nminishell>: exit: %s: numeric argument required\n", \
 				input);
 			system("leaks minishell");
-			free(envp); // this is not a proper free!!! just a temp thing.
 			exit(255);
 		}
 		i++;
 	}
 	printf("exit\n");
 	system("leaks minishell");
-	free(envp); // this is not a proper free!!! just a temp thing.
 	exit(ft_atoi(input));
 }
 
@@ -49,8 +47,27 @@ void	exit_function(char **input, char **envp)
  * echo will print a space between each argument:
  * echo asdf      fasdf (will print asdf fasdf)
  */
-void	echo_function(char **input, char **envp)
+void	echo_function(char *input, char **envp)
 {
-	if (input && *input == ' ' && envp)
-		printf("entered echo function\n");
+	int	len;
+	int	i;
+
+	input = ft_whitespaces(input);
+	len = ft_strlen(input);
+	i = 1;
+	if (*input == '-' && len > 1 && input[1] == 'n')
+	{
+		while (input[i] == 'n' && input[i])
+			i++;
+		if (input[i] != ' ')
+			return (ft_putendl_fd(input, 1));
+		else
+			input = ft_whitespaces(input + i);
+		if (input[0] == '-' && input[1] == 'n')
+			echo_function(input, envp);
+		else
+			ft_putstr_fd(input, 1);
+	}
+	else
+		ft_putendl_fd(input, 1);
 }

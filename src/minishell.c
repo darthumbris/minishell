@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/28 12:54:28 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 14:12:51 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,19 @@ void	signal_handle_function(int sig)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	if (sig == SIGQUIT)
-	{
-		printf("ctrl-\\ \n");
-	}
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	static char	*input;
-	char		**envp_dup;
+	static char		*input;
+	char			**envp_dup;
 
 	input = NULL;
+	rl_catch_signals = 0;
 	if (argc != 1 || !argv || !envp)
 		return (1);
 	signal(SIGINT, signal_handle_function);
+	signal(SIGQUIT, signal_handle_function);
 	envp_dup = envp_duplicate(envp);
 	while (1)
 	{
@@ -74,10 +72,7 @@ int	main(int argc, char **argv, char **envp)
 			return (0);
 		}
 		if (input && *input)
-		{
-			//quote_parser(input);
 			parse_input(input, envp_dup);
-		}
 	}
 	return (0);
 }

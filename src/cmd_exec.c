@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 14:13:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 17:03:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@
  */
 char	**get_path_str(char **envp)
 {
-	int		i;
-
-	i = 0;
-	while (envp[i])
+	if (envp)
 	{
-		if (ft_strnstr(envp[i], "PATH", 5))
-			return (ft_split(ft_substr(envp[i], 5, ft_strlen(envp[i])), ':'));
-		i++;
+		if (ft_getenv("PATH=", envp))
+			return (ft_split(ft_getenv("PATH=", envp), ':'));
 	}
 	return (NULL);
 }

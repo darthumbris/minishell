@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 12:09:37 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 16:56:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**envp_duplicate(char **envp);
 
 char	*ft_getenv(char *str, char **envp);
 void	change_pwd_in_envp(char **envp);
-char	**quote_parser(char *input);
+void	signal_handle_function(int sig);
 
 //---------Shell  Built-in-functions--------------
 void	cd_function(char *input, char **envp);

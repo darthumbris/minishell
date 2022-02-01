@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 15:10:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/01 17:09:38 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*get_input(char *input)
 		free(input);
 		input = NULL;
 	}
-	input = readline("minishell> ");
+	input = readline("\rminishell> ");
 	if (input && *input)
 		add_history(input);
 	return (input);
@@ -75,6 +75,7 @@ void	execute_input(char *input, char **envp)
 		cmd_args = get_cmd_arg(input);
 	}
 	command_exec(paths, cmd_args, envp);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_args[0], 2);
 	ft_putendl_fd(": command not found", 2);
 	free_cmd_args(cmd_args);

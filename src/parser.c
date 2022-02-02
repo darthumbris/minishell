@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 12:07:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 15:36:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
  * like echo, cd, pwd etc.
  * need to also take into account whitespace
  * before the command (i.e.:       pwd should still execute)
- * need to also check that it won't work with : cdb or something
+ * also need to properly check for things like if ./minishell is 
+ * given as input it should increase the shell lvl correctly
+ * and not actually execute minishell (or might need to do it differently)
  */
 void	parse_input(char *input, char **envp)
 {

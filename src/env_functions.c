@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 14:18:23 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 15:32:57 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*normal_env_variable(char *input, char **envp, int len)
  * $? $0 and $PWD (and other env variables)
  * are covered with this function.
  * the returned string should be freed properly.!
- * return value still needs to be done.
+ * !!!!return value still needs to be done. !!!!!
  */
 char	*expand_env_variable(char *input, char **envp)
 {
@@ -117,7 +117,7 @@ char	*expand_env_variable(char *input, char **envp)
 		else if (*input == '?')
 		{
 			remain = ft_substr(input, 1, len);
-			env_expand = ft_strjoin(ft_itoa(0), remain); //need to get this return value from somewhere...
+			env_expand = ft_strjoin(ft_itoa(0), remain);
 		}
 		else
 			return (normal_env_variable(input, envp, len));

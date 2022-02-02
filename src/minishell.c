@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 12:12:46 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 15:36:55 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
  * This function will create the child process to handle the simple 
  * commands. Won't work yet with pipe.
  * Also the return value required for the echo $? needs to be done
+ * THIS FUNCTION IS TEMPORARY UNTIL PIPE ETC IS WORKING!!!!.
  */
 int	minishell_thing(char *input, char **envp)
 {

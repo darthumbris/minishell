@@ -16,7 +16,9 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/env_functions.c \
         $(SRC_DIR)/built_in_functions1.c \
         $(SRC_DIR)/built_in_functions2.c \
-        $(SRC_DIR)/cd_function.c
+        $(SRC_DIR)/cd_function.c \
+        $(SRC_DIR)/shlvl.c \
+        $(SRC_DIR)/pipe.c
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 17:03:44 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 10:27:11 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void	command_exec(char **paths, char **cmd_args, char **envp)
 	char	*cmd_slash;
 
 	i = 0;
-	cmd_slash = ft_strjoin("/", cmd_args[0]);
+	if (cmd_args)
+		cmd_slash = ft_strjoin("/", cmd_args[0]);
+	else
+		cmd_slash = ft_strdup("");
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd_slash);

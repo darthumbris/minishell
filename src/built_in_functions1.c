@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 14:53:41 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 11:53:38 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,9 @@ void	env_function(char *input, char **envp)
 {
 	int	i;
 
-	i = 0;
 	if (input && envp)
 	{
+		i = 0;
 		while (envp[i])
 		{
 			printf("%s\n", envp[i]);

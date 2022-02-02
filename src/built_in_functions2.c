@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 14:12:29 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 12:10:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,16 @@ void	exit_function(char *input, char **envp)
 		{
 			printf("exit\nminishell>: exit: %s: numeric argument required\n", \
 				input);
-			system("leaks minishell");
-			exit(255);
+			if (ft_atoi(ft_getenv("SHLVL=", envp)) == 1)
+				exit(255);
+			change_shl_lvl(envp, -1);
 		}
 		i++;
 	}
 	printf("exit\n");
-	system("leaks minishell");
-	exit(ft_atoi(input));
+	if (ft_atoi(ft_getenv("SHLVL=", envp)) == 1)
+		exit(ft_atoi(input));
+	change_shl_lvl(envp, -1);
 }
 
 /*

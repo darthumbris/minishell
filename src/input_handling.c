@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 17:10:23 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 10:21:54 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	execute_input(char *input, char **envp)
 	char	**paths;
 	char	**cmd_args;
 
-	if (input && *input == '/')
+	if (input && (*input == '/' || (*input == '.' && input[1] == '/')))
 	{
 		paths = path_input(input);
 		cmd_args = get_cmd_arg(input + (ft_strchr(input + 1, '/') - input + 1));

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 12:15:32 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 12:07:34 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,8 @@ void	parse_input(char *input, char **envp)
 			return (function[i].t_function_pointer(input + len, envp));
 		i++;
 	}
+	if (ft_strncmp(input, "./minishell", 11) == 0 && \
+			(input[11] == '\0' || input[11] == ' '))
+		return (change_shl_lvl(envp, 1));
 	minishell_thing(input, envp);
 }

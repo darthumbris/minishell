@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 12:09:16 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 12:54:34 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,19 @@ int	error_msg(char *error_str, int return_val)
  * to this it needs to use dup2 to change
  * the stdin to end[0] and stdout to outfile fd
  */
-void	child_process_cmd2(int outfile_fd, char **argv, char **envp, int fd[2])
+void	child_process_cmd2(int outfile_fd, char **cmds, char **envp, int fd[2])
 {
 	char	**paths;
-	char	**cmd_args;
 
 	paths = get_path_str(envp);
 	dup2(outfile_fd, STDOUT_FILENO);
 	dup2(fd[0], STDIN_FILENO);
 	close(fd[1]);
 	close(outfile_fd);
-	cmd_args = get_cmd_arg(argv[3]);
-	command_exec(paths, cmd_args, envp);
-	ft_putstr_fd(cmd_args[0], 2);
+	command_exec(paths, cmds, envp);
+	ft_putstr_fd(cmds[0], 2);
 	ft_putendl_fd(": command not found", 2);
-	free_cmd_args(cmd_args);
+	free_cmd_args(cmds);
 	exit(127);
 }
 
@@ -50,21 +48,19 @@ void	child_process_cmd2(int outfile_fd, char **argv, char **envp, int fd[2])
  * to this it needs to use dup2 to change
  * the stdin to infile fd and stdout to fd[1]
  */
-void	child_process_cmd1(int infile_fd, char **argv, char **envp, int fd[2])
+void	child_process_cmd1(int infile_fd, char **cmds, char **envp, int fd[2])
 {
 	char	**paths;
-	char	**cmd_args;
 
 	paths = get_path_str(envp);
 	dup2(infile_fd, STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
 	close(fd[0]);
 	close(infile_fd);
-	cmd_args = get_cmd_arg(argv[2]);
-	command_exec(paths, cmd_args, envp);
-	ft_putstr_fd(cmd_args[0], 2);
+	command_exec(paths, cmds, envp);
+	ft_putstr_fd(cmds[0], 2);
 	ft_putendl_fd(": command not found", 2);
-	free_cmd_args(cmd_args);
+	free_cmd_args(cmds);
 	exit(127);
 }
 

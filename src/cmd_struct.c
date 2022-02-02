@@ -1,27 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   shlvl.c                                            :+:    :+:            */
+/*   cmd_struct.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/02 12:04:38 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 12:46:52 by shoogenb      ########   odam.nl         */
+/*   Created: 2022/02/02 13:05:34 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/02/02 13:07:34 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	change_shl_lvl(char **envp, int change)
+t_command	*new_command(char **cmds)
 {
-	char	*shlvl;
-	int		shlvl_current;
-	char	*new_shlvl;
+	t_command	*new;
 
-	shlvl_current = ft_atoi(ft_getenv("SHLVL=", envp));
-	new_shlvl = ft_itoa(shlvl_current + change);
-	shlvl = ft_strjoin("SHLVL=", new_shlvl);
-	free(new_shlvl);
-	export_function(shlvl, envp);
-	free(shlvl);
+	new = malloc(sizeof(*new));
+	if (!new)
+		return (NULL);
+	new->cmds = cmds;
+	new->fd_error = 2;
+	new->fd_in = 0;
+	new->fd_out = 1;
+	return (new);
 }

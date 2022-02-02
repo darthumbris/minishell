@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   shlvl.c                                            :+:    :+:            */
+/*   heredoc.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/02 12:04:38 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 12:46:52 by shoogenb      ########   odam.nl         */
+/*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/02/02 13:13:47 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	change_shl_lvl(char **envp, int change)
+/*
+ * This function should handle the
+ * << redirect and make an heredoc
+ * that properly closes with the
+ * input name (EOF or another word etc.)
+ * than should write everything correctly
+ * to the fd_outpout.
+ */
+void	heredoc_function(void)
 {
-	char	*shlvl;
-	int		shlvl_current;
-	char	*new_shlvl;
-
-	shlvl_current = ft_atoi(ft_getenv("SHLVL=", envp));
-	new_shlvl = ft_itoa(shlvl_current + change);
-	shlvl = ft_strjoin("SHLVL=", new_shlvl);
-	free(new_shlvl);
-	export_function(shlvl, envp);
-	free(shlvl);
+	printf("entered heredoc redirection << function\n");
 }

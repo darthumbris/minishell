@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 15:36:55 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 15:52:28 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
  * commands. Won't work yet with pipe.
  * Also the return value required for the echo $? needs to be done
  * THIS FUNCTION IS TEMPORARY UNTIL PIPE ETC IS WORKING!!!!.
+ * or need to change it in case there is only one command (no pipes)
  */
 int	minishell_thing(char *input, char **envp)
 {

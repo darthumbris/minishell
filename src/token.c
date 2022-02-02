@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 13:45:46 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/02 13:45:38 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/02 14:21:40 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ char	**envp_duplicate(char **envp)
 
 typedef struct s_check
 {
-	int count_s;
-	int	count_d;
-	int	len;
-	int	position;
-	bool single_quote;
-	bool double_quotes;
+	int		count_s;
+	int		count_d;
+	int		len;
+	int		position;
+	bool	single_quote;
+	bool	double_quotes;
 }		t_check;
 
 void	init_check(t_check *check)
@@ -88,7 +88,7 @@ char *remove_white_spaces(char *str, t_check *check)
 			double_quotes(check);
 		if (str[i] != ' ' && !check->single_quote && !check->double_quotes)
 			fill_str(str, &j, i);
-		else if (str[i] == ' ' && str[i + 1] != ' ' && !check->single_quote\
+		else if (str[i] == ' ' && str[i + 1] != ' ' && !check->single_quote \
 			&& !check->double_quotes && str[i + 1] != '\0')
 		{
 			fill_str(str, &j, i);
@@ -99,7 +99,7 @@ char *remove_white_spaces(char *str, t_check *check)
 		i++;
 	}
 	str[j] = '\0';
-	return str;
+	return (str);
 }
 
 char	*str_copy(char *str, int end, int start)
@@ -140,7 +140,7 @@ char	**split_output(char *str, t_check *check)
 			single_quote(check);
 		if (str[i] == '\"')
 			double_quotes(check);
-		else if ((str[i] == ' ' && !check->single_quote\
+		else if ((str[i] == ' ' && !check->single_quote \
 			&& !check->double_quotes) || (str[i + 1] == '\0'))
 		{
 			output[j] = str_copy(str, i, check->position);
@@ -156,8 +156,9 @@ void	tokenizer(char *output)
 {
 	t_check	check;
 	char	**test;
-	int i = 0;
+	int		i;
 
+	i = 0;
 	init_check(&check);
 	output = remove_white_spaces(output, &check);
 	test = split_output(output, &check);

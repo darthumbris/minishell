@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 13:08:04 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 14:00:50 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ char		*ft_getenv(char *str, char **envp);
 void		change_pwd_in_envp(char **envp);
 void		signal_handle_function(int sig);
 void		change_shl_lvl(char **envp, int change);
-t_command	*new_command(char **cmds);
 
 //---------Shell  Built-in-functions--------------
 void		cd_function(char *input, char **envp);
@@ -55,4 +54,6 @@ typedef struct s_command
 	int		fd_out;
 	int		fd_error;
 }				t_command;
+t_command	*new_command(char **cmds);
+char		*expand_env_variable(char *input, char **envp);
 #endif

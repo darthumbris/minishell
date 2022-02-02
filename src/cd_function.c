@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 14:53:45 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/01 15:15:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 14:04:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	cd_tilde(char *input, char **envp)
 
 	if (input[1] == '/' || input[1] == '\0' || input[1] == ' ')
 	{
-		if (!ft_getenv("HOME=", envp))
+		if (!ft_getenv("HOME", envp))
 			return (ft_putendl_fd("minishell: cd: HOME not set", 2));
 		if (input[1] == ' ')
-			return (cd_function(ft_getenv("HOME=", envp), envp));
-		relative = ft_strjoin(ft_getenv("HOME=", envp), input + 1);
+			return (cd_function(ft_getenv("HOME", envp), envp));
+		relative = ft_strjoin(ft_getenv("HOME", envp), input + 1);
 	}
 	else
 		relative = ft_strjoin("/Users/", input + 1);
@@ -35,10 +35,10 @@ void	cd_dash(char *input, char **envp)
 {
 	if (!input)
 		ft_putendl_fd("cd Error", 2);
-	if (ft_getenv("OLDPWD=", envp))
+	if (ft_getenv("OLDPWD", envp))
 	{
-		ft_putendl_fd(ft_getenv("OLDPWD=", envp), 1);
-		cd_function(ft_getenv("OLDPWD=", envp), envp);
+		ft_putendl_fd(ft_getenv("OLDPWD", envp), 1);
+		cd_function(ft_getenv("OLDPWD", envp), envp);
 	}
 	else
 		ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
@@ -57,7 +57,7 @@ void	cd_function(char *input, char **envp)
 	input = ft_whitespaces(input);
 	if (!*input)
 	{
-		if (chdir(ft_getenv("HOME=", envp)) == -1)
+		if (chdir(ft_getenv("HOME", envp)) == -1)
 			perror("");
 		else
 			change_pwd_in_envp(envp);

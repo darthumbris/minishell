@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 11:53:38 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 14:03:49 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	pwd_function(char *input, char **envp)
 	{
 		pwd_str = getcwd(NULL, -1);
 		if (!pwd_str)
-			printf("%s\n", ft_getenv("PWD=", envp));
+			printf("%s\n", ft_getenv("PWD", envp));
 		else
 		{
 			printf("%s\n", pwd_str);

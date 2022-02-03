@@ -6,11 +6,29 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 15:52:28 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/03 15:56:59 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokenizer.h"
+
+void	lexer_checker(char *input)
+{
+	t_token	*lst;
+
+	printf("checking lexer\n");
+	lst = lexer(input);
+	if (!lst)
+		printf("lst is NULL\n");
+	while (lst)
+	{
+		printf("token_name: %s\t", lst->token_name);
+		printf("lst_value: %s\n", lst->token_value);
+		lst = lst->next;
+	}
+	printf("done with lexing\n");
+}
 
 /*
  * This function will create the child process to handle the simple 
@@ -70,7 +88,10 @@ int	main(int argc, char **argv, char **envp)
 		if (input == NULL)
 			exit_function("0", envp_dup);
 		if (input && *input)
-			parse_input(input, envp_dup);
+		{
+			lexer_checker(input);
+			//parse_input(input, envp_dup);
+		}
 	}
 	return (0);
 }

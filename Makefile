@@ -19,8 +19,9 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/cd_function.c \
         $(SRC_DIR)/shlvl.c \
         $(SRC_DIR)/pipe.c \
-        $(SRC_DIR)/token.c \
-        $(SRC_DIR)/token_utils.c
+        $(SRC_DIR)/lexer/lexer.c \
+        $(SRC_DIR)/lexer/lexer_utils.c \
+        $(SRC_DIR)/lexer/token_lst.c
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

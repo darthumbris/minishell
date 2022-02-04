@@ -6,28 +6,35 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 11:53:11 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 14:40:39 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tokenizer.h"
 
-void	lexer_checker(char *input)
+/*
+ * temporary function to check the lexer
+ * functionality.
+ */
+t_token	*lexer_checker(char *input)
 {
-	t_token	*lst;
+	t_token		*lst;
+	t_token		*tmp;
 
 	printf("checking lexer\n");
 	lst = lexer(input);
 	if (!lst)
 		printf("lst is NULL\n");
-	while (lst)
+	tmp = lst;
+	while (tmp)
 	{
-		printf("token_name: %s\t", lst->token_name);
-		printf("lst_value: %s\n", lst->token_value);
-		lst = lst->next;
+		printf("token_name: %s\t", tmp->token_name);
+		printf("lst_value: %s\n", tmp->token_value);
+		tmp = tmp->next;
 	}
 	printf("done with lexing\n");
+	return (lst);
 }
 
 /*
@@ -79,16 +86,25 @@ void	signal_handle_function(int sig)
  * with a shlvl and return value
  * and maybe some other stuff
  * that bash stores itself and in env
+ * or might be able to store it differently.
  */
 int	main(int argc, char **argv, char **envp)
 {
 	static char		*input;
 	char			**envp_dup;
+	int				i;
+	t_token			*lst;
 
 	input = NULL;
 	rl_catch_signals = 0;
 	if (argc != 1 || !argv || !envp)
-		return (1);
+	{
+		i = 1;
+		while (argv[i])
+			printf("argv[1]: %s\n", argv[i++]);
+		//return (1);
+		//not sure about this return yet.
+	}
 	signal(SIGINT, signal_handle_function);
 	signal(SIGQUIT, signal_handle_function);
 	envp_dup = envp_duplicate(envp);
@@ -96,12 +112,19 @@ int	main(int argc, char **argv, char **envp)
 	{
 		input = get_input(input);
 		if (input == NULL)
+		{
+			if (lst)
+				free_token_lst(&lst);
 			exit_function("0", envp_dup);
+		}
 		if (input && *input)
 		{
-			lexer_checker(input);
+			if (lst)
+				free_token_lst(&lst);
+			lst = lexer_checker(input);
 			//parse_input(input, envp_dup);
 		}
 	}
+	system("leaks minishell");
 	return (0);
 }

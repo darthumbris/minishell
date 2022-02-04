@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 11:42:01 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 14:30:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,5 @@ int		is_valid_fd_redirect(char *input, int start, int end);
 void	redirect_function(char *input, int *i, int *word_start, t_token *lst);
 int		add_redirection_token(char *input, t_token *token_lst, int i);
 void	add_word_token(char *input, t_token *token_lst, int start, int end);
+void	free_token_lst(t_token **lst);
 #endif

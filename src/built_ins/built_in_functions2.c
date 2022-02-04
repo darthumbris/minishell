@@ -6,11 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 13:26:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 14:31:13 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "tokenizer.h"
+#include <stdio.h>
 
 /*
  * exit function will exit the minishell
@@ -38,8 +40,11 @@ void	exit_function(char *input, char **envp)
 		i++;
 	}
 	printf("exit\n");
-	if (ft_atoi(ft_getenv("SHLVL", envp)) == 1)
+	if (!ft_getenv("SHLVL", envp) || ft_atoi(ft_getenv("SHLVL", envp)) == 1)
+	{
+		system("leaks minishell");
 		exit(ft_atoi(input));
+	}
 	change_shl_lvl(envp, -1);
 }
 

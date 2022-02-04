@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 14:18:27 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 13:26:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
  * with the exit value given as argument (or 255 if non numeric argument given)
  * if there are too many arguments (more than 1) it will exit with 1.
  * still need to free the envp and input.
+ * !!!checking for shl_lvl might not be necesarry!
  */
 void	exit_function(char *input, char **envp)
 {

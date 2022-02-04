@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 15:36:18 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 13:28:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
  * before the command (i.e.:       pwd should still execute)
  * also need to properly check for things like if ./minishell is 
  * given as input it should increase the shell lvl correctly
- * and not actually execute minishell (or might need to do it differently)
+ * and not actually execute minishell (might need to do it differently
+ * because other group did it without bothering with shlvl)!!!
  */
 void	parse_input(char *input, char **envp)
 {
@@ -50,8 +51,8 @@ void	parse_input(char *input, char **envp)
 			return (function[i].t_function_pointer(input + len, envp));
 		i++;
 	}
-	if (ft_strncmp(input, "./minishell", 11) == 0 && \
-			(input[11] == '\0' || input[11] == ' '))
-		return (change_shl_lvl(envp, 1));
+	// if (ft_strncmp(input, "./minishell", 11) == 0 && \
+	// 		(input[11] == '\0' || input[11] == ' '))
+	// 	return (change_shl_lvl(envp, 1)); probably not needed
 	minishell_thing(input, envp);
 }

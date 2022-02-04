@@ -6,12 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:04:38 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 14:05:29 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 13:27:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+//Function might be unnecesary if the cmd_exec etc. works correctly.
 void	change_shl_lvl(char **envp, int change)
 {
 	char	*shlvl;

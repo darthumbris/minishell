@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 11:27:14 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 16:01:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,8 @@ int	add_pipe_token(char *input, t_token *token_lst, int i, int *word_start)
 	start = i;
 	while (input[i] == input[start])
 		i++;
-	if (i - start > 1)
-		printf("error thing here or maybe in evaluator\n");
-	else
-		add_new_token(&token_lst, new_token
-			("|", ft_substr(input, start, i - 1 - start)));
+	add_new_token(&token_lst, new_token
+		("|", ft_substr(input, start, i - start)));
 	i = move_through_spaces(input, i);
 	*word_start = i;
 	return (i);

@@ -21,11 +21,13 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/lexer/token_lst.c \
         $(SRC_DIR)/lexer/free_token_lst.c \
         $(SRC_DIR)/lexer/lexer_evaluator.c \
-        $(SRC_DIR)/parser.c \
-        $(SRC_DIR)/pipe.c \
-        $(SRC_DIR)/cmd_exec.c \
+        $(SRC_DIR)/parser/parser.c \
+        $(SRC_DIR)/cmd_execution/pipe.c \
+        $(SRC_DIR)/cmd_execution/cmd_exec.c \
         $(SRC_DIR)/tokenizer/token_utils.c \
         $(SRC_DIR)/tokenizer/token.c \
+        $(SRC_DIR)/redirection/heredoc.c \
+        $(SRC_DIR)/redirection/redirect.c 
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

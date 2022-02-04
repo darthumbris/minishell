@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 11:49:29 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 15:56:03 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 /*
  * This function will give the absolute path back
  * needed to execute things. (might not be needed)
+ * can be replaced with getenv("PATH=", envp)!!!
  */
 char	**path_input(char *input)
 {
@@ -35,6 +36,8 @@ char	**path_input(char *input)
  * this might need some work for some cases.
  * might need a check for echo cd pwd etc.
  * need to see how to do this properly.
+ * also need to check when history should be
+ * and should not be added.
  */
 char	*get_input(char *input)
 {

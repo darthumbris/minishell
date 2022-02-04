@@ -24,8 +24,6 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/parser/parser.c \
         $(SRC_DIR)/cmd_execution/pipe.c \
         $(SRC_DIR)/cmd_execution/cmd_exec.c \
-        $(SRC_DIR)/tokenizer/token_utils.c \
-        $(SRC_DIR)/tokenizer/token.c \
         $(SRC_DIR)/redirection/heredoc.c \
         $(SRC_DIR)/redirection/redirect.c 
 

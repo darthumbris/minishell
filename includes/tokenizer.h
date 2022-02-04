@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/03 16:20:25 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 11:42:01 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ typedef struct s_check
 }		t_check;
 
 //enum might be nicer to use?
-enum e_token_names
-{
-	TOKEN_WORD,
-	TOKEN_FILENAME,
-	TOKEN_PIPE = '|',
-	TOKEN_REDIRECT_OUTPUT = '>',
-	TOKEN_REDIRECT_INPUT = '<'
-};
+// enum e_token_names
+// {
+// 	TOKEN_WORD,
+// 	TOKEN_FILENAME,
+// 	TOKEN_PIPE = '|',
+// 	TOKEN_REDIRECT_OUTPUT = '>',
+// 	TOKEN_REDIRECT_INPUT = '<'
+// };
 
 typedef struct s_token
 {
@@ -56,4 +56,7 @@ int		move_through_spaces(char *input, int i);
 void	add_new_token(t_token **lst, t_token *new);
 t_token	*new_token(char *token_name, char *token_value);
 int		is_valid_fd_redirect(char *input, int start, int end);
+void	redirect_function(char *input, int *i, int *word_start, t_token *lst);
+int		add_redirection_token(char *input, t_token *token_lst, int i);
+void	add_word_token(char *input, t_token *token_lst, int start, int end);
 #endif

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/03 15:56:59 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 11:53:11 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,16 @@ void	signal_handle_function(int sig)
 	}
 }
 
+/*
+ * !!!need to properly check the shlvl at
+ * the start of program. Or force it to 1
+ * at the beginning. not sure yet what is 
+ * correct.
+ * Probably have a global struct
+ * with a shlvl and return value
+ * and maybe some other stuff
+ * that bash stores itself and in env
+ */
 int	main(int argc, char **argv, char **envp)
 {
 	static char		*input;

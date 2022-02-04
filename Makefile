@@ -20,6 +20,7 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/lexer/lexer_utils.c \
         $(SRC_DIR)/lexer/token_lst.c \
         $(SRC_DIR)/lexer/free_token_lst.c \
+        $(SRC_DIR)/lexer/lexer_evaluator.c \
         $(SRC_DIR)/parser.c \
         $(SRC_DIR)/pipe.c \
         $(SRC_DIR)/cmd_exec.c \

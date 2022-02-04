@@ -10,18 +10,22 @@ LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC = 	$(SRC_DIR)/minishell.c \
-        $(SRC_DIR)/cmd_exec.c \
         $(SRC_DIR)/input_handling.c \
-        $(SRC_DIR)/parser.c \
-        $(SRC_DIR)/env_functions.c \
-        $(SRC_DIR)/built_in_functions1.c \
-        $(SRC_DIR)/built_in_functions2.c \
-        $(SRC_DIR)/cd_function.c \
-        $(SRC_DIR)/shlvl.c \
-        $(SRC_DIR)/pipe.c \
+        $(SRC_DIR)/built_ins/env_functions.c \
+        $(SRC_DIR)/built_ins/built_in_functions1.c \
+        $(SRC_DIR)/built_ins/built_in_functions2.c \
+        $(SRC_DIR)/built_ins/cd_function.c \
+        $(SRC_DIR)/built_ins/shlvl.c \
         $(SRC_DIR)/lexer/lexer.c \
         $(SRC_DIR)/lexer/lexer_utils.c \
-        $(SRC_DIR)/lexer/token_lst.c
+        $(SRC_DIR)/lexer/token_lst.c \
+        $(SRC_DIR)/parser.c \
+        $(SRC_DIR)/pipe.c \
+        $(SRC_DIR)/cmd_exec.c \
+        $(SRC_DIR)/tokenizer/token_utils.c \
+        $(SRC_DIR)/tokenizer/token.c \
+        $(SRC_DIR)/tokenizer/tokenizer_lst_utils.c \
+        $(SRC_DIR)/tokenizer/tokenizer_lst.c
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

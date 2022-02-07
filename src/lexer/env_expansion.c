@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 14:15:57 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 16:28:34 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	check_for_env_expansion(char **str, char **envp)
 			free(env_expand);
 		}
 		if ((*str)[i] == '\'' && !quote)
-			i = move_through_quotes(*str, i) - 1;
+			i = move_through_quotes(*str, i);
 		i++;
 	}
 }

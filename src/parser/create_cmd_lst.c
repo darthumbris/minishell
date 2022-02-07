@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 14:28:29 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 16:13:52 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 16:22:27 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	create_cmd_lst(t_token *lst, char **envp)
 				cmds[i++] = ft_strdup(tmp->token_value);
 				tmp = tmp->next;
 			}
+			if (tmp)
+				printf("now at command: %s\n", tmp->token_value);
 			cmd = new_command(cmds);
 			parse_input(cmd, envp);
 			free_cmds(cmd);

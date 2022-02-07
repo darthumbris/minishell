@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/26 15:10:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/04 15:56:03 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 /*
  * This function will give the absolute path back
- * needed to execute things.
+ * needed to execute things. (might not be needed)
+ * can be replaced with getenv("PATH=", envp)!!!
  */
 char	**path_input(char *input)
 {
@@ -35,6 +36,8 @@ char	**path_input(char *input)
  * this might need some work for some cases.
  * might need a check for echo cd pwd etc.
  * need to see how to do this properly.
+ * also need to check when history should be
+ * and should not be added.
  */
 char	*get_input(char *input)
 {
@@ -43,7 +46,7 @@ char	*get_input(char *input)
 		free(input);
 		input = NULL;
 	}
-	input = readline("minishell> ");
+	input = readline("\rminishell> ");
 	if (input && *input)
 		add_history(input);
 	return (input);
@@ -64,7 +67,7 @@ void	execute_input(char *input, char **envp)
 	char	**paths;
 	char	**cmd_args;
 
-	if (input && *input == '/')
+	if (input && (*input == '/' || (*input == '.' && input[1] == '/')))
 	{
 		paths = path_input(input);
 		cmd_args = get_cmd_arg(input + (ft_strchr(input + 1, '/') - input + 1));
@@ -75,6 +78,7 @@ void	execute_input(char *input, char **envp)
 		cmd_args = get_cmd_arg(input);
 	}
 	command_exec(paths, cmd_args, envp);
+	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(cmd_args[0], 2);
 	ft_putendl_fd(": command not found", 2);
 	free_cmd_args(cmd_args);

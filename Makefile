@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -g
+FLAGS = -Wall -Werror -Wextra -g3 
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -10,13 +10,22 @@ LIBFT_DIR = ./libs/libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC = 	$(SRC_DIR)/minishell.c \
-        $(SRC_DIR)/cmd_exec.c \
         $(SRC_DIR)/input_handling.c \
-        $(SRC_DIR)/parser.c \
-        $(SRC_DIR)/env_functions.c \
-        $(SRC_DIR)/built_in_functions1.c \
-        $(SRC_DIR)/built_in_functions2.c \
-        $(SRC_DIR)/quote_parser.c
+        $(SRC_DIR)/built_ins/env_functions.c \
+        $(SRC_DIR)/built_ins/built_in_functions1.c \
+        $(SRC_DIR)/built_ins/built_in_functions2.c \
+        $(SRC_DIR)/built_ins/cd_function.c \
+        $(SRC_DIR)/built_ins/shlvl.c \
+        $(SRC_DIR)/lexer/lexer.c \
+        $(SRC_DIR)/lexer/lexer_utils.c \
+        $(SRC_DIR)/lexer/token_lst.c \
+        $(SRC_DIR)/lexer/free_token_lst.c \
+        $(SRC_DIR)/lexer/lexer_evaluator.c \
+        $(SRC_DIR)/parser/parser.c \
+        $(SRC_DIR)/cmd_execution/pipe.c \
+        $(SRC_DIR)/cmd_execution/cmd_exec.c \
+        $(SRC_DIR)/redirection/heredoc.c \
+        $(SRC_DIR)/redirection/redirect.c 
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

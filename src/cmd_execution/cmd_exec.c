@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/25 14:13:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/02 14:04:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@
  */
 char	**get_path_str(char **envp)
 {
-	int		i;
-
-	i = 0;
-	while (envp[i])
+	if (envp)
 	{
-		if (ft_strnstr(envp[i], "PATH", 5))
-			return (ft_split(ft_substr(envp[i], 5, ft_strlen(envp[i])), ':'));
-		i++;
+		if (ft_getenv("PATH", envp))
+			return (ft_split(ft_getenv("PATH", envp), ':'));
 	}
 	return (NULL);
 }
@@ -56,7 +52,10 @@ void	command_exec(char **paths, char **cmd_args, char **envp)
 	char	*cmd_slash;
 
 	i = 0;
-	cmd_slash = ft_strjoin("/", cmd_args[0]);
+	if (cmd_args)
+		cmd_slash = ft_strjoin("/", cmd_args[0]);
+	else
+		cmd_slash = ft_strdup("");
 	while (paths[i])
 	{
 		cmd_path = ft_strjoin(paths[i], cmd_slash);

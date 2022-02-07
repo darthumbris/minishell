@@ -1,28 +1,33 @@
-Probably need to change the whole check_input function to handle a lot of stuff below this.
-
-
-IMPORTANT: implement our own echo cd pwd !!!!
-
-For cd might need the chdir function. Need to check if the command is cd for this. Execve does execute it but the change in directory
-is only for that process.
-cd also won't work do anything if you do for example : cd | ls . it will just do the ls on the current directory.
-
 For the history thing might also need to implement history -c to clear the history?
 
-Need to check in the check input for ./ for the relative path execution.
-
-Check how to handle quotations like " " and ' '
-Also handle the $ sign to get things like echo $? and echo $USER stuff
-or for example: echo "The Computer Name is `scutil --get ComputerName`"
+Need to check in the check input for ./ for the relative path execution. ???
 
 redirections still needs to be done. need to check for that.
 
 Make the pipe stuff work (especially multiple pipes)
 
-Handle ctrl-\ (might need to properly lock the sigquit stuff maybe sigaction needed)
+!!!!!!!!parse_input need to be redone to work with the token list.
 
-implent env (getenv?)
+Need to handle the return values for the built-in functions (for echo $?) (maybe needs to be saved somewhere)
 
-implent the export unset
+Make sure that it executes ./minishell in minishell (or other programs)!!!!!
 
-might need to do something for pwd when the directory has been changed (but not sure yet)
+!!!!need to fix all the built in functions to work with the token list. 
+also might need to do some stuff differently in them (stuff like return values etc.)
+
+Need to fix the evaluator.
+
+!!!!!!!Need to do the expansion after the lexer and evaluator.
+Also handle the $ sign to get things like echo $? and echo $USER stuff
+or for example: echo "The Computer Name is `scutil --get ComputerName`"
+
+need to clean up a lot of includes and maybe some of the functions in the tokenizer folder can be cleared?
+
+Need to properly do the execution of commands
+
+Some of the built in functions need NULL protection I think. 
+
+organize some of the files in to folders maybe. 
+(also maybe split up the built_in_functions files into seperate files for each function)
+
+might be nice to change the makefile so it doesn't need all the SRC_DIR stuff for the SRC files.

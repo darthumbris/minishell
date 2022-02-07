@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 14:13:02 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 17:03:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ void	add_word_token(char *input, t_token *token_lst, int start, int end);
 void	free_token_lst(t_token **lst);
 bool	evaluator(t_token *lst);
 void	check_for_env_expansion(char **str, char **envp);
+t_token	*get_last_token(t_token *lst);
 #endif

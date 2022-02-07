@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 16:28:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 17:30:59 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*normal_env_variable(char *input, char **envp, int len)
 	env_str = ft_substr(input, 0, i);
 	if (!ft_getenv(env_str, envp))
 	{
-		env_expand = ft_substr(input, ft_strlen(env_str) + 1, len);
+		env_expand = ft_substr(input, ft_strlen(env_str), len);
 		free(env_str);
 		return (env_expand);
 	}
@@ -84,7 +84,7 @@ static char	*expand_env_variable(char *input, char **envp)
  */
 void	check_for_env_expansion(char **str, char **envp)
 {
-	int		i;
+	size_t	i;
 	char	*begin;
 	char	*env_expand;
 	bool	quote;
@@ -103,6 +103,8 @@ void	check_for_env_expansion(char **str, char **envp)
 			(*str) = ft_strjoin(begin, env_expand);
 			free(begin);
 			free(env_expand);
+			if (ft_strlen((*str)) == 0)
+				break ;
 		}
 		if ((*str)[i] == '\'' && !quote)
 			i = move_through_quotes(*str, i);

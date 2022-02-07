@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 16:02:26 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 11:32:16 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 17:08:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*new_token(char *token_name, char *token_value)
  * This function will return the last token in the
  * token list.
  */
-static t_token	*get_last_token(t_token *lst)
+t_token	*get_last_token(t_token *lst)
 {
 	while (lst)
 	{

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 12:56:26 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 14:39:21 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,16 @@
 # include "libft.h"
 # include <signal.h>
 # include <dirent.h>
+# include "tokenizer.h"
+
+//maybe the arguments should be a linked lists?
+typedef struct s_command
+{
+	char	**cmds;
+	int		fd_in;
+	int		fd_out;
+	int		fd_error;
+}				t_command;
 
 void		free_cmd_args(char **cmd_args);
 void		command_exec(char **paths, char **cmd_args, char **envp);
@@ -28,7 +38,7 @@ char		**get_path_str(char **envp);
 char		**path_input(char *input);
 char		*get_input(char *input);
 void		execute_input(char *input, char **envp);
-void		parse_input(char *input, char **envp);
+void		parse_input(t_command *cmd, char **envp);
 int			minishell_thing(char *input, char **envp);
 char		**envp_duplicate(char **envp);
 
@@ -46,14 +56,7 @@ void		env_function(char *input, char **envp);
 void		exit_function(char *input, char **envp);
 void		echo_function(char *input, char **envp);
 
-//maybe the arguments should be a linked lists?
-typedef struct s_command
-{
-	char	**cmds;
-	int		fd_in;
-	int		fd_out;
-	int		fd_error;
-}				t_command;
 t_command	*new_command(char **cmds);
+void		create_cmd_lst(t_token *lst, char **envp);
 //char		*expand_env_variable(char *input, char **envp);
 #endif

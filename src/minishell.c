@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 14:18:14 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 16:14:02 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ t_token	*lexer_checker(char *input, char **envp)
 	if (!evaluator(lst))
 		printf("not valid token list\n");
 	printf("done evaluating\n");
+	printf("parsing lst\n");
+	create_cmd_lst(lst, envp);
+	//printf("parsing done\n");
 	return (lst);
 }
 

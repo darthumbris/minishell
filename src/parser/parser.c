@@ -6,12 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 13:28:22 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 14:52:09 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "dispatch.h"
+//#include "tokenizer.h"
 
 /*
  * This function parses the input
@@ -26,7 +27,7 @@
  * and not actually execute minishell (might need to do it differently
  * because other group did it without bothering with shlvl)!!!
  */
-void	parse_input(char *input, char **envp)
+void	parse_input(t_command *cmd, char **envp)
 {
 	int						i;
 	int						len;
@@ -42,17 +43,15 @@ void	parse_input(char *input, char **envp)
 	};
 
 	i = 0;
-	input = ft_whitespaces(input);
+	printf("entered parse function\n");
 	while (function[i].comand != 0)
 	{
 		len = ft_strlen(function[i].comand);
-		if (ft_strncmp(input, function[i].comand, len) == 0 && \
-			(input[len] == '\0' || input[len] == ' '))
-			return (function[i].t_function_pointer(input + len, envp));
+		if (ft_strncmp(cmd->cmds[0], function[i].comand, len) == 0 && \
+			(cmd->cmds[0][len] == '\0' || cmd->cmds[0][len] == ' '))
+			return (function[i].t_function_pointer(cmd->cmds[1], envp));
 		i++;
 	}
-	// if (ft_strncmp(input, "./minishell", 11) == 0 && \
-	// 		(input[11] == '\0' || input[11] == ' '))
-	// 	return (change_shl_lvl(envp, 1)); probably not needed
-	minishell_thing(input, envp);
+	printf("going to minishell thing\n");
+	minishell_thing(cmd->cmds[0], envp);
 }

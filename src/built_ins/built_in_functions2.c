@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 14:31:13 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 16:12:11 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	echo_function(char *input, char **envp)
 	input = ft_whitespaces(input);
 	len = ft_strlen(input);
 	i = 1;
+	printf("entered echo function\n");
 	if (*input == '-' && len > 1 && input[1] == 'n')
 	{
 		while (input[i] == 'n' && input[i])

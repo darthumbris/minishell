@@ -23,6 +23,8 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/lexer/lexer_evaluator.c \
         $(SRC_DIR)/lexer/env_expansion.c \
         $(SRC_DIR)/parser/parser.c \
+        $(SRC_DIR)/parser/create_cmd_lst.c \
+        $(SRC_DIR)/parser/cmd_struct.c \
         $(SRC_DIR)/cmd_execution/pipe.c \
         $(SRC_DIR)/cmd_execution/cmd_exec.c \
         $(SRC_DIR)/redirection/heredoc.c \

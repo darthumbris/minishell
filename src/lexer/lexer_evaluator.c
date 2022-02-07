@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/04 10:23:08 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 09:39:56 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 09:55:01 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static bool	is_valid_redirect(t_token *lst)
 	int	len;
 
 	if (!lst->next)
-		return (printf("minishell: syntax error near unexpected token `newline'\n"));
+		return (printf("minishell: syntax error near unexpected token \
+			`newline'\n"));
 	i = 0;
 	while (ft_isdigit(lst->token_value[i]))
 		i++;
@@ -39,15 +40,6 @@ static bool	is_valid_redirect(t_token *lst)
 	if (i - len > 2)
 		return (printf("minishell: syntax error near unexpected token `%c'\n", \
 			lst->token_name[0]));
-	// else if (ft_isdigit(lst->token_value[0]) && ft_atoi(lst->token_value) > 255)
-	// {
-	// 	if (ft_atoi(lst->token_value) > INT_MAX)
-	// 		return (printf("minishell: file descriptor out of range: \
-	// 		Bad file descriptor\n"));
-	// 	else
-	// 		return (printf("minishell: %d Bad file descriptor\n", \
-	// 		ft_atoi(lst->token_value)));
-	// }
 	else if (*lst->next->token_value == '>' || *lst->next->token_value == '<')
 		return (printf("minishell: syntax error near unexpected token `%c'\n", \
 			lst->next->token_value[0]));

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/03 11:01:07 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 12:56:26 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,5 @@ typedef struct s_command
 	int		fd_error;
 }				t_command;
 t_command	*new_command(char **cmds);
-char		*expand_env_variable(char *input, char **envp);
+//char		*expand_env_variable(char *input, char **envp);
 #endif

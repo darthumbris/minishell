@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 15:04:12 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 12:55:07 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * temporary function to check the lexer
  * functionality.
  */
-t_token	*lexer_checker(char *input)
+t_token	*lexer_checker(char *input, char **envp)
 {
 	t_token		*lst;
 	t_token		*tmp;
@@ -30,6 +30,8 @@ t_token	*lexer_checker(char *input)
 	while (tmp)
 	{
 		printf("token_name: %s\t", tmp->token_name);
+		if (tmp->token_name[0] == 'W' && strchr(tmp->token_value, '$'))
+			check_for_env_expansion(tmp->token_value, envp);
 		printf("lst_value: %s\n", tmp->token_value);
 		tmp = tmp->next;
 	}
@@ -125,7 +127,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (lst)
 				free_token_lst(&lst);
-			lst = lexer_checker(input);
+			lst = lexer_checker(input, envp_dup);
 			//parse_input(input, envp_dup);
 		}
 	}

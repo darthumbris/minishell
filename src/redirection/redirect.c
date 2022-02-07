@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 10:15:47 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 10:25:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,21 @@ void	redirect_output(char *path, t_command *cmd, int append)
  * This function will check the [n]> and [n]<
  * redirections for the n value if it is a valid
  * fd to redirect.
+ * need to change this function so it actually
+ * sets the fd to the input (or 0 or 1 if it fails)
  */
 void	redirect_fd(char *red,	t_command *cmd)
 {
-	if (!ft_isdigit(red[0]))
+	if (!ft_isdigit(red[0]) || !cmd)
 		return ;
 	if (ft_atol(red) > INT_MAX)
-		return (printf("minishell: file descriptor out of range: \
-	 		Bad file descriptor\n"));
+		printf("minishell: file descriptor out of range: \
+	 		Bad file descriptor\n");
 	else if (ft_atoi(red) > 255)
-		return (printf("minishell: %d Bad file descriptor\n", \
-			ft_atoi(red)));
+		printf("minishell: %d Bad file descriptor\n", \
+			ft_atoi(red));
 	else if (fstat(ft_atoi(red), NULL) == -1)
-		return (printf("minishell: %d Bad file descriptor\n", \
-			ft_atoi(red)));
+		printf("minishell: %d Bad file descriptor\n", \
+			ft_atoi(red));
 	//set fd here ?
 }

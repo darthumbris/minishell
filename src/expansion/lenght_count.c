@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   expansion.c                                        :+:    :+:            */
+/*   lenght_count.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/07 10:31:50 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/07 12:48:15 by abba          ########   odam.nl         */
+/*   Created: 2022/02/07 12:47:36 by abba          #+#    #+#                 */
+/*   Updated: 2022/02/07 12:47:39 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,45 @@
 #include "tokenizer.h"
 #include "quotes.h"
 
-t_token *expansion(t_token *lst)
+int	ft_count(char *str, int i, char c)
 {
-    char	**value;
-    int		len;
-    t_token	*tmp;
-	
-	lst = lst->next;
-    len = lstsize(lst);
-    value = ft_calloc(len + 1, sizeof(char *));
-    if (!value)
-        return (0);
-    len = 0;
-	while(lst)
-	{
-        tmp = lst->next;
-        value[len] = check(lst->token_value);
-        len++;
-        free(lst);
-		lst = tmp;
-	}
-    value[len] = NULL;
+	int	len;
+
 	len = 0;
-	while (value[len])
+	while (str[i] != c)
 	{
-		free(value[len]);
 		len++;
+		i++;
 	}
-	free(value);
-    return (lst);
+	return (len);
+}
+
+
+int	ft_count1(char *str, int i)
+{
+	int	len;
+
+	len = 0;
+	while (str[i] && str[i] != '\'' )
+	{
+		if (str[i] == '"')
+			break ;
+		len++;
+		i++;
+	}
+	return (len);
+}
+
+//this function return the len of list so we can get the exact size to malloc
+int lstsize(t_token *lst)
+{
+    int len;
+
+    len = 0;
+    while(lst)
+    {
+        len++;
+        lst = lst->next;
+    }
+    return (len);
 }

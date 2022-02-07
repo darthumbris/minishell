@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:47:36 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/07 12:47:39 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/07 15:12:12 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,18 +41,4 @@ int	ft_count1(char *str, int i)
 		i++;
 	}
 	return (len);
-}
-
-//this function return the len of list so we can get the exact size to malloc
-int lstsize(t_token *lst)
-{
-    int len;
-
-    len = 0;
-    while(lst)
-    {
-        len++;
-        lst = lst->next;
-    }
-    return (len);
 }

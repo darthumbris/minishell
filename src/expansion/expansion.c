@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 10:31:50 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/07 12:48:15 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/07 15:24:28 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,20 @@
 
 t_token *expansion(t_token *lst)
 {
-    char	**value;
-    int		len;
-    t_token	*tmp;
+    char	*value;
+    t_token *tmp;
 	
+    tmp = lst;
 	lst = lst->next;
-    len = lstsize(lst);
-    value = ft_calloc(len + 1, sizeof(char *));
-    if (!value)
-        return (0);
-    len = 0;
 	while(lst)
 	{
-        tmp = lst->next;
-        value[len] = check(lst->token_value);
-        len++;
-        free(lst);
-		lst = tmp;
+        if (ft_strcmp(lst->token_name, "W") || ft_strcmp(lst->token_name, "F"))
+        {
+            value = check(lst->token_value);
+            free(lst->token_value);
+            lst->token_value = value;
+        }
+        lst = lst->next;
 	}
-    value[len] = NULL;
-	len = 0;
-	while (value[len])
-	{
-		free(value[len]);
-		len++;
-	}
-	free(value);
-    return (lst);
+    return (tmp);
 }

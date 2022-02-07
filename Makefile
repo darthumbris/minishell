@@ -25,7 +25,10 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/cmd_execution/pipe.c \
         $(SRC_DIR)/cmd_execution/cmd_exec.c \
         $(SRC_DIR)/redirection/heredoc.c \
-        $(SRC_DIR)/redirection/redirect.c 
+        $(SRC_DIR)/expansion/expansion.c \
+        $(SRC_DIR)/expansion/expansion_util.c \
+        $(SRC_DIR)/expansion/lenght_count.c
+        #$(SRC_DIR)/redirection/redirect.c 
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

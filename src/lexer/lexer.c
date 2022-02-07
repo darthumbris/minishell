@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 16:01:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 14:01:16 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,9 @@ t_token	*lexer(char *input)
 	lst = new_token("B", ft_strdup("start of token lst"));
 	while (input[i])
 	{
+		printf("i: %d\n", i);
 		if (input[i] == '\'' || input[i] == '\"')
-			i = move_through_quotes(input, i);
+			i = move_through_quotes(input, i) - 1;
 		if (input[i] == ' ')
 		{
 			add_word_token(input, lst, word_start, i);

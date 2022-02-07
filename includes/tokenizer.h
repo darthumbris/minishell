@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 12:54:49 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 14:13:02 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,6 @@ typedef struct s_check
 	bool	double_quotes;
 }		t_check;
 
-//enum might be nicer to use?
-// enum e_token_names
-// {
-// 	TOKEN_WORD,
-// 	TOKEN_FILENAME,
-// 	TOKEN_PIPE = '|',
-// 	TOKEN_REDIRECT_OUTPUT = '>',
-// 	TOKEN_REDIRECT_INPUT = '<'
-// };
-
 typedef struct s_token
 {
 	char			*token_name;
@@ -48,6 +38,7 @@ void	fill_str(char	*str, int *j, int i);
 void	double_quotes(t_check *check);
 void	single_quote(t_check *check);
 void	init_check(t_check *check);
+//--------------------------------------------------------------
 
 //----------Lexur functions-----------
 t_token	*lexer(char *input);
@@ -61,5 +52,5 @@ int		add_redirection_token(char *input, t_token *token_lst, int i);
 void	add_word_token(char *input, t_token *token_lst, int start, int end);
 void	free_token_lst(t_token **lst);
 bool	evaluator(t_token *lst);
-void	check_for_env_expansion(char *str, char **envp);
+void	check_for_env_expansion(char **str, char **envp);
 #endif

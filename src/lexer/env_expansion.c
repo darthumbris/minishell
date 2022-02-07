@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 12:57:30 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 14:15:57 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static char	*expand_env_variable(char *input, char **envp)
  * for a $ and see if it needs expanding.
  * and then will expand it.
  */
-void	check_for_env_expansion(char *str, char **envp)
+void	check_for_env_expansion(char **str, char **envp)
 {
 	int		i;
 	char	*begin;
@@ -91,21 +91,21 @@ void	check_for_env_expansion(char *str, char **envp)
 
 	i = 0;
 	quote = false;
-	while (str[i])
+	while ((*str)[i])
 	{
-		if (str[i] == '\"')
+		if ((*str)[i] == '\"')
 			quote = !quote;
-		if (str[i] == '$')
+		if ((*str)[i] == '$')
 		{
-			begin = ft_substr(str, 0, i);
-			env_expand = expand_env_variable(str + i + 1, envp);
-			free(str);
-			str = ft_strjoin(begin, env_expand);
+			begin = ft_substr(*str, 0, i);
+			env_expand = expand_env_variable(*str + i + 1, envp);
+			free(*str);
+			(*str) = ft_strjoin(begin, env_expand);
 			free(begin);
 			free(env_expand);
 		}
-		if (str[i] == '\'' && !quote)
-			i = move_through_quotes(str, i);
+		if ((*str)[i] == '\'' && !quote)
+			i = move_through_quotes(*str, i) - 1;
 		i++;
 	}
 }

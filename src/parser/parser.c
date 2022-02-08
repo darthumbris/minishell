@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:50:37 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 15:37:27 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,5 @@ void	parse_input(t_command *cmd, char **envp)
 		i++;
 	}
 	printf("going to minishell thing needs fixing\n");
-	minishell_thing(cmd->cmds[0], envp);
+	single_command(cmd, envp);
 }

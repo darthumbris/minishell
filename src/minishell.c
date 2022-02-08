@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 15:41:47 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 15:47:43 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ t_token	*lexer_checker(char *input, char **envp)
 	tmp = lst;
 	lst = lst->next;
 	test = create_cmd_lst(lst);
-	parse_input(test, envp);
+	execute_input(test, envp);
+	//parse_input(test, envp);
 	free_token_lst(&tmp);
 	free_cmd_args(test->cmds);
 	free(test);

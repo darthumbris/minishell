@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:42:17 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 15:04:31 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	is_valid_var_name(char *input)
 			i = 0;
 			while (input[i])
 			{
-				if (!ft_isalnum(input[i] && input[i] != '_'))
+				if (!ft_isalnum(input[i]) && input[i] != '_')
 					break ;
 				i++;
 			}
@@ -83,6 +83,7 @@ static	void	set_env(char **envp, char *input)
 		{
 			free(envp[i]);
 			envp[i] = NULL;
+			break ;
 		}
 		i++;
 	}
@@ -118,6 +119,7 @@ void	export_function(t_command *cmd, char **envp)
 				identifier_msg(cmd->cmds[i], cmd->cmds[0], cmd->fd_out);
 			else if (has_equals(cmd->cmds[i]))
 				set_env(envp, cmd->cmds[i]);
+			i++;
 		}
 	}	
 }

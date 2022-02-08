@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:48:32 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:54:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /*
  * temporary function to check the lexer
- * functionality.
+ * functionality. and other stuff.
  */
 t_token	*lexer_checker(char *input, char **envp)
 {
@@ -94,7 +94,7 @@ void	signal_handle_function(int sig)
 
 /*
  * !!!need to properly check the shlvl at
- * the start of program. Or force it to 1
+ * the start of program. Or increase it by 1
  * at the beginning. not sure yet what is 
  * correct.
  * Probably have a global struct

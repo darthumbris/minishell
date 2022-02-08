@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:14:43 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:42:17 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	export_simple(char *input, char **envp)
 	export_function(temp, envp);
 	free_cmd_args(cmds);
 	free(temp);
-	free(input);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:05:51 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:48:32 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_token	*lexer_checker(char *input, char **envp)
 {
 	t_token		*lst;
 	t_token		*tmp;
+	t_command	*test;
 
 	lst = lexer(input);
 	tmp = lst;
@@ -40,7 +41,14 @@ t_token	*lexer_checker(char *input, char **envp)
 		tmp = tmp->next;
 	}
 	evaluator(lst);
-	create_cmd_lst(lst);
+	tmp = lst;
+	lst = lst->next;
+	test = create_cmd_lst(lst);
+	parse_input(test, envp);
+	free_token_lst(&tmp);
+	free_cmd_args(test->cmds);
+	free(test);
+	tmp = NULL;
 	return (lst);
 }
 
@@ -100,7 +108,6 @@ int	main(int argc, char **argv, char **envp)
 	static char		*input;
 	char			**envp_dup;
 	int				i;
-	t_token			*lst;
 
 	input = NULL;
 	rl_catch_signals = 0;
@@ -120,15 +127,15 @@ int	main(int argc, char **argv, char **envp)
 		input = get_input(input);
 		if (input == NULL)
 		{
-			if (lst)
-				free_token_lst(&lst);
+			// if (lst)
+			// 	free_token_lst(&lst);
 			exit_function(NULL, envp_dup);
 		}
 		if (input && *input)
 		{
-			if (lst)
-				free_token_lst(&lst);
-			lst = lexer_checker(input, envp_dup);
+			// if (lst)
+			// 	free_token_lst(&lst);
+			lexer_checker(input, envp_dup);
 			//parse_input(input, envp_dup);
 		}
 	}

@@ -6,12 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:42:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:49:38 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
-#include "stdio.h"
 
 /*
  * This function will add a file token

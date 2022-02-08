@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 14:39:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:52:32 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ void		exit_function(char *input, char **envp);
 void		echo_function(char *input, char **envp);
 
 t_command	*new_command(char **cmds);
-void		create_cmd_lst(t_token *lst, char **envp);
+t_command	*create_cmd_lst(t_token *lst);
 //char		*expand_env_variable(char *input, char **envp);
 #endif

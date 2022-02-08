@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 14:28:29 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:44:56 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:53:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_cmds(t_command *cmd)
  * and all the others in the array
  * are the arguments or options.
  */
-t_command	*create_cmd_lst(t_token *lst, char **envp)
+t_command	*create_cmd_lst(t_token *lst)
 {
 	t_token		*tmp;
 	t_command	*cmd;
@@ -68,22 +68,18 @@ t_command	*create_cmd_lst(t_token *lst, char **envp)
 	int			i;
 
 	tmp = lst;
-	while (tmp)
+	if (tmp->token_name[0] == 'W')
 	{
-		if (tmp->token_name[0] == 'W')
+		len = count_cmd_args(tmp);
+		cmds = ft_calloc(len + 1, sizeof(char *));
+		i = 0;
+		while (i < len)
 		{
-			len = count_cmd_args(tmp);
-			cmds = ft_calloc(len + 1, sizeof(char *));
-			i = 0;
-			while (i < len)
-			{
-				cmds[i++] = ft_strdup(tmp->token_value);
-				tmp = tmp->next;
-			}
-			cmd = new_command(cmds);
-			return (cmd);
-		}
-		else
+			cmds[i++] = ft_strdup(tmp->token_value);
 			tmp = tmp->next;
+		}
+		cmd = new_command(cmds);
+		return (cmd);
 	}
+	return (NULL);
 }

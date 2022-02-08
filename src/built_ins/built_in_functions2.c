@@ -6,12 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 16:12:11 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:51:15 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "tokenizer.h"
 #include <stdio.h>
 
 /*

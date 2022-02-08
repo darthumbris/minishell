@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:36:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:56:15 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,12 @@ t_token	*lexer_checker(char *input, char **envp)
 	t_token		*lst;
 	t_token		*tmp;
 
-	printf("checking lexer\n");
 	lst = lexer(input);
-	if (!lst && !envp)
-		printf("lst is NULL\n");
 	tmp = lst;
 	while (tmp)
 	{
-		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && strchr(tmp->token_value, '$'))
+		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && \
+			strchr(tmp->token_value, '$'))
 			check_for_env_expansion(&(tmp->token_value), envp);
 		tmp = tmp->next;
 	}
@@ -41,14 +39,8 @@ t_token	*lexer_checker(char *input, char **envp)
 		printf("lst_value: %s\n", tmp->token_value);
 		tmp = tmp->next;
 	}
-	printf("done with lexing\n");
-	printf("now evaluating\n");
-	if (!evaluator(lst))
-		printf("not valid token list\n");
-	printf("done evaluating\n");
-	printf("parsing lst\n");
-	create_cmd_lst(lst, envp);
-	//printf("parsing done\n");
+	evaluator(lst);
+	create_cmd_lst(lst);
 	return (lst);
 }
 

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:23:18 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:46:38 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,6 @@
 # define TOKENIZER_H
 # include <stdbool.h>
 # include "libft.h"
-
-// typedef struct s_check
-// {
-// 	int		count_s;
-// 	int		count_d;
-// 	int		len;
-// 	int		position;
-// 	bool	single_quote;
-// 	bool	double_quotes;
-// }		t_check;
 
 typedef struct s_token
 {

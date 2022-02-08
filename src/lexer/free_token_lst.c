@@ -6,12 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/04 14:13:58 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 14:39:50 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:48:58 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
-#include <stdio.h>
 
 /*
  * This function will free the token list.

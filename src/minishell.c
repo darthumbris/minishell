@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 15:24:42 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/08 10:36:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,15 @@ t_token	*lexer_checker(char *input, char **envp)
 	tmp = lst;
 	while (tmp)
 	{
-		printf("token_name: %s\t", tmp->token_name);
 		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && strchr(tmp->token_value, '$'))
 			check_for_env_expansion(&(tmp->token_value), envp);
+		tmp = tmp->next;
+	}
+	lst = quote_expansion(lst);
+	tmp = lst;
+	while (tmp)
+	{
+		printf("token_name: %s\t", tmp->token_name);
 		printf("lst_value: %s\n", tmp->token_value);
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 16:10:25 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:45:31 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,4 @@ void	redirect_fd(char *red,	t_command *cmd)
 	else if (fstat(ft_atoi(red), NULL) == -1)
 		printf("minishell: %d Bad file descriptor\n", \
 			ft_atoi(red));
-	//set fd here ?
 }

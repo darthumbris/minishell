@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 14:28:29 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 16:22:27 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:44:56 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	free_cmds(t_command *cmd)
  * and all the others in the array
  * are the arguments or options.
  */
-void	create_cmd_lst(t_token *lst, char **envp)
+t_command	*create_cmd_lst(t_token *lst, char **envp)
 {
 	t_token		*tmp;
 	t_command	*cmd;
@@ -80,11 +80,8 @@ void	create_cmd_lst(t_token *lst, char **envp)
 				cmds[i++] = ft_strdup(tmp->token_value);
 				tmp = tmp->next;
 			}
-			if (tmp)
-				printf("now at command: %s\n", tmp->token_value);
 			cmd = new_command(cmds);
-			parse_input(cmd, envp);
-			free_cmds(cmd);
+			return (cmd);
 		}
 		else
 			tmp = tmp->next;

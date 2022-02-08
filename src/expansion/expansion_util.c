@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:44:19 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/08 09:46:12 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/08 10:35:58 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 #include "tokenizer.h"
 #include "quotes.h"
 
-static char	*single_function(char *input, int *i)
+static char	*single_quote(char *input, int *i)
 {
 	int			j;
 	char		*tmp;
 
 	(*i)++;
 	j = 0;
-	tmp = ft_calloc(ft_count(input, *i, '\'') + 1, sizeof(char));
+	tmp = ft_calloc(len_until_char(input, *i, '\'') + 1, sizeof(char));
 	if (!tmp)
 		return (0);
 	while (input[*i] && input[*i] != '\'')
@@ -30,17 +30,19 @@ static char	*single_function(char *input, int *i)
 		(*i)++;
 		j++;
 	}
+	if ((*i) >= (int)ft_strlen(input))
+		(*i)--;
 	return (tmp);
 }
 
-static char	*double_function(char *input, int *i)
+static char	*double_quote(char *input, int *i)
 {
 	int			j;
 	char		*tmp;
 
 	(*i)++;
 	j = 0;
-	tmp = ft_calloc(ft_count(input, *i, '\"') + 1, sizeof(char));
+	tmp = ft_calloc(len_until_char(input, *i, '\"') + 1, sizeof(char));
 	if (!tmp)
 		return (0);
 	while (input[*i] && input[*i] != '\"')
@@ -49,16 +51,18 @@ static char	*double_function(char *input, int *i)
 		(*i)++;
 		j++;
 	}
+	if ((*i) >= (int)ft_strlen(input))
+		(*i)--;
 	return (tmp);
 }
 
-static char	*normal_function(char *input, int *i)
+static char	*std_expans(char *input, int *i)
 {
 	int		j;
 	char	*tmp;
 
 	j = 0;
-	tmp = ft_calloc(ft_count1(input, *i) + 1, sizeof(char));
+	tmp = ft_calloc(len_until_quote(input, *i) + 1, sizeof(char));
 	if (!tmp)
 		return (0);
 	while (input[*i] && input[*i] != '\'')
@@ -73,18 +77,15 @@ static char	*normal_function(char *input, int *i)
 	return (tmp);
 }
 
-char	*check(char *input)
+char	*check_for_expans(char *input)
 {
-	int							i;
-	char						*tmp;
-	char						*begin;
-	char						*end;
-	const t_quote				function[] = {
-		{'\'', &single_function},
-		{'"', &double_function},
-		{' ', &normal_function},
-		{0, NULL}
-	};
+	int					i;
+	char				*tmp;
+	char				*begin;
+	char				*end;
+	const t_quote		function[] = {
+	{'\'', &single_quote}, {'"', &double_quote},
+	{' ', &std_expans}, {0, NULL}};
 
 	i = 0;
 	tmp = ft_strdup("");

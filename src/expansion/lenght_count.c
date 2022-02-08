@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:47:36 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/07 15:12:12 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/08 10:28:04 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include "tokenizer.h"
 #include "quotes.h"
 
-int	ft_count(char *str, int i, char c)
+int	len_until_char(char *str, int i, char c)
 {
 	int	len;
 
 	len = 0;
-	while (str[i] != c)
+	while (str[i] != c && str[i])
 	{
 		len++;
 		i++;
@@ -27,8 +27,7 @@ int	ft_count(char *str, int i, char c)
 	return (len);
 }
 
-
-int	ft_count1(char *str, int i)
+int	len_until_quote(char *str, int i)
 {
 	int	len;
 

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 17:08:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:42:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,6 @@ int	add_redirection_token(char *input, t_token *token_lst, int i)
 		add_new_token(&token_lst, new_token
 			("<", ft_substr(input, start, i - start)));
 	i = move_through_spaces(input, i);
-	// i = start;
-	// while (ft_isalnum(input[i])) // NEED TO CHECK THIS ONE CAREFULLY!!@#
-	// 	i++;
-	// add_file_token(input, token_lst, start, i);
-	// i = move_through_spaces(input, i);
 	return (i);
 }
 

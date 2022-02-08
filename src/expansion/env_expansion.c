@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 17:30:59 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 10:42:06 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,12 @@ static char	*expand_env_variable(char *input, char **envp)
 	return (NULL);
 }
 
+static void	free_strjoin_str(char *begin, char *env_expand)
+{
+	free(begin);
+	free(env_expand);
+}
+
 /*
  * this function will check the string
  * for a $ and see if it needs expanding.
@@ -101,8 +107,7 @@ void	check_for_env_expansion(char **str, char **envp)
 			env_expand = expand_env_variable(*str + i + 1, envp);
 			free(*str);
 			(*str) = ft_strjoin(begin, env_expand);
-			free(begin);
-			free(env_expand);
+			free_strjoin_str(begin, env_expand);
 			if (ft_strlen((*str)) == 0)
 				break ;
 		}

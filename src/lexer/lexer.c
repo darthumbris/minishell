@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 16:01:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 17:08:21 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,20 @@ void	add_file_token(char *input, t_token *token_lst, int start, int end)
  * This function will make a word token
  * this can be either a command or argument or option
  * or a string for echo for example.
+ * if the last token was an redirection
+ * it will instead call the add file token function.
  */
 void	add_word_token(char *input, t_token *token_lst, int start, int end)
 {
-	if (end > start)
+	t_token	*last;
+	t_token	*tmp;
+
+	tmp = token_lst;
+	last = get_last_token(tmp);
+	if (last && (last->token_name[0] == '>' || \
+		last->token_name[0] == '<'))
+		add_file_token(input, token_lst, start, end);
+	else if (end > start)
 		add_new_token(&token_lst, new_token
 			("W", ft_substr(input, start, end - start)));
 }
@@ -54,20 +64,18 @@ int	add_redirection_token(char *input, t_token *token_lst, int i)
 	red_start = i;
 	while (input[i] == input[red_start])
 		i++;
-	if (i - red_start > 2)
-		printf("error thing here or maybe in evaluator\n");
-	else if (input[red_start] == '>')
+	if (input[red_start] == '>')
 		add_new_token(&token_lst, new_token
 			(">", ft_substr(input, start, i - start)));
 	else if (input[red_start] == '<')
 		add_new_token(&token_lst, new_token
 			("<", ft_substr(input, start, i - start)));
-	start = move_through_spaces(input, i);
-	i = start;
-	while (ft_isalnum(input[i]))
-		i++;
-	add_file_token(input, token_lst, start, i);
 	i = move_through_spaces(input, i);
+	// i = start;
+	// while (ft_isalnum(input[i])) // NEED TO CHECK THIS ONE CAREFULLY!!@#
+	// 	i++;
+	// add_file_token(input, token_lst, start, i);
+	// i = move_through_spaces(input, i);
 	return (i);
 }
 

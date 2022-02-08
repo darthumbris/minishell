@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 15:32:57 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 12:54:15 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,64 +65,4 @@ char	**envp_duplicate(char **envp)
 		i++;
 	}
 	return (tmp);
-}
-
-/*
- * This function returns the expanded string with
- * the env variable that is expanded to its value.
- * (needs to be properly freed afterwards).
- */
-char	*normal_env_variable(char *input, char **envp, int len)
-{
-	char	*env_str;
-	char	*env_expand;
-	char	*remain;
-
-	env_str = ft_substr(input, 0, \
-				(ft_strchr(input, ' ') - input));
-	if (!ft_getenv(env_str, envp))
-	{
-		env_expand = ft_substr(input, ft_strlen(env_str) + 1, len);
-		free(env_str);
-		return (env_expand);
-	}
-	remain = ft_substr(input, ft_strlen(env_str), len);
-	env_expand = ft_strjoin(ft_getenv(env_str, envp), remain);
-	free(remain);
-	free(env_str);
-	return (env_expand);
-}
-
-/*
- * This function will expand the $ stuff 
- * $? $0 and $PWD (and other env variables)
- * are covered with this function.
- * the returned string should be freed properly.!
- * !!!!return value still needs to be done. !!!!!
- */
-char	*expand_env_variable(char *input, char **envp)
-{
-	int		len;
-	char	*env_expand;
-	char	*remain;
-
-	if (input && *input)
-	{
-		len = ft_strlen(input);
-		if (*input == '0')
-		{
-			remain = ft_substr(input, 1, len);
-			env_expand = ft_strjoin("minishell", remain);
-		}
-		else if (*input == '?')
-		{
-			remain = ft_substr(input, 1, len);
-			env_expand = ft_strjoin(ft_itoa(0), remain);
-		}
-		else
-			return (normal_env_variable(input, envp, len));
-		free(remain);
-		return (env_expand);
-	}
-	return (NULL);
 }

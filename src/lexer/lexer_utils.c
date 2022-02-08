@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 16:01:40 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 11:31:06 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 16:26:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,21 @@
  * gets to the corresponding closing quote
  * it will then return the position after
  * the closing quote.
+ * (it will return i -1 if there is no closing
+ * quote)
  */
 int	move_through_quotes(char *input, int i)
 {
 	int	start;
+	int	len;
 
 	start = i;
 	i++;
+	len = ft_strlen(input);
 	while (input[i] && input[i] != input[start])
 		i++;
+	if (i == len)
+		return (i -1);
 	return (i);
 }
 

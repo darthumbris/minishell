@@ -17,19 +17,21 @@
  * temporary function to check the lexer
  * functionality.
  */
-t_token	*lexer_checker(char *input)
+t_token	*lexer_checker(char *input, char **envp)
 {
 	t_token		*lst;
 	t_token		*tmp;
 
 	printf("checking lexer\n");
 	lst = lexer(input);
-	if (!lst)
+	if (!lst && !envp)
 		printf("lst is NULL\n");
 	tmp = lst;
 	while (tmp)
 	{
 		printf("token_name: %s\t", tmp->token_name);
+		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && strchr(tmp->token_value, '$'))
+			check_for_env_expansion(&(tmp->token_value), envp);
 		printf("lst_value: %s\n", tmp->token_value);
 		tmp = tmp->next;
 	}
@@ -38,6 +40,9 @@ t_token	*lexer_checker(char *input)
 	if (!evaluator(lst))
 		printf("not valid token list\n");
 	printf("done evaluating\n");
+	printf("parsing lst\n");
+	create_cmd_lst(lst, envp);
+	//printf("parsing done\n");
 	return (lst);
 }
 
@@ -125,8 +130,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (lst)
 				free_token_lst(&lst);
-			lst = lexer_checker(input);
-			lst = expansion(lst);
+			lst = lexer_checker(input, envp_dup);
 			//parse_input(input, envp_dup);
 		}
 	}

@@ -25,16 +25,6 @@ typedef struct s_check
 	bool	double_quotes;
 }		t_check;
 
-//enum might be nicer to use?
-// enum e_token_names
-// {
-// 	TOKEN_WORD,
-// 	TOKEN_FILENAME,
-// 	TOKEN_PIPE = '|',
-// 	TOKEN_REDIRECT_OUTPUT = '>',
-// 	TOKEN_REDIRECT_INPUT = '<'
-// };
-
 typedef struct s_token
 {
 	char			*token_name;
@@ -48,6 +38,7 @@ void	fill_str(char	*str, int *j, int i);
 void	double_quotes(t_check *check);
 void	single_quote(t_check *check);
 void	init_check(t_check *check);
+//--------------------------------------------------------------
 
 //----------Lexur functions-----------
 t_token	*lexer(char *input);
@@ -68,4 +59,6 @@ char	*check(char *input);
 int		ft_count(char *str, int i, char c);
 int		ft_count1(char *str, int i);
 
+void	check_for_env_expansion(char **str, char **envp);
+t_token	*get_last_token(t_token *lst);
 #endif

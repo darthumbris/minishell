@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:54:08 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 15:41:47 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,30 +50,6 @@ t_token	*lexer_checker(char *input, char **envp)
 	free(test);
 	tmp = NULL;
 	return (lst);
-}
-
-/*
- * This function will create the child process to handle the simple 
- * commands. Won't work yet with pipe.
- * Also the return value required for the echo $? needs to be done
- * THIS FUNCTION IS TEMPORARY UNTIL PIPE ETC IS WORKING!!!!.
- * or need to change it in case there is only one command (no pipes)
- */
-int	minishell_thing(char *input, char **envp)
-{
-	pid_t	child_pid;
-	int		status;
-
-	child_pid = fork();
-	if (child_pid < 0)
-	{
-		perror("FORK: ");
-		return (1);
-	}
-	if (child_pid == 0)
-		execute_input(input, envp);
-	waitpid(child_pid, &status, 0);
-	return (WEXITSTATUS(status));
 }
 
 /*

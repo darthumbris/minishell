@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:15:14 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 15:37:41 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,9 @@ char		**get_cmd_arg(char *argv);
 char		**get_path_str(char **envp);
 char		**path_input(char *input);
 char		*get_input(char *input);
-void		execute_input(char *input, char **envp);
+void		execute_input(t_command *cmd, char **envp);
 void		parse_input(t_command *cmd, char **envp);
-int			minishell_thing(char *input, char **envp);
+int			single_command(t_command *cmd, char **envp);
 char		**envp_duplicate(char **envp);
 
 char		*ft_getenv(char *str, char **envp);

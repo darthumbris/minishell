@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 15:56:03 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 15:39:45 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,37 +50,4 @@ char	*get_input(char *input)
 	if (input && *input)
 		add_history(input);
 	return (input);
-}
-
-/*
- * For now the check input will handle the case with absolute path
- * and using envp. Wont work yet with relative path.
- * The get_cmd_args that it uses also doesn't yet handle quotes
- * and other difficult stuff.
- * things like echo $? or echo $USER and other commands.
- * will also give wrong error when doing absolute path stuff
- * for example /bin/wc will give command not found
- * instead of no such file or directory.
- */
-void	execute_input(char *input, char **envp)
-{
-	char	**paths;
-	char	**cmd_args;
-
-	if (input && (*input == '/' || (*input == '.' && input[1] == '/')))
-	{
-		paths = path_input(input);
-		cmd_args = get_cmd_arg(input + (ft_strchr(input + 1, '/') - input + 1));
-	}
-	else
-	{
-		paths = get_path_str(envp);
-		cmd_args = get_cmd_arg(input);
-	}
-	command_exec(paths, cmd_args, envp);
-	ft_putstr_fd("minishell: ", 2);
-	ft_putstr_fd(cmd_args[0], 2);
-	ft_putendl_fd(": command not found", 2);
-	free_cmd_args(cmd_args);
-	exit(127);
 }

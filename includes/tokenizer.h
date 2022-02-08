@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 17:03:44 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/07 15:12:27 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,13 @@ int		add_redirection_token(char *input, t_token *token_lst, int i);
 void	add_word_token(char *input, t_token *token_lst, int start, int end);
 void	free_token_lst(t_token **lst);
 bool	evaluator(t_token *lst);
+
+//----------expansion functions-----------
+t_token *expansion(t_token *lst);
+char	*check(char *input);
+int		ft_count(char *str, int i, char c);
+int		ft_count1(char *str, int i);
+
 void	check_for_env_expansion(char **str, char **envp);
 t_token	*get_last_token(t_token *lst);
 #endif

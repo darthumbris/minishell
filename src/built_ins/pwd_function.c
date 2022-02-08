@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   shlvl.c                                            :+:    :+:            */
+/*   pwd_function.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/02 12:04:38 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/04 14:33:33 by shoogenb      ########   odam.nl         */
+/*   Created: 2022/02/08 13:36:42 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/02/08 13:36:59 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-//Function might be unnecesary if the cmd_exec etc. works correctly.
-void	change_shl_lvl(char **envp, int change)
+/*
+ * the pwd function just needs to handle the pwd
+ * it doesn't need any arguments. (and won't complain if there are any in bash)
+ * I think?
+ */
+void	pwd_function(t_command *cmd, char **envp)
 {
-	char	*shlvl;
-	int		shlvl_current;
-	char	*new_shlvl;
+	char	*pwd_str;
 
-	shlvl_current = ft_atoi(ft_getenv("SHLVL", envp));
-	new_shlvl = ft_itoa(shlvl_current + change);
-	shlvl = ft_strjoin("SHLVL=", new_shlvl);
-	free(new_shlvl);
-	export_function(shlvl, envp);
-	free(shlvl);
-	printf("changed chlvl\n");
+	if (cmd->cmds && envp)
+	{
+		pwd_str = getcwd(NULL, -1);
+		if (!pwd_str)
+			ft_putendl_fd(ft_getenv("PWD", envp), cmd->fd_out);
+		else
+		{
+			ft_putendl_fd(pwd_str, cmd->fd_out);
+			free(pwd_str);
+		}		
+	}
 }

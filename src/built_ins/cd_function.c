@@ -6,13 +6,29 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 14:53:45 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/02 14:04:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 13:35:32 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cd_tilde(char *input, char **envp)
+static void	change_pwd_in_envp(char **envp)
+{
+	char	*pwd_change;
+	char	*old_pwd_change;
+	char	*new_path;
+
+	new_path = getcwd(NULL, -1);
+	pwd_change = ft_strjoin("PWD=", new_path);
+	old_pwd_change = ft_strjoin("OLDPWD=", ft_getenv("PWD", envp));
+	export_function(old_pwd_change, envp);
+	export_function(pwd_change, envp);
+	free(pwd_change);
+	free(new_path);
+	free(old_pwd_change);
+}
+
+static void	cd_tilde(char *input, char **envp)
 {
 	char	*relative;
 
@@ -31,7 +47,7 @@ void	cd_tilde(char *input, char **envp)
 	cd_function(input, envp);
 }
 
-void	cd_dash(char *input, char **envp)
+static void	cd_dash(char *input, char **envp)
 {
 	if (!input)
 		ft_putendl_fd("cd Error", 2);

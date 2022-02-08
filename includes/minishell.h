@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:52:32 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 13:49:39 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <dirent.h>
 # include "tokenizer.h"
 
-//maybe the arguments should be a linked lists?
 typedef struct s_command
 {
 	char	**cmds;
@@ -48,13 +47,16 @@ void		signal_handle_function(int sig);
 void		change_shl_lvl(char **envp, int change);
 
 //---------Shell  Built-in-functions--------------
-void		cd_function(char *input, char **envp);
-void		pwd_function(char *input, char **envp);
-void		export_function(char *input, char **envp);
-void		unset_function(char *input, char **envp);
-void		env_function(char *input, char **envp);
-void		exit_function(char *input, char **envp);
-void		echo_function(char *input, char **envp);
+void		cd_function(t_command *cmd, char **envp);
+void		pwd_function(t_command *cmd, char **envp);
+void		export_function(t_command *cmd, char **envp);
+void		unset_function(t_command *cmd, char **envp);
+void		env_function(t_command *cmd, char **envp);
+void		exit_function(t_command *cmd, char **envp);
+void		echo_function(t_command *cmd, char **envp);
+
+bool		is_valid_var_name(char *input);
+void		identifier_msg(char *input, char *cmd, int fd);
 
 t_command	*new_command(char **cmds);
 t_command	*create_cmd_lst(t_token *lst);

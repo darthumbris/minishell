@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 13:49:39 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:15:14 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ int			minishell_thing(char *input, char **envp);
 char		**envp_duplicate(char **envp);
 
 char		*ft_getenv(char *str, char **envp);
-void		change_pwd_in_envp(char **envp);
 void		signal_handle_function(int sig);
-void		change_shl_lvl(char **envp, int change);
 
 //---------Shell  Built-in-functions--------------
 void		cd_function(t_command *cmd, char **envp);
@@ -57,6 +55,7 @@ void		echo_function(t_command *cmd, char **envp);
 
 bool		is_valid_var_name(char *input);
 void		identifier_msg(char *input, char *cmd, int fd);
+void		export_simple(char *input, char **envp);
 
 t_command	*new_command(char **cmds);
 t_command	*create_cmd_lst(t_token *lst);

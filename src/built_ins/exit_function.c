@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:02:10 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:16:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,15 @@
 //should increase the shlvl?
 static void	change_shl_lvl(char **envp, int change)
 {
-	char	*shlvl;
-	int		shlvl_current;
-	char	*new_shlvl;
+	char		*shlvl;
+	int			shlvl_current;
+	char		*new_shlvl;
 
 	shlvl_current = ft_atoi(ft_getenv("SHLVL", envp));
 	new_shlvl = ft_itoa(shlvl_current + change);
 	shlvl = ft_strjoin("SHLVL=", new_shlvl);
 	free(new_shlvl);
-	export_function(shlvl, envp);
-	free(shlvl);
+	export_simple(shlvl, envp);
 }
 
 static void	exit_msg_error(char *input, int fd)
@@ -60,6 +59,11 @@ void	exit_function(t_command *cmd, char **envp)
 {
 	int	i;
 
+	if (!cmd)
+	{
+		system("leaks minishell");
+		exit(0);
+	}
 	if (count_cmd_args(cmd) != 1)
 	{
 		ft_putendl_fd("minishell>: exit: too many arguments", cmd->fd_out);

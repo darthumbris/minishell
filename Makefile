@@ -11,12 +11,14 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/input_handling.c \
-        $(SRC_DIR)/built_ins/env_functions.c \
-        $(SRC_DIR)/built_ins/built_in_functions1.c \
-        $(SRC_DIR)/built_ins/exit_function.c \
+        $(SRC_DIR)/envp_utils.c \
         $(SRC_DIR)/built_ins/cd_function.c \
         $(SRC_DIR)/built_ins/echo_function.c \
-        $(SRC_DIR)/built_ins/shlvl.c \
+        $(SRC_DIR)/built_ins/env_function.c \
+        $(SRC_DIR)/built_ins/exit_function.c \
+        $(SRC_DIR)/built_ins/export_function.c \
+        $(SRC_DIR)/built_ins/pwd_function.c \
+        $(SRC_DIR)/built_ins/unset_function.c \
         $(SRC_DIR)/lexer/lexer.c \
         $(SRC_DIR)/lexer/lexer_utils.c \
         $(SRC_DIR)/lexer/token_lst.c \

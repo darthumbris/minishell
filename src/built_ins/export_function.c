@@ -6,11 +6,25 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 13:49:29 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:14:43 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	export_simple(char *input, char **envp)
+{
+	t_command	*temp;
+	char		**cmds;
+
+	cmds = ft_calloc(2, sizeof(char *));
+	cmds[0] = input;
+	temp = new_command(cmds);
+	export_function(temp, envp);
+	free_cmd_args(cmds);
+	free(temp);
+	free(input);
+}
 
 /*
  * This function checks if the input

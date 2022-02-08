@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:56:15 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 14:05:51 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			if (lst)
 				free_token_lst(&lst);
-			exit_function("0", envp_dup);
+			exit_function(NULL, envp_dup);
 		}
 		if (input && *input)
 		{

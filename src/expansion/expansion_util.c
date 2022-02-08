@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:44:19 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/07 15:07:51 by abba          ########   odam.nl         */
+/*   Updated: 2022/02/08 09:46:12 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ static char	*normal_function(char *input, int *i)
 
 char	*check(char *input)
 {
-	int	i;
+	int							i;
 	char						*tmp;
+	char						*begin;
+	char						*end;
 	const t_quote				function[] = {
 		{'\'', &single_function},
 		{'"', &double_function},
@@ -88,12 +90,16 @@ char	*check(char *input)
 	tmp = ft_strdup("");
 	while (input[i])
 	{
+		begin = tmp;
 		if (input[i] == function[0].quote)
-			tmp = ft_strjoin(tmp, function[0].t_function_pointer(input, &i));
+			end = function[0].t_function_pointer(input, &i);
 		else if (input[i] == function[1].quote)
-			tmp = ft_strjoin(tmp, function[1].t_function_pointer(input, &i));
+			end = function[1].t_function_pointer(input, &i);
 		else
-			tmp = ft_strjoin(tmp, function[2].t_function_pointer(input, &i));
+			end = function[2].t_function_pointer(input, &i);
+		tmp = ft_strjoin(begin, end);
+		free(begin);
+		free(end);
 		i++;
 	}
 	return (tmp);

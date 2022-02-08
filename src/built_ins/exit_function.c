@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:16:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/08 16:02:30 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ void	exit_function(t_command *cmd, char **envp)
 {
 	int	i;
 
-	if (!cmd)
+	if (!cmd || !cmd->cmds[1])
 	{
 		system("leaks minishell");
 		exit(0);
 	}
-	if (count_cmd_args(cmd) != 1)
+	if (count_cmd_args(cmd) > 1)
 	{
 		ft_putendl_fd("minishell>: exit: too many arguments", cmd->fd_out);
 		//return (1);

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 16:06:28 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 10:31:49 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@
 //Function might be unnecesary if the cmd_exec etc. works correctly.
 //or might be necesarry for when minishell is launched it 
 //should increase the shlvl?
-static void	change_shl_lvl(char **envp, int change)
+//CHECK IF IT IS ACTUALLY WORKING WITH THE EXIT!!!!
+void	change_shl_lvl(char **envp, int change)
 {
 	char		*shlvl;
 	int			shlvl_current;
@@ -27,6 +28,7 @@ static void	change_shl_lvl(char **envp, int change)
 	shlvl = ft_strjoin("SHLVL=", new_shlvl);
 	free(new_shlvl);
 	export_simple(shlvl, envp);
+	free(shlvl);
 }
 
 static void	exit_msg_error(char *input, int fd)

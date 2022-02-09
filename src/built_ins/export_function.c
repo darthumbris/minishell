@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 15:04:31 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 10:31:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	export_simple(char *input, char **envp)
 	t_command	*temp;
 	char		**cmds;
 
-	cmds = ft_calloc(2, sizeof(char *));
-	cmds[0] = input;
+	cmds = ft_calloc(3, sizeof(char *));
+	cmds[1] = input;
 	temp = new_command(cmds);
 	export_function(temp, envp);
 	free_cmd_args(cmds);

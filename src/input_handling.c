@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 14:38:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 15:39:45 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 11:54:29 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*get_input(char *input)
 		free(input);
 		input = NULL;
 	}
-	input = readline("\rminishell> ");
+	input = readline("minishell> ");
 	if (input && *input)
 		add_history(input);
 	return (input);

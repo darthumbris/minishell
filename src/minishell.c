@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 15:59:45 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 11:46:17 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,39 +17,24 @@
  * temporary function to check the lexer
  * functionality. and other stuff.
  */
-t_token	*lexer_checker(char *input, char **envp)
+void	lexer_checker(char *input, char **envp)
 {
 	t_token		*lst;
 	t_token		*tmp;
 	t_command	*test;
 
-	lst = lexer(input);
-	tmp = lst;
-	while (tmp)
-	{
-		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && \
-			strchr(tmp->token_value, '$'))
-			check_for_env_expansion(&(tmp->token_value), envp);
-		tmp = tmp->next;
-	}
-	lst = quote_expansion(lst);
-	tmp = lst;
-	while (tmp)
-	{
-		printf("token_name: %s\t", tmp->token_name);
-		printf("lst_value: %s\n", tmp->token_value);
-		tmp = tmp->next;
-	}
-	evaluator(lst);
+	lst = lexer_lst(input, envp);
 	tmp = lst;
 	lst = lst->next;
 	test = create_cmd_lst(lst);
-	parse_input(test, envp);
-	free_token_lst(&tmp);
-	free_cmd_args(test->cmds);
-	free(test);
+	if (test)
+	{
+		parse_input(test, envp);
+		free_token_lst(&tmp);
+		free_cmd_args(test->cmds);
+		free(test);
+	}
 	tmp = NULL;
-	return (lst);
 }
 
 /*
@@ -92,25 +77,19 @@ int	main(int argc, char **argv, char **envp)
 		i = 1;
 		while (argv[i])
 			printf("argv[1]: %s\n", argv[i++]);
-		//return (1);
-		//not sure about this return yet.
+		//return (1); //not sure about this return yet.
 	}
 	signal(SIGINT, signal_handle_function);
 	signal(SIGQUIT, signal_handle_function);
 	envp_dup = envp_duplicate(envp);
+	change_shl_lvl(envp_dup, 1);
 	while (1)
 	{
 		input = get_input(input);
 		if (input == NULL)
-		{
-			// if (lst)
-			// 	free_token_lst(&lst);
 			exit_function(NULL, envp_dup);
-		}
 		if (input && *input)
 		{
-			// if (lst)
-			// 	free_token_lst(&lst);
 			lexer_checker(input, envp_dup);
 			//parse_input(input, envp_dup);
 		}

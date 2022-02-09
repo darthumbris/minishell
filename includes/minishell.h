@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 15:37:41 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 10:42:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void		echo_function(t_command *cmd, char **envp);
 bool		is_valid_var_name(char *input);
 void		identifier_msg(char *input, char *cmd, int fd);
 void		export_simple(char *input, char **envp);
+void		change_shl_lvl(char **envp, int change);
+int			heredoc_function(void);
 
 t_command	*new_command(char **cmds);
 t_command	*create_cmd_lst(t_token *lst);

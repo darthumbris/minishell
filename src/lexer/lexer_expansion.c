@@ -1,27 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   heredoc.c                                          :+:    :+:            */
+/*   lexer_expansion.c                                  :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 10:42:12 by shoogenb      ########   odam.nl         */
+/*   Created: 2022/02/09 11:37:57 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/02/09 11:43:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "tokenizer.h"
+#include "libft.h"
 
-/*
- * This function should handle the
- * << redirect and make an heredoc
- * that properly closes with the
- * input name (EOF or another word etc.)
- * than should write everything correctly
- * to the fd_outpout.
- */
-int	heredoc_function(void)
+t_token	*lexer_lst(char *input, char **envp)
 {
-	printf("entered heredoc redirection << function\n");
-	return (-1);
+	t_token	*lst;
+	t_token	*tmp;
+
+	lst = lexer(input);
+	tmp = lst;
+	while (tmp)
+	{
+		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && \
+			ft_strchr(tmp->token_value, '$'))
+			check_for_env_expansion(&(tmp->token_value), envp);
+		tmp = tmp->next;
+	}
+	lst = quote_expansion(lst);
+	evaluator(lst);
+	return (lst);
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:46:38 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 11:40:28 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_token
 
 //----------Lexur functions-----------
 t_token	*lexer(char *input);
+t_token	*lexer_lst(char *input, char **envp);
 int		move_through_quotes(char *input, int i);
 int		move_through_spaces(char *input, int i);
 void	redirect_function(char *input, int *i, int *word_start, t_token *lst);

@@ -24,6 +24,7 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/lexer/token_lst.c \
         $(SRC_DIR)/lexer/free_token_lst.c \
         $(SRC_DIR)/lexer/lexer_evaluator.c \
+        $(SRC_DIR)/lexer/lexer_expansion.c \
         $(SRC_DIR)/expansion/quote_expansion.c \
         $(SRC_DIR)/expansion/expansion_util.c \
         $(SRC_DIR)/expansion/lenght_count.c \

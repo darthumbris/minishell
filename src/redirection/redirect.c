@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:45:31 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 11:10:40 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,18 @@
  * it will also give an error if the filedescriptor
  * is bad.
  */
-void	redirect_input(char *path, t_command *cmd)
+int	redirect_input(t_token *lst)
 {
-	cmd->fd_in = open(path, O_RDONLY);
-	if (cmd->fd_in < 0)
-		perror(path);
+	int	fd_in;
+
+	fd_in = 0;
+	if (lst && lst->next)
+	{
+		fd_in = open(lst->next->token_value, O_RDONLY);
+		if (fd_in < 0)
+			perror(lst->next->token_value);
+	}
+	return (fd_in);
 }
 
 /*
@@ -35,14 +42,53 @@ void	redirect_input(char *path, t_command *cmd)
  * is bad.
  * O_TRUNC is so it makes an empty file if it already exists.
  */
-void	redirect_output(char *path, t_command *cmd, int append)
+int	redirect_output(t_token *lst, int append)
 {
-	if (append)
-		cmd->fd_out = open(path, O_WRONLY | O_APPEND | O_CREAT, 0644);
-	else
-		cmd->fd_out = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	if (cmd->fd_out < 0)
-		perror(path);
+	int	fd_out;
+
+	fd_out = 1;
+	if (lst && lst->next)
+	{
+		if (append == 2)
+			fd_out = open
+				(lst->next->token_value, O_WRONLY | O_APPEND | O_CREAT, 0644);
+		else
+			fd_out = open
+				(lst->next->token_value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		if (fd_out < 0)
+			perror(lst->next->token_value);
+	}
+	return (fd_out);
+}
+
+/*
+ * This function will check what kind of redirect it
+ * is and than will go to either input, heredoc
+ * or output function and will return
+ * the fd they create. or -1 if it fails.
+ */
+int	redirect_parse(t_token *lst)
+{
+	int	len;
+	int	i;
+
+	if (lst)
+	{
+		i = 0;
+		while (ft_isdigit(lst->token_value[i]))
+		i++;
+		len = i;
+		while (lst->token_value[i] == lst->token_value[len])
+			i++;
+		if (lst->token_name[0] == '<')
+		{
+			if ((i - len) == 1)
+				return (redirect_input(lst));
+			return (heredoc_function());
+		}
+		return (redirect_output(lst, i - len));
+	}
+	return (-1);
 }
 
 /*
@@ -52,17 +98,27 @@ void	redirect_output(char *path, t_command *cmd, int append)
  * need to change this function so it actually
  * sets the fd to the input (or 0 or 1 if it fails)
  */
-void	redirect_fd(char *red,	t_command *cmd)
+int	redirect_fd(t_token	*lst)
 {
-	if (!ft_isdigit(red[0]) || !cmd)
-		return ;
-	if (ft_atol(red) > INT_MAX)
-		printf("minishell: file descriptor out of range: \
-	 		Bad file descriptor\n");
-	else if (ft_atoi(red) > 255)
+	char	*red;
+
+	red = lst->token_value;
+	if (!ft_isdigit(red[0]) && lst->token_name[0] == '>')
+		return (1);
+	if (!ft_isdigit(red[0]) && lst->token_name[0] == '<')
+		return (0);
+	if (ft_atol(red) < INT_MAX && ft_atoi(red) < 255 && \
+		fstat(ft_atoi(red), NULL) != -1)
+		return (ft_atoi(red));
+	else if (ft_atol(red) > INT_MAX)
+		ft_putendl_fd("minishell: file descriptor out of range: \
+	 		Bad file descriptor", 2);
+	else if (ft_atoi(red) > 255 || fstat(ft_atoi(red), NULL) == -1)
 		printf("minishell: %d Bad file descriptor\n", \
 			ft_atoi(red));
-	else if (fstat(ft_atoi(red), NULL) == -1)
-		printf("minishell: %d Bad file descriptor\n", \
-			ft_atoi(red));
+	if (lst->token_name[0] == '>')
+		return (1);
+	if (lst->token_name[0] == '<')
+		return (0);
+	return (-1);
 }

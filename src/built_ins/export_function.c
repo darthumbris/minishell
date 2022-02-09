@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 10:31:08 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:13:06 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static	void	set_env(char **envp, char *input)
 	int		i;
 
 	export_var = ft_substr(input, 0, ft_strchr(input, '=') - input);
-	i = 0;
+	i = 1;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], export_var, ft_strlen(export_var)) == 0)
@@ -87,7 +87,7 @@ static	void	set_env(char **envp, char *input)
 		}
 		i++;
 	}
-	i = 0;
+	i = 1;
 	while (envp[i])
 		i++;
 	envp[i] = ft_strdup(input);
@@ -109,17 +109,23 @@ static	void	set_env(char **envp, char *input)
 void	export_function(t_command *cmd, char **envp)
 {
 	int		i;
+	int		error;
 
+	error = 0;
 	if (cmd && cmd->cmds)
 	{
 		i = 1;
 		while (cmd->cmds[i])
 		{
 			if (!is_valid_var_name(cmd->cmds[i]))
+			{
 				identifier_msg(cmd->cmds[i], cmd->cmds[0], cmd->fd_out);
+				error = 1;
+			}
 			else if (has_equals(cmd->cmds[i]))
 				set_env(envp, cmd->cmds[i]);
 			i++;
 		}
-	}	
+	}
+	set_return_value(envp, error);
 }

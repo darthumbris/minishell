@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   env_functions.c                                    :+:    :+:            */
+/*   envp_utils.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 13:34:42 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 12:52:29 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_getenv(char *str, char **envp)
 
 	if (envp)
 	{
-		i = 0;
+		i = 1;
 		joined = ft_strjoin(str, "=");
 		len = ft_strlen(joined);
 		while (envp[i])
@@ -38,15 +38,16 @@ char	*ft_getenv(char *str, char **envp)
 
 char	**envp_duplicate(char **envp)
 {
-	char	**tmp;
+	char	**dup;
 	int		i;
 
 	i = 0;
-	tmp = ft_calloc(1024, sizeof(char *));
+	dup = ft_calloc(1024, sizeof(char *));
 	while (envp[i])
 	{
-		tmp[i] = ft_strdup(envp[i]);
+		dup[i + 1] = ft_strdup(envp[i]);
 		i++;
 	}
-	return (tmp);
+	dup[0] = ft_strdup("0");
+	return (dup);
 }

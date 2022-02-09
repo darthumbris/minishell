@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 15:41:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 15:42:22 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:18:45 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	single_command(t_command *cmd, char **envp)
 	if (child_pid == 0)
 		execute_input(cmd, envp);
 	waitpid(child_pid, &status, 0);
+	set_return_value(envp, WEXITSTATUS(status));
 	return (WEXITSTATUS(status));
 }
 

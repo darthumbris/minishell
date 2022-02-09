@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:11:07 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 11:54:55 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:10:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void	echo_function(t_command *cmd, char **envp)
 {
 	int	i;
 
-	if (!envp)
-		ft_putendl_fd("Error no envp", 2);
 	if (check_n_option(cmd->cmds[1]))
 	{
 		i = 2;
@@ -63,5 +61,6 @@ void	echo_function(t_command *cmd, char **envp)
 		i = 1;
 		echo_write(cmd, i);
 		write(cmd->fd_out, "\n", 1);
-	}		
+	}
+	set_return_value(envp, 0);
 }

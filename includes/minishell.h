@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 10:42:05 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:03:52 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void		execute_input(t_command *cmd, char **envp);
 void		parse_input(t_command *cmd, char **envp);
 int			single_command(t_command *cmd, char **envp);
 char		**envp_duplicate(char **envp);
+void		set_return_value(char **envp, int nbr);
 
 char		*ft_getenv(char *str, char **envp);
 void		signal_handle_function(int sig);

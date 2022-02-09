@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 13:37:34 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 13:51:37 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:17:16 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,20 @@ void	identifier_msg(char *input, char *cmd, int fd)
 	ft_putendl_fd("\': not a valid identifier", fd);
 }
 
+static void	check_for_var_unset(char **envp, t_command *cmd, int i, int j)
+{
+	if (ft_strncmp(envp[i], cmd->cmds[j], ft_strlen(cmd->cmds[j])) == 0)
+	{
+		free(envp[i]);
+		while (envp[i + 1])
+		{
+			envp[i] = envp[i + 1];
+			i++;
+		}
+		envp[i] = NULL;
+	}
+}
+
 /*
  * The unset function the same as the export function
  * should accept multiple arguments to unset.
@@ -29,26 +43,23 @@ void	unset_function(t_command *cmd, char **envp)
 {
 	int		i;
 	int		j;
+	int		error;
 
 	j = 1;
+	error = 0;
 	while (cmd->cmds[j])
 	{
 		if (!is_valid_var_name(cmd->cmds[j]))
+		{
 			identifier_msg(cmd->cmds[j], cmd->cmds[0], cmd->fd_out);
-		i = 0;
+			error = 1;
+		}
+		i = 1;
 		while (envp[i])
 		{
-			if (ft_strncmp(envp[i], cmd->cmds[j], ft_strlen(cmd->cmds[j])) == 0)
-			{
-				free(envp[i]);
-				while (envp[i + 1])
-				{
-					envp[i] = envp[i + 1];
-					i++;
-				}
-				envp[i] = NULL;
-			}
+			check_for_var_unset(envp, cmd, i, j);
 			i++;
 		}
 	}
+	set_return_value(envp, error);
 }

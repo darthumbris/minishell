@@ -12,6 +12,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/input_handling.c \
         $(SRC_DIR)/envp_utils.c \
+        $(SRC_DIR)/return_value.c \
         $(SRC_DIR)/built_ins/cd_function.c \
         $(SRC_DIR)/built_ins/echo_function.c \
         $(SRC_DIR)/built_ins/env_function.c \

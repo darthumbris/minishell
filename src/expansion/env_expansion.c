@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:42:06 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 12:56:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,8 @@ static char	*expand_env_variable(char *input, char **envp)
 		else if (*input == '?')
 		{
 			remain = ft_substr(input, 1, ft_strlen(input));
-			return_str = ft_itoa(0);
+			return_str = envp[0];
 			env_expand = ft_strjoin(return_str, remain);
-			free(return_str);
 		}
 		else
 			return (normal_env_variable(input, envp, ft_strlen(input)));

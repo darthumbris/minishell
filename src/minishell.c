@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 11:46:17 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 12:49:23 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	static char		*input;
 	char			**envp_dup;
-	int				i;
 
 	input = NULL;
 	rl_catch_signals = 0;
 	if (argc != 1 || !argv || !envp)
-	{
-		i = 1;
-		while (argv[i])
-			printf("argv[1]: %s\n", argv[i++]);
-		//return (1); //not sure about this return yet.
-	}
+		return (1); //not sure about this return yet.
 	signal(SIGINT, signal_handle_function);
 	signal(SIGQUIT, signal_handle_function);
 	envp_dup = envp_duplicate(envp);

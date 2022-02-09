@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 14:53:45 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 14:23:35 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:22:19 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ static void	change_pwd_in_envp(char **envp)
 	export_simple(old_pwd_change, envp);
 	export_simple(pwd_change, envp);
 	free(new_path);
+	free(pwd_change);
+	free(old_pwd_change);
+	set_return_value(envp, 0);
 }
 
 static void	cd_tilde(t_command *cmd, char **envp)
@@ -94,7 +97,10 @@ void	cd_function(t_command *cmd, char **envp)
 		else if (*cmd->cmds[1] == '~')
 			cd_tilde(cmd, envp);
 		else if (chdir(cmd->cmds[1]) == -1)
+		{
 			perror("");
+			set_return_value(envp, 1);
+		}
 		else
 			change_pwd_in_envp(envp);
 	}

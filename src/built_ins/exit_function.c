@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 10:31:49 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/09 13:04:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	exit_function(t_command *cmd, char **envp)
 	if (count_cmd_args(cmd) > 1)
 	{
 		ft_putendl_fd("minishell>: exit: too many arguments", cmd->fd_out);
-		return ; //should return 1
+		set_return_value(envp, 1);
 	}
 	ft_putendl_fd("exit", cmd->fd_out);
 	if (!ft_getenv("SHLVL", envp) || ft_atoi(ft_getenv("SHLVL", envp)) == 1)

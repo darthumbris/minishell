@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:13:06 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/11 11:32:52 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static	void	set_env(char **envp, char *input)
 	int		i;
 
 	export_var = ft_substr(input, 0, ft_strchr(input, '=') - input);
-	i = 1;
+	i = 2;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], export_var, ft_strlen(export_var)) == 0)
@@ -87,7 +87,7 @@ static	void	set_env(char **envp, char *input)
 		}
 		i++;
 	}
-	i = 1;
+	i = 2;
 	while (envp[i])
 		i++;
 	envp[i] = ft_strdup(input);

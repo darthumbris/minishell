@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 12:49:23 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/14 13:34:43 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,21 @@
 #include "tokenizer.h"
 
 /*
- * temporary function to check the lexer
- * functionality. and other stuff.
- */
-void	lexer_checker(char *input, char **envp)
-{
-	t_token		*lst;
-	t_token		*tmp;
-	t_command	*test;
-
-	lst = lexer_lst(input, envp);
-	tmp = lst;
-	lst = lst->next;
-	test = create_cmd_lst(lst);
-	if (test)
-	{
-		parse_input(test, envp);
-		free_token_lst(&tmp);
-		free_cmd_args(test->cmds);
-		free(test);
-	}
-	tmp = NULL;
-}
-
-/*
  * This function handles the ctrl-c for now
  * it will make a new line and clear the input.
  * need to figure out how to handle the ctr-\ thing
+ * also do something different when in a functin/command
+ * and with just normal input should do the replace stuff
  */
 void	signal_handle_function(int sig)
+{
+	if (sig == SIGINT)
+		printf("\n");
+	if (sig == SIGQUIT)
+		printf("Quit: 3\n");
+}
+
+void	signal_handle_child(int sig)
 {
 	if (sig == SIGINT)
 	{
@@ -50,6 +36,34 @@ void	signal_handle_function(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+	}
+}
+
+void	parse_input(char *input, char **envp)
+{
+	t_token	*lst;
+	pid_t	pid;
+	int		status;
+
+	if (input && *input)
+	{
+		lst = lexer_lst(input, envp);
+		pid = fork();
+		if (pid)
+		{
+			signal(SIGQUIT, SIG_IGN);
+			signal(SIGINT, SIG_IGN);
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status) == 0 && status == 3)
+				signal_handle_function(SIGQUIT);
+			else if (WIFEXITED(status) == 0 && status == 2)
+				signal_handle_function(SIGINT);
+		}
+		else if (pid == 0)
+			parse_token_lst(lst, envp);
+		if (lst)
+			free_token_lst(&lst);
+		set_return_value(envp, WEXITSTATUS(status));
 	}
 }
 
@@ -73,21 +87,22 @@ int	main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	if (argc != 1 || !argv || !envp)
 		return (1); //not sure about this return yet.
-	signal(SIGINT, signal_handle_function);
-	signal(SIGQUIT, signal_handle_function);
+	signal(SIGINT, signal_handle_child);
+	signal(SIGQUIT, SIG_IGN);
 	envp_dup = envp_duplicate(envp);
 	change_shl_lvl(envp_dup, 1);
 	while (1)
 	{
+		signal(SIGINT, signal_handle_child);
+		signal(SIGQUIT, signal_handle_child);
 		input = get_input(input);
 		if (input == NULL)
-			exit_function(NULL, envp_dup);
-		if (input && *input)
 		{
-			lexer_checker(input, envp_dup);
-			//parse_input(input, envp_dup);
+			ft_putendl_fd("\x1b[1Aminishell> exit", 2);
+			exit_function(NULL, envp_dup);
 		}
+		if (input && *input)
+			parse_input(input, envp_dup);
 	}
-	system("leaks minishell");
 	return (0);
 }

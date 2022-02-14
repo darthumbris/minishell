@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 14:28:29 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:53:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/14 12:22:37 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,15 @@ void	free_cmds(t_command *cmd)
 	i = 0;
 	while (cmd->cmds[i])
 	{
+		//printf("freeing cmds[%d]\n", i);
 		free(cmd->cmds[i]);
 		i++;
 	}
+	//printf("freeing cmds\n");
 	free(cmd->cmds);
+	//printf("freeing cmd\n");
 	free(cmd);
+	cmd = NULL;
 }
 
 /*
@@ -59,26 +63,23 @@ void	free_cmds(t_command *cmd)
  * and all the others in the array
  * are the arguments or options.
  */
-t_command	*create_cmd_lst(t_token *lst)
+t_command	*create_cmd_lst(t_token **lst, t_command *cmd)
 {
-	t_token		*tmp;
-	t_command	*cmd;
 	char		**cmds;
 	int			len;
 	int			i;
 
-	tmp = lst;
-	if (tmp->token_name[0] == 'W')
+	if ((*lst)->token_name[0] == 'W')
 	{
-		len = count_cmd_args(tmp);
+		len = count_cmd_args((*lst));
 		cmds = ft_calloc(len + 1, sizeof(char *));
 		i = 0;
 		while (i < len)
 		{
-			cmds[i++] = ft_strdup(tmp->token_value);
-			tmp = tmp->next;
+			cmds[i++] = ft_strdup((*lst)->token_value);
+			(*lst) = (*lst)->next;
 		}
-		cmd = new_command(cmds);
+		cmd->cmds = cmds;
 		return (cmd);
 	}
 	return (NULL);

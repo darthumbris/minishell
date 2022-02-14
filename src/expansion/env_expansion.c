@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 12:56:44 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/14 11:18:02 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ static char	*expand_env_variable(char *input, char **envp)
 		free(remain);
 		return (env_expand);
 	}
-	return (NULL);
+	return_str = ft_strdup("$");
+	return (return_str);
 }
 
 static void	free_strjoin_str(char *begin, char *env_expand)

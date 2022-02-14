@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:04:10 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/14 11:15:28 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,7 @@ void	exit_function(t_command *cmd, char **envp)
 	int	i;
 
 	if (!cmd || !cmd->cmds[1])
-	{
-		system("leaks minishell");
 		exit(0);
-	}
 	i = 0;
 	while (cmd->cmds[1][i] && envp)
 	{
@@ -85,9 +82,6 @@ void	exit_function(t_command *cmd, char **envp)
 	}
 	ft_putendl_fd("exit", cmd->fd_out);
 	if (!ft_getenv("SHLVL", envp) || ft_atoi(ft_getenv("SHLVL", envp)) == 1)
-	{
-		system("leaks minishell");
 		exit(ft_atoi(cmd->cmds[1]) % 255);
-	}
 	change_shl_lvl(envp, -1);
 }

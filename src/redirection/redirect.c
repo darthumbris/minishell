@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 11:10:40 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/11 10:31:59 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * it will also give an error if the filedescriptor
  * is bad.
  */
-int	redirect_input(t_token *lst)
+static int	redirect_input(t_token *lst, char **envp)
 {
 	int	fd_in;
 
@@ -30,7 +30,10 @@ int	redirect_input(t_token *lst)
 	{
 		fd_in = open(lst->next->token_value, O_RDONLY);
 		if (fd_in < 0)
+		{
 			perror(lst->next->token_value);
+			set_return_value(envp, 1);
+		}
 	}
 	return (fd_in);
 }
@@ -42,7 +45,7 @@ int	redirect_input(t_token *lst)
  * is bad.
  * O_TRUNC is so it makes an empty file if it already exists.
  */
-int	redirect_output(t_token *lst, int append)
+static int	redirect_output(t_token *lst, int append, char **envp)
 {
 	int	fd_out;
 
@@ -56,7 +59,10 @@ int	redirect_output(t_token *lst, int append)
 			fd_out = open
 				(lst->next->token_value, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 		if (fd_out < 0)
+		{
 			perror(lst->next->token_value);
+			set_return_value(envp, 1);
+		}
 	}
 	return (fd_out);
 }
@@ -67,7 +73,7 @@ int	redirect_output(t_token *lst, int append)
  * or output function and will return
  * the fd they create. or -1 if it fails.
  */
-int	redirect_parse(t_token *lst)
+int	redirect_parse(t_token *lst, char **envp)
 {
 	int	len;
 	int	i;
@@ -83,10 +89,10 @@ int	redirect_parse(t_token *lst)
 		if (lst->token_name[0] == '<')
 		{
 			if ((i - len) == 1)
-				return (redirect_input(lst));
+				return (redirect_input(lst, envp));
 			return (heredoc_function());
 		}
-		return (redirect_output(lst, i - len));
+		return (redirect_output(lst, i - len, envp));
 	}
 	return (-1);
 }

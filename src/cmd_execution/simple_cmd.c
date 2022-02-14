@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 15:41:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:18:45 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/14 13:05:25 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,27 @@ int	single_command(t_command *cmd, char **envp)
 	pid_t	child_pid;
 	int		status;
 
+	ft_putendl_fd("\nghadfsaf\n\n", 2);
+	signal(SIGINT, signal_handle_child);
+	signal(SIGQUIT, signal_handle_child);
 	child_pid = fork();
 	if (child_pid < 0)
 	{
 		perror("FORK: ");
 		return (1);
 	}
+	if (child_pid > 0)
+	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, SIG_IGN);
+		waitpid(child_pid, &status, 0);
+		if (WIFEXITED(status) == 0 && status == 3)
+			signal_handle_function(SIGQUIT);
+		else if (WIFEXITED(status) == 0 && status == 2)
+			signal_handle_function(SIGINT);
+	}
 	if (child_pid == 0)
-		execute_input(cmd, envp);
-	waitpid(child_pid, &status, 0);
+		parse_command(cmd, envp);
 	set_return_value(envp, WEXITSTATUS(status));
 	return (WEXITSTATUS(status));
 }

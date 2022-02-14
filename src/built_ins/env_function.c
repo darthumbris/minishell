@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:20:46 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/11 10:57:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	env_function(t_command *cmd, char **envp)
 
 	if (cmd && envp && cmd->cmds)
 	{
-		i = 1;
+		i = 2;
 		while (envp[i])
 		{
 			ft_putendl_fd(envp[i], cmd->fd_out);

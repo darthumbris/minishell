@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 13:37:34 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:17:16 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/11 11:33:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	unset_function(t_command *cmd, char **envp)
 			identifier_msg(cmd->cmds[j], cmd->cmds[0], cmd->fd_out);
 			error = 1;
 		}
-		i = 1;
+		i = 2;
 		while (envp[i])
 		{
 			check_for_var_unset(envp, cmd, i, j);

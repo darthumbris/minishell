@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/08 10:49:38 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/16 15:22:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	add_word_token(char *input, t_token *token_lst, int start, int end)
 	tmp = token_lst;
 	last = get_last_token(tmp);
 	if (last && (last->token_name[0] == '>' || \
-		last->token_name[0] == '<'))
+		last->token_name[0] == '<' || last->token_name[0] == 'h'))
 		add_file_token(input, token_lst, start, end);
 	else if (end > start)
 		add_new_token(&token_lst, new_token
@@ -66,6 +66,9 @@ int	add_redirection_token(char *input, t_token *token_lst, int i)
 	if (input[red_start] == '>')
 		add_new_token(&token_lst, new_token
 			(">", ft_substr(input, start, i - start)));
+	else if (input[red_start] == '<' && i - red_start == 2)
+		add_new_token(&token_lst, new_token
+			("h", ft_substr(input, start, i - start)));
 	else if (input[red_start] == '<')
 		add_new_token(&token_lst, new_token
 			("<", ft_substr(input, start, i - start)));

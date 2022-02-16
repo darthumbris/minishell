@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/04 10:23:08 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 09:55:01 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/16 15:33:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ static bool	is_valid_redirect(t_token *lst)
 	int	len;
 
 	if (!lst->next)
-		return (printf("minishell: syntax error near unexpected token \
-			`newline'\n"));
+		return (printf(\
+			"minishell: syntax error near unexpected token `newline'\n"));
 	i = 0;
 	while (ft_isdigit(lst->token_value[i]))
 		i++;
@@ -79,7 +79,9 @@ bool	evaluator(t_token *lst)
 		if (current->token_name[0] == '|' && is_valid_pipe(current, prev))
 			return (false);
 		else if ((current->token_name[0] == '>' || \
-			current->token_name[0] == '<') && is_valid_redirect(current))
+			current->token_name[0] == '<' || \
+			current->token_name[0] == 'h') && \
+			is_valid_redirect(current))
 			return (false);
 		prev = current;
 		current = current->next;

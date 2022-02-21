@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/14 13:34:43 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:51:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,29 +41,49 @@ void	signal_handle_child(int sig)
 
 void	parse_input(char *input, char **envp)
 {
-	t_token	*lst;
-	pid_t	pid;
-	int		status;
+	t_token		*lst;
+	pid_t		pid;
+	int			status;
+	t_command	*exit_cmd;
 
 	if (input && *input)
 	{
 		lst = lexer_lst(input, envp);
+		check_valid_commands(lst, envp); //probably not needed.
+		exit_cmd = get_exit_cmd(lst);
 		pid = fork();
+		if (pid < 0)
+		{
+			perror("FORK");
+			ft_putendl_fd("error", 2);
+			return ;
+		}
 		if (pid)
 		{
 			signal(SIGQUIT, SIG_IGN);
 			signal(SIGINT, SIG_IGN);
 			waitpid(pid, &status, 0);
-			if (WIFEXITED(status) == 0 && status == 3)
-				signal_handle_function(SIGQUIT);
-			else if (WIFEXITED(status) == 0 && status == 2)
-				signal_handle_function(SIGINT);
 		}
-		else if (pid == 0)
+		else if (pid == 0 && !exit_cmd)
 			parse_token_lst(lst, envp);
 		if (lst)
 			free_token_lst(&lst);
+		if (exit_cmd && pid == 0)
+		{
+			parse_command(exit_cmd, envp);
+			free_cmds(exit_cmd);
+		}
+		//waitpid(pid, &status, 0);
 		set_return_value(envp, WEXITSTATUS(status));
+		if (WIFEXITED(status) == 0 && status == 3 && WEXITSTATUS(status) != 127)
+			signal_handle_function(SIGQUIT);
+		else if (WIFEXITED(status) == 0 && status == 2)
+			signal_handle_function(SIGINT);
+		if (exit_cmd && is_valid_exit(exit_cmd))
+		{
+			ft_putendl_fd("exit", 2);
+			exit(ft_atoi(envp[0]));
+		}
 	}
 }
 
@@ -82,13 +102,14 @@ int	main(int argc, char **argv, char **envp)
 {
 	static char		*input;
 	char			**envp_dup;
+	//int				status;
 
 	input = NULL;
 	rl_catch_signals = 0;
 	if (argc != 1 || !argv || !envp)
 		return (1); //not sure about this return yet.
 	signal(SIGINT, signal_handle_child);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, signal_handle_child);
 	envp_dup = envp_duplicate(envp);
 	change_shl_lvl(envp_dup, 1);
 	while (1)
@@ -98,11 +119,15 @@ int	main(int argc, char **argv, char **envp)
 		input = get_input(input);
 		if (input == NULL)
 		{
-			ft_putendl_fd("\x1b[1Aminishell> exit", 2);
-			exit_function(NULL, envp_dup);
+			ft_putstr_fd("\x1b[1Aminishell> ", 1);
+			ft_putendl_fd("exit", 2);
+			exit(0);
 		}
 		if (input && *input)
+		{
 			parse_input(input, envp_dup);
+			//waitpid(0, &status, 0);
+		}
 	}
 	return (0);
 }

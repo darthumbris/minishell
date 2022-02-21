@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/14 11:15:28 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/17 17:05:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ void	change_shl_lvl(char **envp, int change)
 
 static void	exit_msg_error(char *input, int fd)
 {
-	ft_putendl_fd("exit", fd);
 	ft_putstr_fd("nminishell>: exit: ", fd);
 	ft_putstr_fd(input, fd);
 	ft_putendl_fd(": numeric argument required", fd);
 }
 
-static int	count_cmd_args(t_command *cmd)
+int	count_cmd_args(t_command *cmd)
 {
 	int	i;
 
@@ -47,6 +46,24 @@ static int	count_cmd_args(t_command *cmd)
 	while (cmd->cmds[i])
 		i++;
 	return (i - 1);
+}
+
+bool	is_valid_exit(t_command *cmd)
+{
+	int		i;
+
+	if (!cmd || !cmd->cmds[1])
+		return (true);
+	i = 0;
+	while (cmd->cmds[1][i])
+	{
+		if (!ft_isdigit(cmd->cmds[1][i]))
+			return (true);
+		i++;
+	}
+	if (count_cmd_args(cmd) > 1)
+		return (false);
+	return (true);
 }
 
 /*
@@ -68,20 +85,16 @@ void	exit_function(t_command *cmd, char **envp)
 	{
 		if (!ft_isdigit(cmd->cmds[1][i]))
 		{
-			exit_msg_error(cmd->cmds[1], cmd->fd_out);
-			if (ft_atoi(ft_getenv("SHLVL", envp)) == 1)
-				exit(255);
-			change_shl_lvl(envp, -1);
+			exit_msg_error(cmd->cmds[1], cmd->fd_error);
+			exit(255);
 		}
 		i++;
 	}
 	if (count_cmd_args(cmd) > 1)
 	{
-		ft_putendl_fd("minishell>: exit: too many arguments", cmd->fd_out);
+		ft_putendl_fd("minishell>: exit: too many arguments", cmd->fd_error);
 		set_return_value(envp, 1);
+		return ;
 	}
-	ft_putendl_fd("exit", cmd->fd_out);
-	if (!ft_getenv("SHLVL", envp) || ft_atoi(ft_getenv("SHLVL", envp)) == 1)
-		exit(ft_atoi(cmd->cmds[1]) % 255);
-	change_shl_lvl(envp, -1);
+	exit(ft_atoi(cmd->cmds[1]) % 255);
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/14 11:18:02 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:03:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static char	*normal_env_variable(char *input, char **envp, int len)
  * the returned string should be freed properly.!
  * !!!!return value still needs to be done. !!!!!
  */
-static char	*expand_env_variable(char *input, char **envp)
+char	*expand_env_variable(char *input, char **envp)
 {
 	char	*env_expand;
 	char	*remain;
@@ -83,12 +83,23 @@ static void	free_strjoin_str(char *begin, char *env_expand)
 	free(env_expand);
 }
 
+static bool	is_heredoc(t_token *lst)
+{
+	while (lst)
+	{
+		if (!ft_strcmp(lst->token_name, "<"))
+			return (true);
+		lst = lst->next;
+	}
+	return (false);
+}
+
 /*
  * this function will check the string
  * for a $ and see if it needs expanding.
  * and then will expand it.
  */
-void	check_for_env_expansion(char **str, char **envp)
+void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 {
 	size_t	i;
 	char	*begin;
@@ -104,8 +115,13 @@ void	check_for_env_expansion(char **str, char **envp)
 		if ((*str)[i] == '$')
 		{
 			begin = ft_substr(*str, 0, i);
-			env_expand = expand_env_variable(*str + i + 1, envp);
-			free(*str);
+			if (is_heredoc(lst))
+				env_expand = *str;
+			else
+			{
+				env_expand = expand_env_variable(*str + i + 1, envp);
+				free(*str);
+			}
 			(*str) = ft_strjoin(begin, env_expand);
 			free_strjoin_str(begin, env_expand);
 			if (ft_strlen((*str)) == 0)

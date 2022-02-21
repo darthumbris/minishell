@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -g 
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
 SRC_DIR = src
 OBJ_DIR = obj
@@ -37,7 +37,8 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/redirection/heredoc.c \
         $(SRC_DIR)/cmd_execution/pipe.c \
         $(SRC_DIR)/cmd_execution/cmd_exec.c \
-        $(SRC_DIR)/cmd_execution/simple_cmd.c 
+        $(SRC_DIR)/cmd_execution/simple_cmd.c \
+        $(SRC_DIR)/parser/get_exit_cmd.c 
 
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

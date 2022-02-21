@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 11:37:57 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 11:43:05 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:01:34 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ t_token	*lexer_lst(char *input, char **envp)
 	{
 		if ((tmp->token_name[0] == 'W' || tmp->token_name[0] == 'F') && \
 			ft_strchr(tmp->token_value, '$'))
-			check_for_env_expansion(&(tmp->token_value), envp);
+			check_for_env_expansion(&(tmp->token_value), envp, tmp);
 		tmp = tmp->next;
 	}
 	lst = quote_expansion(lst);
-	evaluator(lst);
+	if (!evaluator(lst))
+		free_token_lst(&lst);
 	return (lst);
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:11:07 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:10:10 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/17 10:24:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static bool	check_n_option(char *input)
 {
 	int	i;
 
+	if (!input)
+		return (false);
 	i = 1;
 	if (input[0] == '-' && input[1] == 'n')
 	{
@@ -29,7 +31,7 @@ static bool	check_n_option(char *input)
 
 static void	echo_write(t_command *cmd, int i)
 {
-	while (cmd->cmds[i])
+	while (cmd->cmds && cmd->cmds[i])
 	{
 		ft_putstr_fd(cmd->cmds[i], cmd->fd_out);
 		if (cmd->cmds[i + 1])
@@ -49,7 +51,7 @@ void	echo_function(t_command *cmd, char **envp)
 {
 	int	i;
 
-	if (check_n_option(cmd->cmds[1]))
+	if (cmd && cmd->cmds && check_n_option(cmd->cmds[1]))
 	{
 		i = 2;
 		while (cmd->cmds[i] && check_n_option(cmd->cmds[i]))

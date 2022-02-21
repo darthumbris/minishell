@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/16 15:34:50 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:01:57 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,97 +14,111 @@
 #include "dispatch.h"
 #include "tokenizer.h"
 
-static int	parse_redirection(t_token *lst, char **envp, t_command *cmd)
+// int	last_command(t_command *cmd, char **envp)
+// {
+// 	pid_t		pid;
+// 	int			status = 0;
+
+// 	ft_putendl_fd("what?", 2);
+// 	pid = fork();
+// 	if (pid < 0)
+// 	{
+// 		perror("FORK");
+// 		ft_putendl_fd("error", 2);
+// 		return (-1);
+// 	}
+// 	else if (pid == 0)
+// 		parse_command(cmd, envp);
+// 	else
+// 	{
+// 		signal(SIGQUIT, SIG_IGN);
+// 		signal(SIGINT, SIG_IGN);
+// 		waitpid(pid, &status, 0);
+// 		if (status == 2)
+// 			signal_handle_function(SIGINT);
+// 		if (status == 3)
+// 			signal_handle_function(SIGQUIT);
+// 	}
+// 	return (status);
+// }
+
+int	count_pipes(t_token *lst, char **envp)
 {
 	t_token		*tmp;
 	int			pipe_cnt;
-	int			done;
 
 	tmp = lst;
 	pipe_cnt = 0;
-	done = 0;
-	while (tmp)
+	while (tmp && envp)
 	{
-		if (tmp->token_name[0] == '<')
-			cmd->fd_in = redirect_parse(tmp, envp);
-		else if (tmp->token_name[0] == '>')
-			cmd->fd_out = redirect_parse(tmp, envp);
-		else if (tmp->token_name[0] == '|')
+		if (tmp->token_name[0] == '|')
 			pipe_cnt++;
-		else if (tmp->token_name[0] == 'h' && !done)
-		{
-			redirect_parse(tmp, envp);
-			done = 1;
-		}
-		tmp = tmp->next;
+		if (tmp)
+			tmp = tmp->next;
 	}
 	return (pipe_cnt);
 }
 
-// //need to check first if the commands are valid?
-// //NEED TO CHECK THE CMDS BEFORE THE FORKING!!!!!!!!!
-// static void	parse_command_lst(t_token *tmp, char **envp, \
-// 	t_command *cmd, int pipe_cnt)
-// {
-// 	int		temp_status;
-// 	int		status;
-// 	bool	valid;
-
-// 	status = 0;
-// 	valid = true;
-// 	while (tmp)
-// 	{
-// 		if (tmp->token_name[0] == 'W')
-// 		{
-// 			if (cmd->cmds)
-// 				free_cmd_args(cmd->cmds);
-// 			cmd = create_cmd_lst(&tmp, cmd);
-// 			if (ft_strcmp(cmd->cmds[0], "cat") != 0)
-// 				valid = false;
-// 		}
-// 		if (pipe_cnt && cmd && cmd->cmds)
-// 		{
-// 			temp_status = new_pipex_multiple(cmd, envp);
-// 			//printf("temp: %d\n", temp_status);
-// 			if (temp_status == 2 || temp_status == 3)
-// 				status = temp_status;
-// 			pipe_cnt--;
-// 		}
-// 		else if (cmd && cmd->cmds)
-// 		{
-// 			dup2(cmd->fd_in, STDIN_FILENO);
-// 			if (WIFEXITED(status) == 0 && status == 2)
-// 			{
-// 				//signal_handle_function(SIGINT);
-// 				//exit(0);
-// 			}
-// 			if (WIFEXITED(status) == 0 && status == 3)
-// 			{
-// 				//exit(0);
-// 				//signal_handle_function(SIGQUIT);
-// 			}
-// 			parse_command(cmd, envp);
-// 		}
-// 		if (tmp)
-// 			tmp = tmp->next;
-// 	}
-// }
-
-int	single_command(t_command *cmd, char **envp)
+//need to check first if the commands are valid?
+//NEED TO CHECK THE CMDS BEFORE THE FORKING!!!!!!!!!
+static void	parse_command_lst(t_token *tmp, char **envp, \
+	t_command *cmd, int pipe_cnt)
 {
-	pid_t	pid;
+	int		temp_status;
 	int		status;
 
-	pid = fork();
-	if (pid)
+	status = 0;
+	while (tmp)
 	{
-		signal(SIGQUIT, SIG_IGN);
-		signal(SIGINT, SIG_IGN);
+		if (tmp->token_name[0] == 'W')
+		{
+			if (cmd->cmds)
+				free_cmd_args(cmd->cmds);
+			cmd = create_cmd_lst(&tmp, cmd, envp);
+		}
+		if (tmp && tmp->token_name[0] == '>')
+		{
+			if (cmd->fd_out != 1)
+			{
+				dup2(cmd->fd_out, STDOUT_FILENO);
+				close(cmd->fd_out);
+			}
+			cmd->fd_out = redirect_parse(tmp, envp);
+		}
+		else if (tmp && (tmp->token_name[0] == '<' || tmp->token_name[0] == 'h'))
+		{
+			if (cmd->fd_in != 0)
+			{
+				dup2(cmd->fd_in, STDIN_FILENO);
+				close(cmd->fd_in);
+			}
+			cmd->fd_in = redirect_parse(tmp, envp);
+		}
+		if (pipe_cnt && cmd && cmd->cmds)
+		{
+			temp_status = new_pipex_multiple(cmd, envp);
+			if (temp_status == 2 || temp_status == 3)
+				status = temp_status;
+			pipe_cnt--;
+			if (cmd->cmds)
+				free_cmd_args(cmd->cmds);
+			cmd->cmds = NULL;
+		}
+		else if (cmd && cmd->cmds)
+		{
+			if (cmd->fd_out != 1)
+			{
+				dup2(cmd->fd_out, STDOUT_FILENO);
+				close(cmd->fd_out);
+				cmd->fd_out = 1;
+			}
+			parse_command(cmd, envp);
+		}
+		if (tmp)
+			tmp = tmp->next;
 	}
-	else
-		parse_command(cmd, envp);
-	waitpid(pid, &status, 0);
-	return (status);
+	return ;
+	exit(0);
 }
 
 /*  check for redirections and open them
@@ -125,36 +139,15 @@ void	parse_token_lst(t_token *lst, char **envp)
 {
 	t_token		*tmp;
 	t_command	*cmd;
-	t_command	*tmp_cmd;
 	int			pipe_cnt;
-	int			status;
 
 	cmd = new_command(NULL);
-	pipe_cnt = parse_redirection(lst, envp, cmd);
+	pipe_cnt = count_pipes(lst, envp);
 	tmp = lst;
-	if (pipe_cnt == 0)
-	{
-		tmp_cmd = get_next_command(&lst);
-		if (tmp_cmd)
-		{
-			tmp_cmd->fd_in = cmd->fd_in;
-			tmp_cmd->fd_out = cmd->fd_out;
-			status = single_command(tmp_cmd, envp);
-			free_cmds(tmp_cmd);
-		}
-		//free_cmds(cmd);
-	}
-	else
-		status = pipex_concurrent(lst, envp, pipe_cnt, cmd);
-	// if (cmd->fd_in < 0 || cmd->fd_out < 0)
-	// {
-	// 	free_cmds(cmd);
-	// 	exit(1);
-	// }
-	//printf("status: %d\n", status);
+	parse_command_lst(tmp, envp, cmd, pipe_cnt);
 	if (cmd->cmds)
 		free_cmds(cmd);
-	//exit(0);
+	exit(0);
 }
 
 /*
@@ -178,8 +171,6 @@ void	parse_command(t_command *cmd, char **envp)
 	};
 
 	i = 0;
-	//ft_putendl_fd("parse command", 2);
-	//ft_putendl_fd(cmd->cmds[0], 2);
 	while (function[i].comand != 0)
 	{
 		len = ft_strlen(function[i].comand);

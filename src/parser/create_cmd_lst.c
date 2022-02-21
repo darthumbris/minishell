@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 14:28:29 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/14 12:22:37 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 14:54:45 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
  * how big the cmd args are
  * for the cmd struct.
  */
-int	count_cmd_args(t_token *lst)
+static int	count_cmd_args_lst(t_token *lst)
 {
 	t_token	*tmp;
 	int		count;
@@ -26,10 +26,12 @@ int	count_cmd_args(t_token *lst)
 	count = 0;
 	while (tmp)
 	{
-		if (tmp->token_name[0] != 'W')
+		if (tmp->token_name[0] == '|')
 			break ;
-		count++;
-		tmp = tmp->next;
+		if (tmp->token_name[0] == 'W')
+			count++;
+		if (tmp)
+			tmp = tmp->next;
 	}
 	return (count);
 }
@@ -38,18 +40,36 @@ void	free_cmds(t_command *cmd)
 {
 	int	i;
 
-	i = 0;
-	while (cmd->cmds[i])
+	if (cmd->cmds)
 	{
-		//printf("freeing cmds[%d]\n", i);
-		free(cmd->cmds[i]);
-		i++;
+		i = 0;
+		while (cmd->cmds[i])
+		{
+			free(cmd->cmds[i]);
+			i++;
+		}
+		free(cmd->cmds);
 	}
-	//printf("freeing cmds\n");
-	free(cmd->cmds);
-	//printf("freeing cmd\n");
 	free(cmd);
 	cmd = NULL;
+}
+
+void	close_fd_cmd(t_command *cmd)
+{
+	if (cmd->fd_out != 1)
+	{
+		dup2(cmd->fd_out, STDOUT_FILENO);
+		ft_putendl_fd("closing out3", 2);
+		close(cmd->fd_out);
+		cmd->fd_out = 1;
+	}
+	if (cmd->fd_in != 0)
+	{
+		dup2(cmd->fd_in, STDIN_FILENO);
+		ft_putendl_fd("closing in3", 2);
+		close(cmd->fd_in);
+		cmd->fd_in = 0;
+	}
 }
 
 /*
@@ -63,7 +83,7 @@ void	free_cmds(t_command *cmd)
  * and all the others in the array
  * are the arguments or options.
  */
-t_command	*create_cmd_lst(t_token **lst, t_command *cmd)
+t_command	*create_cmd_lst(t_token **lst, t_command *cmd, char **envp)
 {
 	char		**cmds;
 	int			len;
@@ -71,12 +91,36 @@ t_command	*create_cmd_lst(t_token **lst, t_command *cmd)
 
 	if ((*lst)->token_name[0] == 'W')
 	{
-		len = count_cmd_args((*lst));
+		len = count_cmd_args_lst((*lst));
 		cmds = ft_calloc(len + 1, sizeof(char *));
 		i = 0;
 		while (i < len)
 		{
-			cmds[i++] = ft_strdup((*lst)->token_value);
+			if ((*lst)->token_name[0] == 'W')
+				cmds[i++] = ft_strdup((*lst)->token_value);
+			if ((*lst)->token_name[0] == '>' && cmd->fd_out != -1)
+			{
+				ft_putendl_fd("hello", 2);
+				if (cmd->fd_out != 1)
+				{
+					dup2(cmd->fd_out, STDOUT_FILENO);
+					close(cmd->fd_out);
+					cmd->fd_out = 1;
+				}
+				cmd->fd_out = redirect_parse((*lst), envp);
+			}
+			else if (((*lst)->token_name[0] == '<' || (*lst)->token_name[0] == 'h') && cmd->fd_in != -1)
+			{
+				//ft_putendl_fd("there", 2);
+				if (cmd->fd_in != 0)
+				{
+					ft_putendl_fd("\n\n\nclosing fdin\n\n\n", 2);
+					dup2(cmd->fd_in, STDIN_FILENO);
+					close(cmd->fd_in);
+					cmd->fd_in = 0;
+				}
+				cmd->fd_in = redirect_parse((*lst), envp);
+			}
 			(*lst) = (*lst)->next;
 		}
 		cmd->cmds = cmds;

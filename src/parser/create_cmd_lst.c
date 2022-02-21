@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 14:28:29 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:54:45 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:30:51 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,24 +54,6 @@ void	free_cmds(t_command *cmd)
 	cmd = NULL;
 }
 
-void	close_fd_cmd(t_command *cmd)
-{
-	if (cmd->fd_out != 1)
-	{
-		dup2(cmd->fd_out, STDOUT_FILENO);
-		ft_putendl_fd("closing out3", 2);
-		close(cmd->fd_out);
-		cmd->fd_out = 1;
-	}
-	if (cmd->fd_in != 0)
-	{
-		dup2(cmd->fd_in, STDIN_FILENO);
-		ft_putendl_fd("closing in3", 2);
-		close(cmd->fd_in);
-		cmd->fd_in = 0;
-	}
-}
-
 /*
  * This function will create a command struct
  * using the token list. Basically
@@ -100,25 +82,12 @@ t_command	*create_cmd_lst(t_token **lst, t_command *cmd, char **envp)
 				cmds[i++] = ft_strdup((*lst)->token_value);
 			if ((*lst)->token_name[0] == '>' && cmd->fd_out != -1)
 			{
-				ft_putendl_fd("hello", 2);
-				if (cmd->fd_out != 1)
-				{
-					dup2(cmd->fd_out, STDOUT_FILENO);
-					close(cmd->fd_out);
-					cmd->fd_out = 1;
-				}
+				dup_and_close(&(cmd->fd_out), STDOUT_FILENO);
 				cmd->fd_out = redirect_parse((*lst), envp);
 			}
 			else if (((*lst)->token_name[0] == '<' || (*lst)->token_name[0] == 'h') && cmd->fd_in != -1)
 			{
-				//ft_putendl_fd("there", 2);
-				if (cmd->fd_in != 0)
-				{
-					ft_putendl_fd("\n\n\nclosing fdin\n\n\n", 2);
-					dup2(cmd->fd_in, STDIN_FILENO);
-					close(cmd->fd_in);
-					cmd->fd_in = 0;
-				}
+				dup_and_close(&(cmd->fd_in), STDIN_FILENO);
 				cmd->fd_in = redirect_parse((*lst), envp);
 			}
 			(*lst) = (*lst)->next;

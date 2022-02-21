@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:06:36 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:33:43 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ int	heredoc_function(t_token *lst, char **envp)
 	int		i;
 
 	i = 0;
-	//ft_putendl_fd("heredoc function", 2);
 	end = get_end(lst);
 	while (1)
 	{
@@ -127,9 +126,9 @@ int	heredoc_function(t_token *lst, char **envp)
 		if (end_len(end) == 1)
 		{
 			pipe(fd);
-			while (ft_strcmp(line, *end) != 0)
+			while (line && ft_strcmp(line, *end) != 0)
 			{
-				if (ft_strcmp(line, *end) == 0)
+				if (line && ft_strcmp(line, *end) == 0)
 					break ;
 				line = test(line, envp);
 				write(fd[1], line, ft_strlen(line));

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 14:51:33 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 16:57:20 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,24 @@ void	signal_handle_child(int sig)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+	}
+}
+
+void	parse_input_new(char *input, char **envp)
+{
+	t_token		*lst;
+	int			pipe_cnt;
+	t_command	**cmds;
+	t_command	*cmd;
+
+	if (input && *input)
+	{
+		lst = lexer_lst(input, envp);
+		check_valid_commands(lst, envp);
+		pipe_cnt = count_pipes(lst, envp);
+		cmd = new_command(NULL);
+		cmds = get_commands(lst, cmd, pipe_cnt + 1, envp);
+		printf("now do something with this???\n");
 	}
 }
 
@@ -73,7 +91,6 @@ void	parse_input(char *input, char **envp)
 			parse_command(exit_cmd, envp);
 			free_cmds(exit_cmd);
 		}
-		//waitpid(pid, &status, 0);
 		set_return_value(envp, WEXITSTATUS(status));
 		if (WIFEXITED(status) == 0 && status == 3 && WEXITSTATUS(status) != 127)
 			signal_handle_function(SIGQUIT);
@@ -125,7 +142,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		if (input && *input)
 		{
-			parse_input(input, envp_dup);
+			parse_input_new(input, envp_dup);
 			//waitpid(0, &status, 0);
 		}
 	}

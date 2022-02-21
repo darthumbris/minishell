@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:01:57 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 16:37:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,49 @@ int	count_pipes(t_token *lst, char **envp)
 	return (pipe_cnt);
 }
 
+void	dup_and_close(int *fd, int std)
+{
+	if (*fd != std)
+	{
+		dup2(*fd, std);
+		close(*fd);
+		*fd = std;
+	}
+}
+
+void	check_redir_in(t_token **lst, char **envp, t_command *cmd);
+
+void	check_redir_out(t_token **lst, char **envp, t_command *cmd)
+{
+	if ((*lst) && (*lst)->token_name[0] == '>')
+	{
+		dup_and_close(&(cmd->fd_out), STDOUT_FILENO);
+		cmd->fd_out = redirect_parse((*lst), envp);
+		(*lst) = (*lst)->next->next;
+	}
+	if ((*lst) && ((*lst)->token_name[0] == '<' || \
+		(*lst)->token_name[0] == 'h'))
+		check_redir_in(lst, envp, cmd);
+	else if ((*lst) && (*lst)->token_name[0] == '>')
+		check_redir_out(lst, envp, cmd);
+}
+
+void	check_redir_in(t_token **lst, char **envp, t_command *cmd)
+{
+	if ((*lst) && ((*lst)->token_name[0] == '<' || \
+		(*lst)->token_name[0] == 'h'))
+	{
+		dup_and_close(&(cmd->fd_in), STDIN_FILENO);
+		cmd->fd_in = redirect_parse((*lst), envp);
+		(*lst) = (*lst)->next->next;
+	}
+	if ((*lst) && (*lst)->token_name[0] == '>')
+		check_redir_out(lst, envp, cmd);
+	else if ((*lst) && ((*lst)->token_name[0] == '<' || \
+		(*lst)->token_name[0] == 'h'))
+		check_redir_in(lst, envp, cmd);
+}
+
 //need to check first if the commands are valid?
 //NEED TO CHECK THE CMDS BEFORE THE FORKING!!!!!!!!!
 static void	parse_command_lst(t_token *tmp, char **envp, \
@@ -72,46 +115,23 @@ static void	parse_command_lst(t_token *tmp, char **envp, \
 	{
 		if (tmp->token_name[0] == 'W')
 		{
-			if (cmd->cmds)
-				free_cmd_args(cmd->cmds);
+			free_cmd_args(cmd->cmds);
 			cmd = create_cmd_lst(&tmp, cmd, envp);
 		}
-		if (tmp && tmp->token_name[0] == '>')
-		{
-			if (cmd->fd_out != 1)
-			{
-				dup2(cmd->fd_out, STDOUT_FILENO);
-				close(cmd->fd_out);
-			}
-			cmd->fd_out = redirect_parse(tmp, envp);
-		}
-		else if (tmp && (tmp->token_name[0] == '<' || tmp->token_name[0] == 'h'))
-		{
-			if (cmd->fd_in != 0)
-			{
-				dup2(cmd->fd_in, STDIN_FILENO);
-				close(cmd->fd_in);
-			}
-			cmd->fd_in = redirect_parse(tmp, envp);
-		}
+		check_redir_in(&tmp, envp, cmd);
+		check_redir_out(&tmp, envp, cmd);
 		if (pipe_cnt && cmd && cmd->cmds)
 		{
 			temp_status = new_pipex_multiple(cmd, envp);
 			if (temp_status == 2 || temp_status == 3)
 				status = temp_status;
 			pipe_cnt--;
-			if (cmd->cmds)
-				free_cmd_args(cmd->cmds);
+			free_cmd_args(cmd->cmds);
 			cmd->cmds = NULL;
 		}
 		else if (cmd && cmd->cmds)
 		{
-			if (cmd->fd_out != 1)
-			{
-				dup2(cmd->fd_out, STDOUT_FILENO);
-				close(cmd->fd_out);
-				cmd->fd_out = 1;
-			}
+			dup_and_close(&(cmd->fd_out), STDOUT_FILENO);
 			parse_command(cmd, envp);
 		}
 		if (tmp)
@@ -140,11 +160,25 @@ void	parse_token_lst(t_token *lst, char **envp)
 	t_token		*tmp;
 	t_command	*cmd;
 	int			pipe_cnt;
+	t_command	**cmds;
+	int			i;
 
 	cmd = new_command(NULL);
 	pipe_cnt = count_pipes(lst, envp);
 	tmp = lst;
-	parse_command_lst(tmp, envp, cmd, pipe_cnt);
+	if (!cmd)
+		parse_command_lst(tmp, envp, cmd, pipe_cnt);
+	cmds = get_commands(tmp, cmd, pipe_cnt + 1, envp);
+	i = 0;
+	// while (cmds[i])
+	// {
+	// 	fprintf(stderr, "cmd[%d]: %s\n", i, cmds[i]->cmds[0]);
+	// 	if (cmds[i]->cmds[1])
+	// 		fprintf(stderr, "cmd[%d]: %s\n", i, cmds[i]->cmds[1]);
+	// 	fprintf(stderr, "fd_in[%d]: %d\n", i, cmds[i]->fd_in);
+	// 	fprintf(stderr, "fd_out[%d]: %d\n", i, cmds[i]->fd_out);
+	// 	i++;
+	// }
 	if (cmd->cmds)
 		free_cmds(cmd);
 	exit(0);

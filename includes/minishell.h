@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:00:35 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/21 15:53:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,11 @@ bool		is_valid_exit(t_command *cmd);
 void		check_valid_commands(t_token *lst, char **envp);
 bool		is_first_command_empty_cat(t_token *lst);
 int			count_cmd_args(t_command *cmd);
-t_command	*get_next_command(t_token **lst);
+t_command	*get_next_command(t_token **lst, char **envp);
 int			count_pipes(t_token *lst, char **envp);
 void		parse_token_lst_with_pipe(t_token *lst, char **envp);
+void		dup_and_close(int *fd, int std);
+void		check_redir_in(t_token **lst, char **envp, t_command *cmd);
+void		check_redir_out(t_token **lst, char **envp, t_command *cmd);
+t_command	**get_commands(t_token *lst, t_command *cmd, int cmd_cnt, char **envp);
 #endif

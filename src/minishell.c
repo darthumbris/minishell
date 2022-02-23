@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 16:57:20 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/23 16:32:25 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,46 @@ void	parse_input_new(char *input, char **envp)
 	t_token		*lst;
 	int			pipe_cnt;
 	t_command	**cmds;
-	t_command	*cmd;
+	pid_t		pid;
+	int			status;
+	int			cmd_cnt;
 
 	if (input && *input)
 	{
 		lst = lexer_lst(input, envp);
 		check_valid_commands(lst, envp);
 		pipe_cnt = count_pipes(lst, envp);
-		cmd = new_command(NULL);
-		cmds = get_commands(lst, cmd, pipe_cnt + 1, envp);
-		printf("now do something with this???\n");
+		cmds = get_commands(lst, pipe_cnt + 1, envp);
+		cmd_cnt = 0;
+		for (int i = 0; cmds[i]; i++)
+			cmd_cnt++;
+		if (cmd_cnt == 1 && is_valid_exit(cmds[0]))
+			parse_command(cmds[0], envp);
+		if (cmd_cnt)
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				if (cmd_cnt > 1)
+				{
+					piper(cmds, envp, cmd_cnt - 1);
+					exit(1);
+				}
+				else if (cmd_cnt == 1)
+				{
+					redirect(cmds[0], 0);
+					parse_command(cmds[0], envp);
+				}
+			}
+			else
+			{
+				signal(SIGQUIT, SIG_IGN);
+				signal(SIGINT, SIG_IGN);
+				waitpid(pid, &status, 0);
+				if (status == 3)
+					signal_handle_function(SIGQUIT);
+			}
+		}
 	}
 }
 
@@ -119,12 +149,10 @@ int	main(int argc, char **argv, char **envp)
 {
 	static char		*input;
 	char			**envp_dup;
-	//int				status;
 
-	input = NULL;
 	rl_catch_signals = 0;
-	if (argc != 1 || !argv || !envp)
-		return (1); //not sure about this return yet.
+	(void)argc;
+	(void)argv;
 	signal(SIGINT, signal_handle_child);
 	signal(SIGQUIT, signal_handle_child);
 	envp_dup = envp_duplicate(envp);
@@ -141,10 +169,7 @@ int	main(int argc, char **argv, char **envp)
 			exit(0);
 		}
 		if (input && *input)
-		{
 			parse_input_new(input, envp_dup);
-			//waitpid(0, &status, 0);
-		}
 	}
 	return (0);
 }

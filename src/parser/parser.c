@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 16:37:48 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/23 13:13:03 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ void	parse_token_lst(t_token *lst, char **envp)
 	tmp = lst;
 	if (!cmd)
 		parse_command_lst(tmp, envp, cmd, pipe_cnt);
-	cmds = get_commands(tmp, cmd, pipe_cnt + 1, envp);
+	cmds = get_commands(tmp, pipe_cnt + 1, envp);
 	i = 0;
 	// while (cmds[i])
 	// {
@@ -205,6 +205,7 @@ void	parse_command(t_command *cmd, char **envp)
 	};
 
 	i = 0;
+	//ft_putendl_fd(cmd->cmds[0], 2);
 	while (function[i].comand != 0)
 	{
 		len = ft_strlen(function[i].comand);

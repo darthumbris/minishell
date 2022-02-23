@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:53:33 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/23 14:41:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <signal.h>
 # include <dirent.h>
 # include "tokenizer.h"
+# include "pipe.h"
 
 typedef struct s_command
 {
@@ -78,11 +79,14 @@ bool		is_valid_exit(t_command *cmd);
 void		check_valid_commands(t_token *lst, char **envp);
 bool		is_first_command_empty_cat(t_token *lst);
 int			count_cmd_args(t_command *cmd);
-t_command	*get_next_command(t_token **lst, char **envp);
+t_command	*get_next_command(t_token **lst, char **envp, int fd_in, int fd_out);
 int			count_pipes(t_token *lst, char **envp);
 void		parse_token_lst_with_pipe(t_token *lst, char **envp);
 void		dup_and_close(int *fd, int std);
 void		check_redir_in(t_token **lst, char **envp, t_command *cmd);
 void		check_redir_out(t_token **lst, char **envp, t_command *cmd);
-t_command	**get_commands(t_token *lst, t_command *cmd, int cmd_cnt, char **envp);
+t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp);
+void		piper(t_command **cmds, char **envp, int pipes);
+void		executer(t_command *cmd, t_pipe *piper, char **envp);
+void		redirect(t_command *cmd, int pid);
 #endif

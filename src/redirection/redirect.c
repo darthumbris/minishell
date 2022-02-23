@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:06:27 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/23 15:35:13 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ static int	redirect_output(t_token *lst, int append, char **envp)
 			perror(lst->next->token_value);
 			set_return_value(envp, 1);
 		}
-		else
-			dup2(fd_out, STDOUT_FILENO);
+		//else
+		//	dup2(fd_out, STDOUT_FILENO);
 	}
 	return (fd_out);
 }
@@ -99,6 +99,7 @@ int	redirect_parse(t_token *lst, char **envp)
 			return (heredoc_function(lst, envp));
 		return (redirect_output(lst, i - len, envp));
 	}
+	fprintf(stderr, "fd fail\n");
 	return (-1);
 }
 

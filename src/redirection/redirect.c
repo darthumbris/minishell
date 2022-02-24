@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/23 15:35:13 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:27:25 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <sys/stat.h>
+
+void	redirect(t_command *cmd, int pid)
+{
+	if (pid == 0 && cmd)
+	{
+		if (cmd->fd_in > 2)
+		{
+			dup2(cmd->fd_in, STDIN_FILENO);
+			close(cmd->fd_in);
+		}
+		if (cmd->fd_out > 2)
+		{
+			dup2(cmd->fd_out, STDOUT_FILENO);
+			close(cmd->fd_out);
+		}
+	}
+}
 
 /*
  * This function will open the file for input and set the 
@@ -34,8 +51,6 @@ static int	redirect_input(t_token *lst, char **envp)
 			perror(lst->next->token_value);
 			set_return_value(envp, 1);
 		}
-		//else
-			//dup2(fd_in, STDIN_FILENO);
 	}
 	return (fd_in);
 }
@@ -65,8 +80,6 @@ static int	redirect_output(t_token *lst, int append, char **envp)
 			perror(lst->next->token_value);
 			set_return_value(envp, 1);
 		}
-		//else
-		//	dup2(fd_out, STDOUT_FILENO);
 	}
 	return (fd_out);
 }
@@ -99,38 +112,38 @@ int	redirect_parse(t_token *lst, char **envp)
 			return (heredoc_function(lst, envp));
 		return (redirect_output(lst, i - len, envp));
 	}
-	fprintf(stderr, "fd fail\n");
 	return (-1);
 }
 
+// /*
+//  * This function will check the [n]> and [n]<
+//  * redirections for the n value if it is a valid
+//  * fd to redirect.
+//  * need to change this function so it actually
+//  * sets the fd to the input (or 0 or 1 if it fails)
+//  */
+// int	redirect_fd(t_token	*lst)
+// {
+// 	char	*red;
 /*
- * This function will check the [n]> and [n]<
- * redirections for the n value if it is a valid
- * fd to redirect.
- * need to change this function so it actually
- * sets the fd to the input (or 0 or 1 if it fails)
- */
-int	redirect_fd(t_token	*lst)
-{
-	char	*red;
-
-	red = lst->token_value;
-	if (!ft_isdigit(red[0]) && lst->token_name[0] == '>')
-		return (1);
-	if (!ft_isdigit(red[0]) && lst->token_name[0] == '<')
-		return (0);
-	if (ft_atol(red) < INT_MAX && ft_atoi(red) < 255 && \
-		fstat(ft_atoi(red), NULL) != -1)
-		return (ft_atoi(red));
-	else if (ft_atol(red) > INT_MAX)
-		ft_putendl_fd("minishell: file descriptor out of range: \
-	 		Bad file descriptor", 2);
-	else if (ft_atoi(red) > 255 || fstat(ft_atoi(red), NULL) == -1)
-		printf("minishell: %d Bad file descriptor\n", \
-			ft_atoi(red));
-	if (lst->token_name[0] == '>')
-		return (1);
-	if (lst->token_name[0] == '<')
-		return (0);
-	return (-1);
-}
+// 	red = lst->token_value;
+// 	if (!ft_isdigit(red[0]) && lst->token_name[0] == '>')
+// 		return (1);
+// 	if (!ft_isdigit(red[0]) && lst->token_name[0] == '<')
+// 		return (0);
+// 	if (ft_atol(red) < INT_MAX && ft_atoi(red) < 255 && \
+// 		fstat(ft_atoi(red), NULL) != -1)
+// 		return (ft_atoi(red));
+// 	else if (ft_atol(red) > INT_MAX)
+// 		ft_putendl_fd("minishell: file descriptor out of range: \
+// 	 		Bad file descriptor", 2);
+// 	else if (ft_atoi(red) > 255 || fstat(ft_atoi(red), NULL) == -1)
+// 		printf("minishell: %d Bad file descriptor\n", \
+// 			ft_atoi(red));
+// 	if (lst->token_name[0] == '>')
+// 		return (1);
+// 	if (lst->token_name[0] == '<')
+// 		return (0);
+// 	return (-1);
+// }
+*/

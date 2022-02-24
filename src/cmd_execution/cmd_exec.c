@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/23 14:18:32 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 10:29:40 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * This function will get all the paths
  * located in the envp variable
  */
-char	**get_path_str(char **envp)
+static char	**get_path_str(char **envp)
 {
 	if (envp)
 	{
@@ -27,25 +27,12 @@ char	**get_path_str(char **envp)
 }
 
 /*
- * This function splits the argument given on the space.
- * so for example ls -l -a will be properly split. This 
- * won't work in the more complex stuff.
- */
-char	**get_cmd_arg(char *argv)
-{
-	char	**cmd_args;
-
-	cmd_args = ft_split(argv, ' ');
-	return (cmd_args);
-}
-
-/*
  * The Access check is there to check if the command is actually
  * an executable file.
  * It will loop through all the paths in the envp to look
  * for the command to execute.
  */
-void	command_exec(char **paths, char **cmd_args, char **envp)
+static void	command_exec(char **paths, char **cmd_args, char **envp)
 {
 	int		i;
 	char	*cmd_path;
@@ -82,4 +69,24 @@ void	free_cmd_args(char **cmd_args)
 		free(cmd_args);
 	}
 	cmd_args = NULL;
+}
+
+/*
+ * 
+ */
+void	execute_input(t_command *cmd, char **envp)
+{
+	char	**paths;
+	char	*input;
+
+	input = cmd->cmds[0];
+	if (input && (*input == '/' || (*input == '.' && input[1] == '/')))
+		paths = path_input(input);
+	else
+		paths = get_path_str(envp);
+	command_exec(paths, cmd->cmds, envp);
+	ft_putstr_fd("minishell: ", cmd->fd_error);
+	ft_putstr_fd(cmd->cmds[0], cmd->fd_error);
+	ft_putendl_fd(": command not found", cmd->fd_error);
+	exit(127);
 }

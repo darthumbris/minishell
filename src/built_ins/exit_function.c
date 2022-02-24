@@ -6,17 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/23 16:20:15 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 10:52:51 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
 
-//Function might be unnecesary if the cmd_exec etc. works correctly.
-//or might be necesarry for when minishell is launched it 
-//should increase the shlvl?
-//CHECK IF IT IS ACTUALLY WORKING WITH THE EXIT!!!!
 void	change_shl_lvl(char **envp, int change)
 {
 	char		*shlvl;
@@ -38,7 +33,7 @@ static void	exit_msg_error(char *input, int fd)
 	ft_putendl_fd(": numeric argument required", fd);
 }
 
-int	count_cmd_args(t_command *cmd)
+static int	count_cmd_args(t_command *cmd)
 {
 	int	i;
 

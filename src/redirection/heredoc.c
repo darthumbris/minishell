@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/23 16:28:42 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:55:21 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ int	heredoc_function(t_token *lst, char **envp)
 				rl_on_new_line();
 				line = readline("> ");
 			}
-			free(*end);
+			free(end);
 			free(line);
 			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
@@ -146,10 +146,11 @@ int	heredoc_function(t_token *lst, char **envp)
 		}
 		else if (ft_strcmp(line, end[i]) == 0)
 		{
-			free(*end);
+			//free(*end);
 			end++;
 			i++;
 		}
+		//free(end);
 		free(line);
 	}
 	return (-1);

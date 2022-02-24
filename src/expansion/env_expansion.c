@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:03:05 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 12:35:59 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,8 @@ static bool	is_heredoc(t_token *lst)
 /*
  * this function will check the string
  * for a $ and see if it needs expanding.
- * and then will expand it.
+ * and then will expand it. 
+ * (for heredoc delimiter if won't expand)
  */
 void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 {
@@ -116,12 +117,10 @@ void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 		{
 			begin = ft_substr(*str, 0, i);
 			if (is_heredoc(lst))
-				env_expand = *str;
+				env_expand = ft_strdup(*str);
 			else
-			{
 				env_expand = expand_env_variable(*str + i + 1, envp);
-				free(*str);
-			}
+			free(*str);
 			(*str) = ft_strjoin(begin, env_expand);
 			free_strjoin_str(begin, env_expand);
 			if (ft_strlen((*str)) == 0)

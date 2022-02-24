@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/03 12:04:32 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 11:17:43 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 10:43:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
  * This function will add a file token
  * this should be made after a redirection.
  */
-void	add_file_token(char *input, t_token *token_lst, int start, int end)
+static void	add_file_token(char *input, t_token *token_lst, int start, int end)
 {
 	if (end > start)
 		add_new_token(&token_lst, new_token
@@ -80,7 +80,8 @@ int	add_redirection_token(char *input, t_token *token_lst, int i)
  * This function will first create a word token
  * and than will create a pipe token.
  */
-int	add_pipe_token(char *input, t_token *token_lst, int i, int *word_start)
+static int	add_pipe_token(char *input, t_token *token_lst, \
+	int i, int *word_start)
 {
 	int	start;
 

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:35:59 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 14:09:31 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,6 @@ char	*expand_env_variable(char *input, char **envp)
 	return (return_str);
 }
 
-static void	free_strjoin_str(char *begin, char *env_expand)
-{
-	free(begin);
-	free(env_expand);
-}
-
 static bool	is_heredoc(t_token *lst)
 {
 	while (lst)
@@ -94,6 +88,22 @@ static bool	is_heredoc(t_token *lst)
 	return (false);
 }
 
+static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
+{
+	char	*begin;
+	char	*env_expand;
+
+	begin = ft_substr(*str, 0, i);
+	if (is_heredoc(lst))
+		env_expand = ft_strdup(*str);
+	else
+		env_expand = expand_env_variable(*str + i + 1, envp);
+	free(*str);
+	(*str) = ft_strjoin(begin, env_expand);
+	free(begin);
+	free(env_expand);
+}
+
 /*
  * this function will check the string
  * for a $ and see if it needs expanding.
@@ -103,8 +113,6 @@ static bool	is_heredoc(t_token *lst)
 void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 {
 	size_t	i;
-	char	*begin;
-	char	*env_expand;
 	bool	quote;
 
 	i = 0;
@@ -115,14 +123,7 @@ void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 			quote = !quote;
 		if ((*str)[i] == '$')
 		{
-			begin = ft_substr(*str, 0, i);
-			if (is_heredoc(lst))
-				env_expand = ft_strdup(*str);
-			else
-				env_expand = expand_env_variable(*str + i + 1, envp);
-			free(*str);
-			(*str) = ft_strjoin(begin, env_expand);
-			free_strjoin_str(begin, env_expand);
+			dollar_sign_handler(str, envp, i, lst);
 			if (ft_strlen((*str)) == 0)
 				break ;
 		}

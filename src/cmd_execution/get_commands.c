@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 13:55:36 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 16:36:28 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ static t_command	*get_next_command(t_token **lst, char **envp, \
 	return (NULL);
 }
 
+//Might need to change it so it stores the heredoc delimters in the cmd
+//and if there are no commands than check the token lst for heredocs and do
+//them then.
 t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp)
 {
 	t_command	**cmds;

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 13:46:19 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 16:34:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	parse_input(char *input, char **envp)
 	cmds = get_commands(lst, count_pipes(lst, envp) + 1, envp);
 	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt == 1 && is_valid_exit(cmds[0]))
-		parse_command(cmds[0], envp);
+		parse_command(cmds[0], envp); //might need to handle heredoc
 	if (cmd_cnt)
 	{
 		pid = fork();

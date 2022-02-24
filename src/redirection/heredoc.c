@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:55:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/24 16:44:52 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,62 +15,45 @@
 #include <limits.h>
 #include <sys/stat.h>
 
-/*
- * This function should handle the
- * << redirect and make an heredoc
- * that properly closes with the
- * input name (EOF or another word etc.)
- * than should write everything correctly
- * to the fd_outpout.
- */
-
-int	count_len(t_token *lst)
+static int	count_heredocs(t_token *lst)
 {
 	int	len;
 
 	len = 0;
 	while (lst)
 	{
-		if (ft_strcmp(lst->token_name, "h"))
+		if (ft_strcmp(lst->token_name, "|") == 0)
+			break ;
+		if (ft_strcmp(lst->token_name, "h") == 0)
 			len++;
 		lst = lst->next;
 	}
 	return (len);
 }
 
-char	**get_end(t_token *lst)
+static char	**get_delimiter(t_token *lst)
 {
-	char	**end;
+	char	**delimiter;
 	int		i;
 
 	i = 0;
-	end = ft_calloc(count_len(lst) + 1, sizeof(char *));
-	if (!end)
+	delimiter = ft_calloc(count_heredocs(lst) + 1, sizeof(char *));
+	if (!delimiter)
 		return (NULL);
 	while (lst)
 	{
 		if (ft_strcmp(lst->token_name, "h") == 0)
 		{
 			lst = lst->next;
-			end[i] = lst->token_value;
+			delimiter[i] = lst->token_value;
 			i++;
 		}
 		lst = lst->next;
 	}
-	return (end);
+	return (delimiter);
 }
 
-char	*rm_last_line(char *line)
-{
-	int	i;
-
-	i = strlen(line) - 1;
-	// if (line[i] == '\n')
-	// 	line[i] = '\0';
-	return (line);
-}
-
-bool	need_exp(char *str, int *i)
+static bool	need_expansion(char *str, int *i)
 {
 	*i = 0;
 	while (str[*i])
@@ -82,75 +65,86 @@ bool	need_exp(char *str, int *i)
 	return (false);
 }
 
-char	*test(char *line, char **envp)
+char	*expand_input(char *line, char **envp)
 {
 	char	*str;
 	int		i;
+	char	*tmp;
 
-	if (need_exp(line, &i))
+	if (need_expansion(line, &i))
 	{
 		str = ft_strdup(line);
 		str[i] = 0;
 		line = expand_env_variable(line + i + 1, envp);
-		str = ft_strjoin(str, line);
+		tmp = str;
+		str = ft_strjoin(tmp, line);
+		free(tmp);
 	}
 	else
-		str = line;
+		str = ft_strdup(line);
+	free(line);
 	return (str);
 }
 
-int	end_len(char **end)
+static int	delimiter_len(char **delimiter)
 {
 	int	i;
 
 	i = 0;
-	while (end[i])
+	while (delimiter[i])
 		i++;
 	return (i);
 }
 
+/*
+ * This function should handle the
+ * << redirect and make an heredoc
+ * that properly closes with the
+ * input name (EOF or another word etc.)
+ * than should write everything correctly
+ * to the fd_outpout.
+ */
 int	heredoc_function(t_token *lst, char **envp)
 {
-	char	**end;
+	char	**delimiter;
 	char	*line;
 	int		fd[2];
 	int		i;
 
 	i = 0;
-	end = get_end(lst);
+	delimiter = get_delimiter(lst);
 	while (1)
 	{
-		line = ft_strdup("");
 		rl_on_new_line();
 		line = readline("> ");
-		if (end_len(end) == 1)
+		if (delimiter_len(delimiter) == 1)
 		{
 			pipe(fd);
-			while (line && ft_strcmp(line, *end) != 0)
+			while (line && ft_strcmp(line, *delimiter) != 0)
 			{
-				if (line && ft_strcmp(line, *end) == 0)
+				if (line && ft_strcmp(line, *delimiter) == 0)
 					break ;
-				line = test(line, envp);
-				write(fd[1], line, ft_strlen(line));
-				write(fd[1], "\n", 1);
+				line = expand_input(line, envp);
+				write(fd[0], line, ft_strlen(line));
+				write(fd[0], "\n", 1);
 				free(line);
 				rl_on_new_line();
 				line = readline("> ");
+				if (!line)
+					ft_putstr_fd("> \x1b[1T", 0);
 			}
-			free(end);
+			free(delimiter);
 			free(line);
-			dup2(fd[0], STDIN_FILENO);
 			close(fd[0]);
+			dup2(fd[0], STDIN_FILENO);
 			close(fd[1]);
 			return (0);
 		}
-		else if (ft_strcmp(line, end[i]) == 0)
+		else if (ft_strcmp(line, delimiter[i]) == 0)
 		{
-			//free(*end);
-			end++;
+			delimiter++;
 			i++;
 		}
-		//free(end);
 		free(line);
 	}
 	return (-1);

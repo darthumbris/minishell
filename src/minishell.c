@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 15:17:25 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/25 12:18:59 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			ft_putstr_fd("\x1b[1Aminishell> ", 1);
 			ft_putendl_fd("exit", 2);
+			system("leaks minishell");
 			exit(0);
 		}
 		if (input && *input)

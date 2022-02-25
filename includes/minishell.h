@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 11:11:16 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/25 11:52:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ typedef struct s_command
 	int		fd_in;
 	int		fd_out;
 	int		fd_error;
+	char	**delimiter;
+	int		heredocs;
 }				t_command;
 
 void		free_cmd_args(char **cmd_args);
@@ -59,7 +61,6 @@ int			redirect_parse(t_token *lst, char **envp);
 t_command	*new_command(char **cmds);
 void		free_cmds(t_command *cmd);
 bool		is_valid_exit(t_command *cmd);
-int			count_pipes(t_token *lst, char **envp);
 void		dup_and_close(int *fd, int std);
 void		check_redir_in(t_token **lst, char **envp, t_command *cmd);
 void		check_redir_out(t_token **lst, char **envp, t_command *cmd);
@@ -72,4 +73,7 @@ void		parse_input(char *input, char **envp);
 void		set_signals(void);
 void		disable_signals(void);
 void		signal_handle_function(int sig);
+char		**get_delimiter(t_token *lst);
+bool		check_heredoc(t_token **lst, t_command *cmd);
+void		heredoc_with_command(t_command *cmd, char **envp);
 #endif

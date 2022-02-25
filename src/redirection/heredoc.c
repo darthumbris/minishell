@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 16:44:52 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/25 12:25:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,6 @@
 #include <fcntl.h>
 #include <limits.h>
 #include <sys/stat.h>
-
-static int	count_heredocs(t_token *lst)
-{
-	int	len;
-
-	len = 0;
-	while (lst)
-	{
-		if (ft_strcmp(lst->token_name, "|") == 0)
-			break ;
-		if (ft_strcmp(lst->token_name, "h") == 0)
-			len++;
-		lst = lst->next;
-	}
-	return (len);
-}
-
-static char	**get_delimiter(t_token *lst)
-{
-	char	**delimiter;
-	int		i;
-
-	i = 0;
-	delimiter = ft_calloc(count_heredocs(lst) + 1, sizeof(char *));
-	if (!delimiter)
-		return (NULL);
-	while (lst)
-	{
-		if (ft_strcmp(lst->token_name, "h") == 0)
-		{
-			lst = lst->next;
-			delimiter[i] = lst->token_value;
-			i++;
-		}
-		lst = lst->next;
-	}
-	return (delimiter);
-}
 
 static bool	need_expansion(char *str, int *i)
 {
@@ -86,14 +48,29 @@ char	*expand_input(char *line, char **envp)
 	return (str);
 }
 
-static int	delimiter_len(char **delimiter)
+static int	delimiter_len(char **delimiter, int pos)
+{
+	int	i;
+
+	i = pos;
+	while (delimiter[i])
+		i++;
+	return (i - pos);
+}
+
+static char	**free_delimiter(char **delimiter)
 {
 	int	i;
 
 	i = 0;
 	while (delimiter[i])
+	{
+		free(delimiter[i]);
 		i++;
-	return (i);
+	}
+	free(delimiter);
+	delimiter = NULL;
+	return (NULL);
 }
 
 /*
@@ -113,27 +90,27 @@ int	heredoc_function(t_token *lst, char **envp)
 
 	i = 0;
 	delimiter = get_delimiter(lst);
-	while (1)
+	while (true)
 	{
 		rl_on_new_line();
 		line = readline("> ");
-		if (delimiter_len(delimiter) == 1)
+		if (delimiter_len(delimiter, i) == 1)
 		{
 			pipe(fd);
-			while (line && ft_strcmp(line, *delimiter) != 0)
+			while (line && ft_strcmp(line, delimiter[i]) != 0)
 			{
-				if (line && ft_strcmp(line, *delimiter) == 0)
+				if (line && ft_strcmp(line, delimiter[i]) == 0)
 					break ;
 				line = expand_input(line, envp);
-				write(fd[0], line, ft_strlen(line));
-				write(fd[0], "\n", 1);
+				write(fd[1], line, ft_strlen(line));
+				write(fd[1], "\n", 1);
 				free(line);
 				rl_on_new_line();
 				line = readline("> ");
 				if (!line)
 					ft_putstr_fd("> \x1b[1T", 0);
 			}
-			free(delimiter);
+			delimiter = free_delimiter(delimiter);
 			free(line);
 			close(fd[0]);
 			dup2(fd[0], STDIN_FILENO);
@@ -141,11 +118,50 @@ int	heredoc_function(t_token *lst, char **envp)
 			return (0);
 		}
 		else if (ft_strcmp(line, delimiter[i]) == 0)
-		{
-			delimiter++;
 			i++;
-		}
 		free(line);
 	}
 	return (-1);
+}
+
+void	heredoc_with_command(t_command *cmd, char **envp)
+{
+	char	*line;
+	int		i;
+	int		fd[2];
+
+	i = 0;
+	while (true)
+	{
+		rl_on_new_line();
+		line = readline("> ");
+		if (cmd->heredocs - i == 1)
+		{
+			pipe(fd);
+			while (line && ft_strcmp(line, cmd->delimiter[i]) != 0)
+			{
+				if (line && ft_strcmp(line, cmd->delimiter[i]) == 0)
+					break ;
+				if (cmd->fd_in == 0)
+				{
+					line = expand_input(line, envp);
+					write(fd[1], line, ft_strlen(line));
+					write(fd[1], "\n", 1);
+				}
+				free(line);
+				rl_on_new_line();
+				line = readline("> ");
+				if (!line)
+					ft_putstr_fd("> \x1b[1T", 1);
+			}
+			free(line);
+			close(fd[1]);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
+			return ;
+		}
+		else if (ft_strcmp(line, cmd->delimiter[i]) == 0)
+			i++;
+		free(line);
+	}
 }

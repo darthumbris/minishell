@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/25 12:25:10 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/25 16:12:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,13 +102,12 @@ int	heredoc_function(t_token *lst, char **envp)
 				if (line && ft_strcmp(line, delimiter[i]) == 0)
 					break ;
 				line = expand_input(line, envp);
-				write(fd[1], line, ft_strlen(line));
-				write(fd[1], "\n", 1);
+				ft_putendl_fd(line, fd[1]);
 				free(line);
 				rl_on_new_line();
 				line = readline("> ");
 				if (!line)
-					ft_putstr_fd("> \x1b[1T", 0);
+					ft_putstr_fd("> \x1b[1T", 1);
 			}
 			delimiter = free_delimiter(delimiter);
 			free(line);
@@ -145,8 +144,7 @@ void	heredoc_with_command(t_command *cmd, char **envp)
 				if (cmd->fd_in == 0)
 				{
 					line = expand_input(line, envp);
-					write(fd[1], line, ft_strlen(line));
-					write(fd[1], "\n", 1);
+					ft_putendl_fd(line, fd[1]);
 				}
 				free(line);
 				rl_on_new_line();
@@ -164,4 +162,54 @@ void	heredoc_with_command(t_command *cmd, char **envp)
 			i++;
 		free(line);
 	}
+}
+
+int	heredoc_in_pipe(t_command *cmd, char **envp, int fd_out, int fd_in)
+{
+	char	*line;
+	int		i;
+	int		fd[2];
+
+	i = 0;
+	(void)fd_in;
+	(void)fd_out;
+	pipe(fd);
+	dup2(fd_in, STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	close(fd[0]);
+	close(fd[0]);
+	while (true)
+	{
+		rl_on_new_line();
+		line = readline("> ");
+		if (cmd->heredocs - i == 1)
+		{
+			while (line && ft_strcmp(line, cmd->delimiter[i]) != 0)
+			{
+				if (line && ft_strcmp(line, cmd->delimiter[i]) == 0)
+					break ;
+				if (cmd->fd_in == 0)
+				{
+					line = expand_input(line, envp);
+					ft_putendl_fd(line, fd_in);
+				}
+				free(line);
+				rl_on_new_line();
+				line = readline("> ");
+				rl_redisplay();
+				if (!line)
+					ft_putstr_fd("> \x1b[1T", 1);
+			}
+			free(line);
+			close(fd_in);
+			close(fd[1]);
+			//dup2(fd[0], STDIN_FILENO);
+			//close(fd[0]);
+			return (fd[1]);
+		}
+		else if (ft_strcmp(line, cmd->delimiter[i]) == 0)
+			i++;
+		free(line);
+	}
+	return (-1);
 }

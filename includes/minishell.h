@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/25 11:52:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/25 14:47:45 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,4 +76,5 @@ void		signal_handle_function(int sig);
 char		**get_delimiter(t_token *lst);
 bool		check_heredoc(t_token **lst, t_command *cmd);
 void		heredoc_with_command(t_command *cmd, char **envp);
+int			heredoc_in_pipe(t_command *cmd, char **envp, int fd_in, int fd_out);
 #endif

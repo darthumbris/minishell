@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 12:25:30 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/25 15:59:37 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 {
+	int	testfd;
+
 	if (i == 0)
 		dup2(pipe->fd[i][1], STDOUT_FILENO);
 	if (i != 0 && i != pipe->pipes)
@@ -24,9 +26,17 @@ static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 	}
 	if (i == pipe->pipes)
 		dup2(pipe->fd[i - 1][0], STDIN_FILENO);
-	closing_pipes(pipe);
 	if (!cmds[i])
 		exit(1);
+	if (cmds[i]->heredocs)
+	{
+		testfd = heredoc_in_pipe(cmds[i], envp, pipe->fd[i][1], pipe->fd[i][0]);
+		//heredoc_with_command(cmds[i], envp);
+		//testfd = 0;
+		//dup2(testfd, STDIN_FILENO);
+		//close(testfd);
+	}
+	closing_pipes(pipe);
 	redirect(cmds[i], 0);
 	parse_command(cmds[i], envp);
 	exit(1);

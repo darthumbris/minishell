@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 17:01:47 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 11:59:13 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,21 +58,19 @@ static int	delimiter_len(char **delimiter, int pos)
 	return (i - pos);
 }
 
-static char	**free_delimiter(char **delimiter)
+void	free_delimiter(char **delimiter)
 {
 	int	i;
 
 	i = 0;
 	while (delimiter[i])
 	{
-		fprintf(stderr, "del: %s\n", delimiter[i]);
 		free(delimiter[i]);
 		delimiter[i] = NULL;
 		i++;
 	}
 	free(delimiter);
 	delimiter = NULL;
-	return (NULL);
 }
 
 /*
@@ -168,57 +166,3 @@ void	heredoc_with_command(t_command *cmd, char **envp)
 		free(line);
 	}
 }
-
-// int	heredoc_in_pipe(t_command *cmd, char **envp, int fd_out, int fd_in)
-// {
-// 	char	*line;
-// 	int		i;
-// 	//int		fd[2];
-
-// 	i = 0;
-// 	(void)fd_in;
-// 	(void)fd_out;
-// 	//pipe(fd);
-// 	//dup2(fd_out, fd[1]);
-// 	//close(fd_out);
-// 	while (true)
-// 	{
-// 		rl_on_new_line();
-// 		line = readline("> ");
-// 		if (cmd->heredocs - i == 1)
-// 		{
-// 			while (line && ft_strcmp(line, cmd->delimiter[i]) != 0)
-// 			{
-// 				if (line && ft_strcmp(line, cmd->delimiter[i]) == 0)
-// 					break ;
-// 				if (cmd->fd_in == 0)
-// 				{
-// 					line = expand_input(line, envp);
-// 					ft_putendl_fd(line, fd_out);
-// 				}
-// 				free(line);
-// 				rl_on_new_line();
-// 				line = readline("> ");
-// 				rl_redisplay();
-// 				if (!line)
-// 					ft_putstr_fd("> \x1b[1T", 1);
-// 			}
-// 			free(line);
-// 			// if (fd_in)
-// 			// {
-// 			// 	dup2(fd[0], STDIN_FILENO);
-// 			// 	close(fd[0]);
-// 			// 	//close(fd[1]);
-// 			// }
-// 			// //close(fd[1]);
-// 			// close(fd[0]);
-// 			close(fd_in);
-// 			//close(fd_out);
-// 			return (0);
-// 		}
-// 		else if (ft_strcmp(line, cmd->delimiter[i]) == 0)
-// 			i++;
-// 		free(line);
-// 	}
-// 	return (-1);
-// }

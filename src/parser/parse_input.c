@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 17:03:36 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 12:00:54 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,33 @@ static void	parse_input_child(int cmd_cnt, t_command **cmds, char **envp)
 	}
 }
 
-static void	parse_input_parent(int pid, char **envp)
+static void	parse_input_parent(int pid, char **envp, t_command **cmds, \
+							int cmd_cnt)
 {
-	int	status;
+	int				status;
+	struct termios	term_save;
 
 	status = 0;
 	disable_signals();
+	if (cmd_cnt == 1 && cmds[0]->heredocs)
+	{
+		tcgetattr(0, &term_save);
+		g_pid = pid;
+		signal(SIGINT, signal_heredoc);
+	}
 	waitpid(pid, &status, 0);
 	if (status == 3)
 		signal_handle_function(SIGQUIT);
 	if (status == 2)
 		signal_handle_function(SIGINT);
+	if (status == 9)
+	{
+		tcsetattr(0, TCSAFLUSH, &term_save);
+		set_return_value(envp, 1);
+		return ;
+	}
+	if (cmd_cnt == 1 && WIFEXITED(status) && is_valid_exit(cmds[0]))
+		exit(WEXITSTATUS(status));
 	set_return_value(envp, WEXITSTATUS(status));
 }
 
@@ -82,12 +98,6 @@ void	parse_input(char *input, char **envp)
 	lst = lexer_lst(input, envp);
 	cmds = get_commands(lst, count_pipes(lst, envp) + 1, envp);
 	cmd_cnt = get_cmd_count(cmds);
-	if (cmd_cnt == 1 && is_valid_exit(cmds[0]))
-	{
-		if (cmds[0]->heredocs)
-			heredoc_with_command(cmds[0], envp);
-		parse_command(cmds[0], envp);
-	}
 	if (cmd_cnt)
 	{
 		pid = fork();
@@ -99,12 +109,10 @@ void	parse_input(char *input, char **envp)
 		if (pid == 0)
 			parse_input_child(cmd_cnt, cmds, envp);
 		else
-			parse_input_parent(pid, envp);
+			parse_input_parent(pid, envp, cmds, cmd_cnt);
 	}
 	else
-	{
 		heredoc_function(lst, envp);
-	}
 	free_cmd_lst(cmds);
 	free_token_lst(&lst);
 }

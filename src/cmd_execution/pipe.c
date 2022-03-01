@@ -6,13 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 16:24:31 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 11:27:37 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipe.h"
-pid_t	g_pid;
 
 static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 {
@@ -41,25 +40,17 @@ static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 	exit(1);
 }
 
-void	signal_heredoc(int sig)
-{
-	if (sig == SIGINT)
-	{
-		kill(g_pid, SIGKILL);
-	}
-}
-
 static void	pipex_parent(int i, t_pipe *pipe, t_command *cmd)
 {
-	int	status;
-	int	temp_status;
-	int	j;
-	int	stdin_cpy;
-	int	stdout_cpy;
+	int				status;
+	int				temp_status;
+	int				j;
+	struct termios	test;
 
 	disable_signals();
 	if (cmd->heredocs)
 	{
+		tcgetattr(0, &test);
 		g_pid = pipe->pids[i];
 		signal(SIGINT, signal_heredoc);
 		waitpid(pipe->pids[i], &status, 0);
@@ -70,17 +61,10 @@ static void	pipex_parent(int i, t_pipe *pipe, t_command *cmd)
 		signal(SIGINT, SIG_IGN);
 		if (status == 9)
 		{
-			closing_pipes(pipe);
-			stdin_cpy = dup(0);
-			stdout_cpy = dup(1);
-			dup2(stdin_cpy, STDIN_FILENO);
-			dup2(stdout_cpy, STDOUT_FILENO);
-			close(stdin_cpy);
-			close(stdout_cpy);
+			tcsetattr(0, TCSAFLUSH, &test);
 			exit(1);
 		}
 	}
-	(void)cmd;
 	if (i == pipe->pipes)
 	{
 		closing_pipes(pipe);

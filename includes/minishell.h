@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 14:11:50 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 11:58:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <signal.h>
 # include <dirent.h>
 # include "tokenizer.h"
+# include <termios.h>
+
+pid_t	g_pid;
 
 typedef struct s_command
 {
@@ -76,6 +79,6 @@ void		signal_handle_function(int sig);
 char		**get_delimiter(t_token *lst);
 bool		check_heredoc(t_token **lst, t_command *cmd);
 void		heredoc_with_command(t_command *cmd, char **envp);
-int			heredoc_in_pipe(t_command *cmd, char **envp, int fd_in, int fd_out);
-int			heredoc_in_pipe_with_fork(t_command *cmd, char **envp, int fd_out, int fd_in);
+void		signal_heredoc(int sig);
+void		free_delimiter(char **delimiter);
 #endif

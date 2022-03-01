@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 11:27:37 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 13:45:45 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,31 +40,34 @@ static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 	exit(1);
 }
 
+static void	pipex_heredoc_signal_set(t_pipe *pipe, int i)
+{
+	struct termios	term_save;
+	int				status;
+
+	tcgetattr(0, &term_save);
+	g_pid = pipe->pids[i];
+	signal(SIGINT, signal_heredoc);
+	waitpid(pipe->pids[i], &status, 0);
+	if (status == 2 || status == 3)
+		signal_handle_function(status);
+	signal(SIGINT, SIG_IGN);
+	if (status == 9)
+	{
+		tcsetattr(0, TCSAFLUSH, &term_save);
+		exit(1);
+	}
+}
+
 static void	pipex_parent(int i, t_pipe *pipe, t_command *cmd)
 {
-	int				status;
-	int				temp_status;
-	int				j;
-	struct termios	test;
+	int	status;
+	int	temp_status;
+	int	j;
 
 	disable_signals();
 	if (cmd->heredocs)
-	{
-		tcgetattr(0, &test);
-		g_pid = pipe->pids[i];
-		signal(SIGINT, signal_heredoc);
-		waitpid(pipe->pids[i], &status, 0);
-		if (status == 2)
-			signal_handle_function(SIGINT);
-		if (status == 3)
-			signal_handle_function(SIGQUIT);
-		signal(SIGINT, SIG_IGN);
-		if (status == 9)
-		{
-			tcsetattr(0, TCSAFLUSH, &test);
-			exit(1);
-		}
-	}
+		pipex_heredoc_signal_set(pipe, i);
 	if (i == pipe->pipes)
 	{
 		closing_pipes(pipe);
@@ -79,10 +82,8 @@ static void	pipex_parent(int i, t_pipe *pipe, t_command *cmd)
 			j++;
 		}
 		waitpid(pipe->pids[i], &status, 0);
-		if (temp_status == 2)
-			signal_handle_function(SIGINT);
-		if (temp_status == 3)
-			signal_handle_function(SIGQUIT);
+		if (temp_status == 2 || temp_status == 3)
+			signal_handle_function(temp_status);
 		exit(WEXITSTATUS(status));
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 13:33:54 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 13:41:46 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,15 +83,12 @@ static void	parse_input_parent(int pid, char **envp, t_command **cmds)
 		signal(SIGINT, signal_heredoc);
 	}
 	waitpid(pid, &status, 0);
-	if (status == 3)
-		signal_handle_function(SIGQUIT);
-	if (status == 2)
-		signal_handle_function(SIGINT);
+	if (status == 3 || status == 2)
+		signal_handle_function(status);
 	if (status == 9)
 	{
 		tcsetattr(0, TCSAFLUSH, &term_save);
 		set_return_value(envp, 1);
-		//signal(SIGINT, SIG_IGN);
 		return ;
 	}
 	if (cmd_cnt == 1 && WIFEXITED(status) && is_valid_exit(cmds[0]))

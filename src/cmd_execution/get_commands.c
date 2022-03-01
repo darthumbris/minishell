@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 11:58:56 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 14:19:14 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,15 +43,9 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 		if ((*lst)->token_name[0] == 'W')
 			cmds[i++] = ft_strdup((*lst)->token_value);
 		if ((*lst)->token_name[0] == '>' && cmd->fd_out != -1)
-		{
-			dup_and_close(&(cmd->fd_out), STDOUT_FILENO);
-			cmd->fd_out = redirect_parse((*lst), envp);
-		}
+			dup_and_close_redirect(&(cmd->fd_out), STDOUT_FILENO, lst, envp);
 		else if ((*lst)->token_name[0] == '<' && cmd->fd_in != -1)
-		{
-			dup_and_close(&(cmd->fd_in), STDIN_FILENO);
-			cmd->fd_in = redirect_parse((*lst), envp);
-		}
+			dup_and_close_redirect(&(cmd->fd_in), STDIN_FILENO, lst, envp);
 		else if ((*lst)->token_name[0] == 'h' && !(cmd->delimiter))
 		{
 			cmd->delimiter = get_delimiter(*lst);
@@ -60,6 +54,19 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 		(*lst) = (*lst)->next;
 	}
 	cmd->cmds = cmds;
+}
+
+static char	**check_redirect_command(t_token **lst, char **envp, \
+									int *fd_in, char **delimiter)
+{
+	if ((*lst)->token_name[0] == '<')
+		*fd_in = redirect_parse((*lst), envp);
+	if ((*lst)->token_name[0] == 'h' && !delimiter)
+	{
+		delimiter = get_delimiter((*lst));
+		*fd_in = 0;
+	}
+	return (delimiter);
 }
 
 static t_command	*get_next_command(t_token **lst, char **envp, \
@@ -71,15 +78,9 @@ static t_command	*get_next_command(t_token **lst, char **envp, \
 	delimiter = NULL;
 	while ((*lst))
 	{
+		delimiter = check_redirect_command(lst, envp, &fd_in, delimiter);
 		if ((*lst)->token_name[0] == '>')
 			fd_out = redirect_parse((*lst), envp);
-		if ((*lst)->token_name[0] == '<')
-			fd_in = redirect_parse((*lst), envp);
-		if ((*lst)->token_name[0] == 'h' && !delimiter)
-		{
-			delimiter = get_delimiter((*lst));
-			fd_in = 0;
-		}
 		if ((*lst)->token_name[0] == 'W')
 		{
 			cmd = new_command(NULL);

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/25 11:15:43 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/25 12:16:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 14:20:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,19 @@ char	**get_delimiter(t_token *lst)
 			tmp = tmp->next;
 	}
 	return (delimiter);
+}
+
+void	free_delimiter(char **delimiter)
+{
+	int	i;
+
+	i = 0;
+	while (delimiter[i])
+	{
+		free(delimiter[i]);
+		delimiter[i] = NULL;
+		i++;
+	}
+	free(delimiter);
+	delimiter = NULL;
 }

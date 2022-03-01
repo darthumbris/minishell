@@ -38,6 +38,7 @@ SRC = 	$(SRC_DIR)/minishell.c \
         $(SRC_DIR)/redirection/redirect_utils.c \
         $(SRC_DIR)/redirection/heredoc.c \
         $(SRC_DIR)/redirection/heredoc_utils.c \
+        $(SRC_DIR)/redirection/heredoc_cmd.c \
         $(SRC_DIR)/cmd_execution/pipe.c \
         $(SRC_DIR)/cmd_execution/pipe_utils.c \
         $(SRC_DIR)/cmd_execution/cmd_exec.c \

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 11:58:33 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 14:35:04 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ int			redirect_parse(t_token *lst, char **envp);
 t_command	*new_command(char **cmds);
 void		free_cmds(t_command *cmd);
 bool		is_valid_exit(t_command *cmd);
-void		dup_and_close(int *fd, int std);
+void		dup_and_close_redirect(int *fd, int std, \
+							t_token **lst, char **envp);
 void		check_redir_in(t_token **lst, char **envp, t_command *cmd);
 void		check_redir_out(t_token **lst, char **envp, t_command *cmd);
 t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp);
@@ -81,4 +82,5 @@ bool		check_heredoc(t_token **lst, t_command *cmd);
 void		heredoc_with_command(t_command *cmd, char **envp);
 void		signal_heredoc(int sig);
 void		free_delimiter(char **delimiter);
+char		*expand_input(char *line, char **envp);
 #endif

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 13:45:45 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:05:25 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ void	pipex(t_command **cmds, char **envp, int pipes)
 	pid_t	pid;
 
 	init_pipe_strct(&pipe, pipes);
+	if (pipe.fd == NULL || pipe.pids == NULL)
+		return ;
 	set_pipes(&pipe);
 	i = 0;
 	while (i < pipes + 1)

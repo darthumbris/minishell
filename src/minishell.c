@@ -6,12 +6,18 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 13:30:08 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:10:16 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tokenizer.h"
+
+static int	envp_dup_err(void)
+{
+	ft_putendl_fd("Error duplicating envp", 2);
+	return (1);
+}
 
 /*
  * !!!need to properly check the shlvl at
@@ -33,6 +39,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	envp_dup = envp_duplicate(envp);
+	if (!envp_dup)
+		return (envp_dup_err());
 	change_shl_lvl(envp_dup, 1);
 	while (1)
 	{
@@ -42,7 +50,6 @@ int	main(int argc, char **argv, char **envp)
 		{
 			ft_putstr_fd("\x1b[1Aminishell> ", 1);
 			ft_putendl_fd("exit", 2);
-			system("leaks minishell");
 			exit(0);
 		}
 		if (input && *input)

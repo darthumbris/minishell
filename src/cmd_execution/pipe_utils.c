@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 12:11:14 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 16:19:29 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:04:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	**get_pipefd(int pipes)
 
 	fd = ft_calloc(pipes, sizeof(int *));
 	i = 0;
-	while (i < pipes)
+	while (i < pipes && fd)
 	{
 		fd[i] = ft_calloc(2, sizeof(int));
 		i++;

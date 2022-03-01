@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 14:19:14 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:03:17 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 
 	cmds = ft_calloc(len + 1, sizeof(char *));
 	i = 0;
-	while (i < len)
+	while (i < len && cmds)
 	{
 		if ((*lst)->token_name[0] == 'W')
 			cmds[i++] = ft_strdup((*lst)->token_value);
@@ -112,7 +112,7 @@ t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp)
 	tmp = lst;
 	cmds = ft_calloc(cmd_cnt + 1, sizeof(t_command *));
 	i = 0;
-	while (i < cmd_cnt)
+	while (i < cmd_cnt && cmds)
 	{
 		cmds[i] = get_next_command(&tmp, envp, 0, 1);
 		check_redir_in(&tmp, envp, cmds[i]);

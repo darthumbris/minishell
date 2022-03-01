@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 11:59:20 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/14 16:02:03 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:06:49 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ char	**envp_duplicate(char **envp)
 
 	i = 0;
 	dup = ft_calloc(1024, sizeof(char *));
+	if (!dup)
+		return (NULL);
 	while (envp[i])
 	{
 		dup[i + 2] = ft_strdup(envp[i]);

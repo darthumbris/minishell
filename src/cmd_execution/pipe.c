@@ -6,49 +6,81 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/25 15:59:37 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/28 16:24:31 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "pipe.h"
+pid_t	g_pid;
 
 static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 {
-	int	testfd;
-
+	if (cmds[i] && cmds[i]->heredocs)
+		heredoc_with_command(cmds[i], envp);
 	if (i == 0)
 		dup2(pipe->fd[i][1], STDOUT_FILENO);
 	if (i != 0 && i != pipe->pipes)
 	{
-		dup2(pipe->fd[i - 1][0], STDIN_FILENO);
 		dup2(pipe->fd[i][1], STDOUT_FILENO);
+		if (cmds[i]->heredocs)
+			closing_pipes(pipe);
+		dup2(pipe->fd[i - 1][0], STDIN_FILENO);
 	}
 	if (i == pipe->pipes)
+	{
+		if (cmds[i]->heredocs)
+			closing_pipes(pipe);
 		dup2(pipe->fd[i - 1][0], STDIN_FILENO);
+	}
 	if (!cmds[i])
 		exit(1);
-	if (cmds[i]->heredocs)
-	{
-		testfd = heredoc_in_pipe(cmds[i], envp, pipe->fd[i][1], pipe->fd[i][0]);
-		//heredoc_with_command(cmds[i], envp);
-		//testfd = 0;
-		//dup2(testfd, STDIN_FILENO);
-		//close(testfd);
-	}
 	closing_pipes(pipe);
 	redirect(cmds[i], 0);
 	parse_command(cmds[i], envp);
 	exit(1);
 }
 
-static void	pipex_parent(int i, t_pipe *pipe)
+void	signal_heredoc(int sig)
+{
+	if (sig == SIGINT)
+	{
+		kill(g_pid, SIGKILL);
+	}
+}
+
+static void	pipex_parent(int i, t_pipe *pipe, t_command *cmd)
 {
 	int	status;
 	int	temp_status;
 	int	j;
+	int	stdin_cpy;
+	int	stdout_cpy;
 
 	disable_signals();
+	if (cmd->heredocs)
+	{
+		g_pid = pipe->pids[i];
+		signal(SIGINT, signal_heredoc);
+		waitpid(pipe->pids[i], &status, 0);
+		if (status == 2)
+			signal_handle_function(SIGINT);
+		if (status == 3)
+			signal_handle_function(SIGQUIT);
+		signal(SIGINT, SIG_IGN);
+		if (status == 9)
+		{
+			closing_pipes(pipe);
+			stdin_cpy = dup(0);
+			stdout_cpy = dup(1);
+			dup2(stdin_cpy, STDIN_FILENO);
+			dup2(stdout_cpy, STDOUT_FILENO);
+			close(stdin_cpy);
+			close(stdout_cpy);
+			exit(1);
+		}
+	}
+	(void)cmd;
 	if (i == pipe->pipes)
 	{
 		closing_pipes(pipe);
@@ -90,7 +122,7 @@ void	pipex(t_command **cmds, char **envp, int pipes)
 		else
 		{
 			pipe.pids[i] = pid;
-			pipex_parent(i, &pipe);
+			pipex_parent(i, &pipe, cmds[i]);
 		}
 		i++;
 	}

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/25 16:12:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/02/28 17:01:47 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ static char	**free_delimiter(char **delimiter)
 	i = 0;
 	while (delimiter[i])
 	{
+		fprintf(stderr, "del: %s\n", delimiter[i]);
 		free(delimiter[i]);
+		delimiter[i] = NULL;
 		i++;
 	}
 	free(delimiter);
@@ -81,6 +83,8 @@ static char	**free_delimiter(char **delimiter)
  * than should write everything correctly
  * to the fd_outpout.
  */
+//HANDLE SIGNAL!!!!
+//HANDLE LEAK WHEN CTRL-D
 int	heredoc_function(t_token *lst, char **envp)
 {
 	char	**delimiter;
@@ -109,7 +113,7 @@ int	heredoc_function(t_token *lst, char **envp)
 				if (!line)
 					ft_putstr_fd("> \x1b[1T", 1);
 			}
-			delimiter = free_delimiter(delimiter);
+			free_delimiter(delimiter);
 			free(line);
 			close(fd[0]);
 			dup2(fd[0], STDIN_FILENO);
@@ -123,6 +127,7 @@ int	heredoc_function(t_token *lst, char **envp)
 	return (-1);
 }
 
+//HANDLE SIGNAL!!!!
 void	heredoc_with_command(t_command *cmd, char **envp)
 {
 	char	*line;
@@ -153,8 +158,8 @@ void	heredoc_with_command(t_command *cmd, char **envp)
 					ft_putstr_fd("> \x1b[1T", 1);
 			}
 			free(line);
-			close(fd[1]);
 			dup2(fd[0], STDIN_FILENO);
+			close(fd[1]);
 			close(fd[0]);
 			return ;
 		}
@@ -164,52 +169,56 @@ void	heredoc_with_command(t_command *cmd, char **envp)
 	}
 }
 
-int	heredoc_in_pipe(t_command *cmd, char **envp, int fd_out, int fd_in)
-{
-	char	*line;
-	int		i;
-	int		fd[2];
+// int	heredoc_in_pipe(t_command *cmd, char **envp, int fd_out, int fd_in)
+// {
+// 	char	*line;
+// 	int		i;
+// 	//int		fd[2];
 
-	i = 0;
-	(void)fd_in;
-	(void)fd_out;
-	pipe(fd);
-	dup2(fd_in, STDIN_FILENO);
-	dup2(fd[1], STDOUT_FILENO);
-	close(fd[0]);
-	close(fd[0]);
-	while (true)
-	{
-		rl_on_new_line();
-		line = readline("> ");
-		if (cmd->heredocs - i == 1)
-		{
-			while (line && ft_strcmp(line, cmd->delimiter[i]) != 0)
-			{
-				if (line && ft_strcmp(line, cmd->delimiter[i]) == 0)
-					break ;
-				if (cmd->fd_in == 0)
-				{
-					line = expand_input(line, envp);
-					ft_putendl_fd(line, fd_in);
-				}
-				free(line);
-				rl_on_new_line();
-				line = readline("> ");
-				rl_redisplay();
-				if (!line)
-					ft_putstr_fd("> \x1b[1T", 1);
-			}
-			free(line);
-			close(fd_in);
-			close(fd[1]);
-			//dup2(fd[0], STDIN_FILENO);
-			//close(fd[0]);
-			return (fd[1]);
-		}
-		else if (ft_strcmp(line, cmd->delimiter[i]) == 0)
-			i++;
-		free(line);
-	}
-	return (-1);
-}
+// 	i = 0;
+// 	(void)fd_in;
+// 	(void)fd_out;
+// 	//pipe(fd);
+// 	//dup2(fd_out, fd[1]);
+// 	//close(fd_out);
+// 	while (true)
+// 	{
+// 		rl_on_new_line();
+// 		line = readline("> ");
+// 		if (cmd->heredocs - i == 1)
+// 		{
+// 			while (line && ft_strcmp(line, cmd->delimiter[i]) != 0)
+// 			{
+// 				if (line && ft_strcmp(line, cmd->delimiter[i]) == 0)
+// 					break ;
+// 				if (cmd->fd_in == 0)
+// 				{
+// 					line = expand_input(line, envp);
+// 					ft_putendl_fd(line, fd_out);
+// 				}
+// 				free(line);
+// 				rl_on_new_line();
+// 				line = readline("> ");
+// 				rl_redisplay();
+// 				if (!line)
+// 					ft_putstr_fd("> \x1b[1T", 1);
+// 			}
+// 			free(line);
+// 			// if (fd_in)
+// 			// {
+// 			// 	dup2(fd[0], STDIN_FILENO);
+// 			// 	close(fd[0]);
+// 			// 	//close(fd[1]);
+// 			// }
+// 			// //close(fd[1]);
+// 			// close(fd[0]);
+// 			close(fd_in);
+// 			//close(fd_out);
+// 			return (0);
+// 		}
+// 		else if (ft_strcmp(line, cmd->delimiter[i]) == 0)
+// 			i++;
+// 		free(line);
+// 	}
+// 	return (-1);
+// }

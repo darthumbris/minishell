@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 12:00:54 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 12:13:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ static int	get_cmd_count(t_command **cmds)
 	return (i);
 }
 
-static void	parse_input_child(int cmd_cnt, t_command **cmds, char **envp)
+static void	parse_input_child(t_command **cmds, char **envp, t_token *lst)
 {
+	int	cmd_cnt;
+
+	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt > 1)
 	{
 		pipex(cmds, envp, cmd_cnt - 1);
@@ -56,17 +59,23 @@ static void	parse_input_child(int cmd_cnt, t_command **cmds, char **envp)
 		redirect(cmds[0], 0);
 		parse_command(cmds[0], envp);
 	}
+	else
+	{
+		heredoc_function(lst, envp);
+		exit(0);
+	}
 }
 
-static void	parse_input_parent(int pid, char **envp, t_command **cmds, \
-							int cmd_cnt)
+static void	parse_input_parent(int pid, char **envp, t_command **cmds)
 {
 	int				status;
 	struct termios	term_save;
+	int				cmd_cnt;
 
+	cmd_cnt = get_cmd_count(cmds);
 	status = 0;
 	disable_signals();
-	if (cmd_cnt == 1 && cmds[0]->heredocs)
+	if ((cmd_cnt == 1 && cmds[0]->heredocs) || !cmd_cnt)
 	{
 		tcgetattr(0, &term_save);
 		g_pid = pid;
@@ -93,26 +102,19 @@ void	parse_input(char *input, char **envp)
 	t_token		*lst;
 	t_command	**cmds;
 	pid_t		pid;
-	int			cmd_cnt;
 
 	lst = lexer_lst(input, envp);
 	cmds = get_commands(lst, count_pipes(lst, envp) + 1, envp);
-	cmd_cnt = get_cmd_count(cmds);
-	if (cmd_cnt)
+	pid = fork();
+	if (pid < 0)
 	{
-		pid = fork();
-		if (pid < 0)
-		{
-			perror("FORK");
-			return (set_return_value(envp, 1));
-		}
-		if (pid == 0)
-			parse_input_child(cmd_cnt, cmds, envp);
-		else
-			parse_input_parent(pid, envp, cmds, cmd_cnt);
+		perror("FORK");
+		return (set_return_value(envp, 1));
 	}
+	if (pid == 0)
+		parse_input_child(cmds, envp, lst);
 	else
-		heredoc_function(lst, envp);
+		parse_input_parent(pid, envp, cmds);
 	free_cmd_lst(cmds);
 	free_token_lst(&lst);
 }

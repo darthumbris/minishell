@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/17 16:07:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/01/17 16:07:45 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 16:14:46 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,11 +100,11 @@ char	**ft_split(char const *s, char c)
 	{
 		splts = ft_count_splits(s, c);
 		split = malloc(sizeof(char *) * (splts + 1));
-		if (split == 0)
+		if (split == NULL)
 			return (NULL);
 		split = ft_split_while(s, c, split, splts);
 	}
 	else
-		split = ft_calloc(sizeof(char *), 1);
+		split = ft_calloc(1, sizeof(char *));
 	return (split);
 }

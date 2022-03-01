@@ -6,11 +6,27 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 10:29:40 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 15:37:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+ * This function will give the absolute path back
+ * needed to execute things. (might not be needed)
+ * can be replaced with getenv("PATH=", envp)!!!
+ */
+static char	**path_input(char *input)
+{
+	char	**paths;
+
+	paths = ft_calloc(2, sizeof(char *));
+	if (!paths)
+		return (NULL);
+	paths[0] = ft_substr(input, 0, ft_strchr(input + 1, '/') - input);
+	return (paths);
+}
 
 /*
  * This function will get all the paths

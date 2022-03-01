@@ -6,11 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:07:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 13:34:47 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 15:43:15 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+pid_t	g_pid;
 
 void	signal_heredoc(int sig)
 {

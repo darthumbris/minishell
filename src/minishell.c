@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 11:14:15 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 13:30:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	main(int argc, char **argv, char **envp)
 	rl_catch_signals = 0;
 	(void)argc;
 	(void)argv;
-	set_signals();
 	envp_dup = envp_duplicate(envp);
 	change_shl_lvl(envp_dup, 1);
 	while (1)

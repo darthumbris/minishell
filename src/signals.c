@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:07:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 11:27:51 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 13:34:47 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	signal_heredoc(int sig)
 {
 	if (sig == SIGINT)
 	{
+		ft_putchar_fd('\n', 1);
 		kill(g_pid, SIGKILL);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 12:13:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 13:33:54 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void	parse_input_child(t_command **cmds, char **envp, t_token *lst)
 {
 	int	cmd_cnt;
 
+	disable_signals();
 	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt > 1)
 	{
@@ -72,9 +73,9 @@ static void	parse_input_parent(int pid, char **envp, t_command **cmds)
 	struct termios	term_save;
 	int				cmd_cnt;
 
+	disable_signals();
 	cmd_cnt = get_cmd_count(cmds);
 	status = 0;
-	disable_signals();
 	if ((cmd_cnt == 1 && cmds[0]->heredocs) || !cmd_cnt)
 	{
 		tcgetattr(0, &term_save);
@@ -90,6 +91,7 @@ static void	parse_input_parent(int pid, char **envp, t_command **cmds)
 	{
 		tcsetattr(0, TCSAFLUSH, &term_save);
 		set_return_value(envp, 1);
+		//signal(SIGINT, SIG_IGN);
 		return ;
 	}
 	if (cmd_cnt == 1 && WIFEXITED(status) && is_valid_exit(cmds[0]))

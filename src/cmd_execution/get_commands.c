@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_commands.c                                      :+:    :+:           */
+/*   get_commands.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 17:15:31 by abba            ########   odam.nl       */
+/*   Updated: 2022/03/02 10:20:00 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,8 @@ t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp)
 		if (check_heredoc(&tmp, cmds[i]))
 			cmds[i]->fd_in = 0;
 		if (cmds[i] && cmds[i]->delimiter)
-		{
 			while (cmds[i]->delimiter[cmds[i]->heredocs])
 				cmds[i]->heredocs++;
-		}
 		i++;
 	}
 	return (cmds);

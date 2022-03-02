@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pipe_utils.c                                        :+:    :+:           */
+/*   pipe_utils.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 12:11:14 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 17:18:08 by abba            ########   odam.nl       */
+/*   Updated: 2022/03/02 10:18:30 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int	**get_pipefd(int pipes)
 
 	fd = ft_calloc(pipes, sizeof(int *));
 	if (!fd)
-		return (0);
+		return (NULL);
 	i = 0;
 	while (i < pipes && fd)
 	{

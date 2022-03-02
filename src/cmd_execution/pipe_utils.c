@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pipe_utils.c                                       :+:    :+:            */
+/*   pipe_utils.c                                        :+:    :+:           */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 12:11:14 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:18:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:18:08 by abba            ########   odam.nl       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	**get_pipefd(int pipes)
 	int	i;
 
 	fd = ft_calloc(pipes, sizeof(int *));
+	if (!fd)
+		return (0);
 	i = 0;
 	while (i < pipes && fd)
 	{
@@ -75,5 +77,7 @@ void	init_pipe_strct(t_pipe *pipe, int pipes)
 {
 	pipe->fd = get_pipefd(pipes);
 	pipe->pids = ft_calloc(pipes + 1, sizeof(pid_t));
+	if (!pipe->pids)
+		return ;
 	pipe->pipes = pipes;
 }

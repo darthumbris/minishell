@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_commands.c                                     :+:    :+:            */
+/*   get_commands.c                                      :+:    :+:           */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:03:17 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/01 17:15:31 by abba            ########   odam.nl       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 	int			i;
 
 	cmds = ft_calloc(len + 1, sizeof(char *));
+	if (!cmds)
+		return ;
 	i = 0;
 	while (i < len && cmds)
 	{
@@ -111,6 +113,8 @@ t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp)
 		return (NULL);
 	tmp = lst;
 	cmds = ft_calloc(cmd_cnt + 1, sizeof(t_command *));
+	if (!cmds)
+		return (NULL);
 	i = 0;
 	while (i < cmd_cnt && cmds)
 	{

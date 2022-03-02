@@ -6,11 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:12:12 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:47:20 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
 
 void	export_simple(char *input, char **envp)
 {
@@ -34,7 +34,7 @@ void	export_simple(char *input, char **envp)
  */
 static bool	has_equals(char *input)
 {
-	if (strchr(input, '='))
+	if (ft_strchr(input, '='))
 		return (true);
 	return (false);
 }
@@ -60,7 +60,7 @@ bool	is_valid_var_name(char *input)
 					break ;
 				i++;
 			}
-			if (input[i] == '=' || input[i] == '\0')
+			if (i && (input[i] == '=' || input[i] == '\0'))
 				return (true);
 		}
 	}

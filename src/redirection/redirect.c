@@ -6,14 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 13:38:47 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:34:01 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
+#include "heredoc.h"
 #include <fcntl.h>
-#include <limits.h>
-#include <sys/stat.h>
 
 void	redirect(t_command *cmd, int pid)
 {
@@ -95,7 +94,7 @@ int	redirect_parse(t_token *lst, char **envp)
 	int	len;
 	int	i;
 
-	if (lst)
+	if (lst && lst->token_value)
 	{
 		i = 0;
 		while (ft_isdigit(lst->token_value[i]))

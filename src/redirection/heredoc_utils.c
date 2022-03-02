@@ -6,11 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/25 11:15:43 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 14:20:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:51:19 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "heredoc.h"
 
 bool	check_heredoc(t_token **lst, t_command *cmd)
 {

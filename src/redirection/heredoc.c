@@ -6,14 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 14:33:17 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:02:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "heredoc.h"
 #include "minishell.h"
-#include <fcntl.h>
-#include <limits.h>
-#include <sys/stat.h>
 
 static bool	need_expansion(char *str, int *i)
 {

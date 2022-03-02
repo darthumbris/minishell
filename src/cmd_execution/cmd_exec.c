@@ -6,11 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 15:37:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:52:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "built_in.h"
 
 /*
  * This function will give the absolute path back

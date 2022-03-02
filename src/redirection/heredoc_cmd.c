@@ -6,14 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/01 14:33:06 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 14:34:00 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:02:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <fcntl.h>
-#include <limits.h>
-#include <sys/stat.h>
+#include "heredoc.h"
 
 void	heredoc_pipe_cmd(char *line, t_command *cmd, char **envp, int i)
 {

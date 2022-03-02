@@ -6,11 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 14:53:45 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/09 13:22:19 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:18:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
 
 static void	change_pwd_in_envp(char **envp)
 {
@@ -89,7 +89,7 @@ void	cd_function(t_command *cmd, char **envp)
 		else
 			change_pwd_in_envp(envp);
 	}
-	else
+	else if (cmd && cmd->cmds && cmd->cmds[1][0] != '\0')
 	{
 		if (*cmd->cmds[1] == '-' && \
 			(cmd->cmds[1][1] == ' ' || cmd->cmds[1][1] == '\0'))

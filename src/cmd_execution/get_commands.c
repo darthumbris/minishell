@@ -6,11 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:20:00 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:40:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "redirect.h"
+#include "heredoc.h"
 
 static int	count_cmd_args_lst(t_token *lst)
 {
@@ -40,9 +42,9 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 	if (!cmds)
 		return ;
 	i = 0;
-	while (i < len && cmds)
+	while (i < len && cmds && (*lst))
 	{
-		if ((*lst)->token_name[0] == 'W')
+		if ((*lst)->token_name[0] == 'W' && (*lst)->token_value)
 			cmds[i++] = ft_strdup((*lst)->token_value);
 		if ((*lst)->token_name[0] == '>' && cmd->fd_out != -1)
 			dup_and_close_redirect(&(cmd->fd_out), STDOUT_FILENO, lst, envp);
@@ -53,7 +55,8 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 			cmd->delimiter = get_delimiter(*lst);
 			cmd->fd_in = 0;
 		}
-		(*lst) = (*lst)->next;
+		if ((*lst))
+			(*lst) = (*lst)->next;
 	}
 	cmd->cmds = cmds;
 }

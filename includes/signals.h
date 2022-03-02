@@ -1,37 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   is_built_in.c                                      :+:    :+:            */
+/*   signals.h                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/03/02 09:50:18 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:46:18 by shoogenb      ########   odam.nl         */
+/*   Created: 2022/03/02 10:32:42 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/03/02 10:41:18 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "built_in.h"
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-bool	is_built_in(t_command *cmd)
-{
-	int			i;
-	const char	*built_ins[8] = {
-		"cd",
-		"echo",
-		"env",
-		"exit",
-		"export",
-		"pwd",
-		"unset",
-		NULL
-	};
+//------------Signal Functions---------------
+void		set_signals(void);
+void		disable_signals(void);
+void		signal_handle_function(int sig);
+void		signal_heredoc(int sig);
 
-	i = 0;
-	while (built_ins[i])
-	{
-		if (cmd && cmd->cmds && ft_strcmp(cmd->cmds[0], built_ins[i]) == 0)
-			return (true);
-		i++;
-	}
-	return (false);
-}
+#endif

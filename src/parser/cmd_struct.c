@@ -6,11 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:05:34 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 12:00:01 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:01:23 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "command.h"
 
 t_command	*new_command(char **cmds)
 {
@@ -61,6 +61,8 @@ void	free_cmd_lst(t_command **cmds)
 	int	i;
 
 	i = 0;
+	if (!cmds)
+		return ;
 	while (cmds[i])
 	{
 		free_cmds(cmds[i]);

@@ -6,11 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/25 11:12:42 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 13:57:17 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:50:26 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "redirect.h"
 
 static void	dup_and_close(int *fd, int std)
 {

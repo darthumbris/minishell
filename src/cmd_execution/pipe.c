@@ -6,12 +6,15 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:08:58 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:52:21 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "signals.h"
 #include "pipe.h"
+#include "heredoc.h"
+#include "redirect.h"
 
 static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 {

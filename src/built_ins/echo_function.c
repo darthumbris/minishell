@@ -6,11 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:11:07 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/17 10:24:10 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:45:04 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "built_in.h"
 
 static bool	check_n_option(char *input)
 {

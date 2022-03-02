@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 10:31:50 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/08 10:48:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:43:06 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@ t_token	*quote_expansion(t_token *lst)
 	{
 		if (ft_strcmp(lst->token_name, "W") || ft_strcmp(lst->token_name, "F"))
 		{
-			value = check_for_expans(lst->token_value);
-			free(lst->token_value);
-			lst->token_value = value;
+			if (lst->token_value)
+			{
+				value = check_for_expans(lst->token_value);
+				free(lst->token_value);
+				lst->token_value = value;
+			}
 		}
 		lst = lst->next;
 	}

@@ -6,12 +6,14 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:10:16 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:43:25 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "tokenizer.h"
+#include "signals.h"
+#include "built_in.h"
 
 static int	envp_dup_err(void)
 {

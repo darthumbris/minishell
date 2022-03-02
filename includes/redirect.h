@@ -1,35 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   pipe.h                                             :+:    :+:            */
+/*   redirect.h                                         :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/02/22 10:23:58 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:27:17 by shoogenb      ########   odam.nl         */
+/*   Created: 2022/03/02 10:33:35 by shoogenb      #+#    #+#                 */
+/*   Updated: 2022/03/02 10:34:30 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPE_H
-# define PIPE_H
+#ifndef REDIRECT_H
+# define REDIRECT_H
 
-# include <sys/types.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include "libft.h"
+# include "tokenizer.h"
 # include "command.h"
 
-typedef struct s_pipe
-{
-	int		pipes;
-	int		**fd;
-	pid_t	*pids;
-}				t_pipe;
-
-void	set_pipes(t_pipe *pipe_strct);
-void	closing_pipes(t_pipe *pipe);
-void	init_pipe_strct(t_pipe *pipe, int pipes);
-int		err_msg(char *msg, int ret);
-void	pipex(t_command **cmds, char **envp, int pipes);
+//------------redirection functions--------------
+void		dup_and_close_redirect(int *fd, int std, \
+							t_token **lst, char **envp);
+void		check_redir_in(t_token **lst, char **envp, t_command *cmd);
+void		check_redir_out(t_token **lst, char **envp, t_command *cmd);
+void		redirect(t_command *cmd, int pid);
+int			redirect_parse(t_token *lst, char **envp);
 
 #endif

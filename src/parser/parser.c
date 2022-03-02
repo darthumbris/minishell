@@ -6,13 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:09:41 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:48:31 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "built_in.h"
 #include "minishell.h"
 #include "dispatch.h"
-#include "tokenizer.h"
 
 /*
  * This function parses the command.

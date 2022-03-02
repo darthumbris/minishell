@@ -6,7 +6,7 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:44:19 by abba          #+#    #+#                 */
-/*   Updated: 2022/02/08 10:48:44 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:42:24 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	*check_for_expans(char *input)
 
 	i = 0;
 	tmp = ft_strdup("");
-	while (input[i])
+	while (input && input[i])
 	{
 		begin = tmp;
 		if (input[i] == function[0].quote)

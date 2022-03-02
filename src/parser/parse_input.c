@@ -6,11 +6,16 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:17:30 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:49:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "signals.h"
+#include "pipe.h"
+#include "heredoc.h"
+#include "redirect.h"
+#include "built_in.h"
 
 static int	count_pipes(t_token *lst, char **envp)
 {
@@ -105,7 +110,7 @@ void	parse_input(char *input, char **envp)
 	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt == 1 && is_built_in(cmds[0]) && cmds[0]->heredocs == 0)
 		parse_command(cmds[0], envp, false);
-	else
+	else if (cmds && lst)
 	{
 		pid = fork();
 		if (pid < 0)

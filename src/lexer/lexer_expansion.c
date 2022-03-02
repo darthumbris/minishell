@@ -6,12 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/09 11:37:57 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:01:34 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:00:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
-#include "libft.h"
 
 t_token	*lexer_lst(char *input, char **envp)
 {

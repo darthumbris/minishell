@@ -6,12 +6,12 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/24 14:09:31 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 11:29:41 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "tokenizer.h"
-#include "minishell.h"
+#include "heredoc.h"
+#include "built_in.h"
 
 /*
  * This function returns the expanded string with
@@ -33,6 +33,11 @@ static char	*normal_env_variable(char *input, char **envp, int len)
 	{
 		env_expand = ft_substr(input, ft_strlen(env_str), len);
 		free(env_str);
+		if (!ft_strlen(env_expand))
+		{
+			free(env_expand);
+			return (NULL);
+		}
 		return (env_expand);
 	}
 	remain = ft_substr(input, ft_strlen(env_str), len);
@@ -98,10 +103,19 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
 		env_expand = ft_strdup(*str);
 	else
 		env_expand = expand_env_variable(*str + i + 1, envp);
-	free(*str);
-	(*str) = ft_strjoin(begin, env_expand);
-	free(begin);
-	free(env_expand);
+	if (env_expand == NULL)
+	{
+		(*str) = begin;
+		if (ft_strlen((*str)) == 0)
+			(*str) = NULL;
+	}
+	else
+	{
+		free(*str);
+		(*str) = ft_strjoin(begin, env_expand);
+		free(begin);
+		free(env_expand);
+	}
 }
 
 /*
@@ -124,7 +138,7 @@ void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 		if ((*str)[i] == '$')
 		{
 			dollar_sign_handler(str, envp, i, lst);
-			if (ft_strlen((*str)) == 0)
+			if (!(*str) || ft_strlen((*str)) == 0)
 				break ;
 		}
 		if ((*str)[i] == '\'' && !quote)

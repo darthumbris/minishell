@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/04 10:23:08 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/23 15:42:18 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 12:39:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,12 @@ static bool	is_valid_redirect(t_token *lst)
 	return (false);
 }
 
+// static bool	pipe_err_msg(void)
+// {
+// 	ft_putendl_fd("minishell: syntax error near unexpected token `|'", 2);
+// 	return (false);
+// }
+
 /*
  * This function will evaluate the pipe token
  * and will check if there was a command before the 
@@ -59,6 +65,10 @@ static bool	is_valid_pipe(t_token *current, t_token *prev)
 	else if (prev->token_name[0] != 'W' && prev->token_name[0] != 'F')
 		return (printf("minishell: syntax error near unexpected token `|'\n"));
 	else if (current->next && current->next->token_name[0] == '|')
+		return (printf("minishell: syntax error near unexpected token `|'\n"));
+	else if (current->next && current->next->token_value == NULL)
+		return (true);
+	else if (prev->token_name[0] == 'W' && prev->token_value == NULL)
 		return (printf("minishell: syntax error near unexpected token `|'\n"));
 	return (false);
 }

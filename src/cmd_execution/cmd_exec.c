@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:52:44 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 14:17:21 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static char	**path_input(char *input)
 	paths = ft_calloc(2, sizeof(char *));
 	if (!paths)
 		return (NULL);
-	paths[0] = ft_substr(input, 0, ft_strchr(input + 1, '/') - input);
+	paths[0] = ft_substr(input, 0, ft_strrchr(input, '/') - input);
 	return (paths);
 }
 
@@ -97,7 +97,13 @@ void	execute_input(t_command *cmd, char **envp)
 	char	*input;
 
 	input = cmd->cmds[0];
-	if (input && (*input == '/' || (*input == '.' && input[1] == '/')))
+	if (input && *input == '/')
+	{
+		paths = path_input(input);
+		free(cmd->cmds[0]);
+		cmd->cmds[0] = ft_substr(input, ft_strlen(paths[0]), ft_strlen(input));
+	}
+	else if (input && *input == '.' && input[1] == '/')
 		paths = path_input(input);
 	else
 		paths = get_path_str(envp);

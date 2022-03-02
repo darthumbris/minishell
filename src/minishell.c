@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 12:13:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 14:17:06 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 15:04:29 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,6 @@ static int	envp_dup_err(void)
 	return (1);
 }
 
-/*
- * !!!need to properly check the shlvl at
- * the start of program. Or increase it by 1
- * at the beginning. not sure yet what is 
- * correct.
- * Probably have a global struct
- * with a shlvl and return value
- * and maybe some other stuff
- * that bash stores itself and in env
- * or might be able to store it differently.
- */
 int	main(int argc, char **argv, char **envp)
 {
 	static char		*input;
@@ -52,7 +41,6 @@ int	main(int argc, char **argv, char **envp)
 		{
 			ft_putstr_fd("\x1b[1Aminishell> ", 1);
 			ft_putendl_fd("exit", 2);
-			system("leaks minishell");
 			exit(0);
 		}
 		if (input && *input)

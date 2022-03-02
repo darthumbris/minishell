@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 14:17:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 15:08:25 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,9 +107,13 @@ void	execute_input(t_command *cmd, char **envp)
 		paths = path_input(input);
 	else
 		paths = get_path_str(envp);
-	command_exec(paths, cmd->cmds, envp);
+	if (paths)
+		command_exec(paths, cmd->cmds, envp);
 	ft_putstr_fd("minishell: ", cmd->fd_error);
 	ft_putstr_fd(cmd->cmds[0], cmd->fd_error);
-	ft_putendl_fd(": command not found", cmd->fd_error);
+	if (paths)
+		ft_putendl_fd(": command not found", cmd->fd_error);
+	else
+		ft_putendl_fd(": No such file or directory", cmd->fd_error);
 	exit(127);
 }

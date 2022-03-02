@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 09:50:18 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:46:18 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 12:10:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ bool	is_built_in(t_command *cmd)
 	i = 0;
 	while (built_ins[i])
 	{
-		if (cmd && cmd->cmds && ft_strcmp(cmd->cmds[0], built_ins[i]) == 0)
+		if (cmd && cmd->cmds && cmd->cmds[0] && \
+			ft_strcmp(cmd->cmds[0], built_ins[i]) == 0)
 			return (true);
 		i++;
 	}

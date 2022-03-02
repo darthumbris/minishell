@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:14:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:45:20 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 12:11:42 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool	is_valid_exit(t_command *cmd)
 {
 	int		i;
 
-	if (cmd && cmd->cmds && ft_strcmp(cmd->cmds[0], "exit"))
+	if (cmd && cmd->cmds && cmd->cmds[0] && ft_strcmp(cmd->cmds[0], "exit"))
 		return (false);
 	if (!cmd || !cmd->cmds[1])
 		return (true);

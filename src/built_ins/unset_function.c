@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 13:37:34 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/11 11:33:18 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 09:45:48 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	unset_function(t_command *cmd, char **envp)
 			check_for_var_unset(envp, cmd, i, j);
 			i++;
 		}
+		j++;
 	}
 	set_return_value(envp, error);
 }

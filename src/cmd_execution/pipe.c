@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 16:05:25 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:08:58 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 		exit(1);
 	closing_pipes(pipe);
 	redirect(cmds[i], 0);
-	parse_command(cmds[i], envp);
+	parse_command(cmds[i], envp, true);
 	exit(1);
 }
 

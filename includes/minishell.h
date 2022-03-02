@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/24 14:11:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 15:49:40 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:08:01 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_command
 //-----------Input get function------------
 char		*get_input(char *input);
 //----------Parsing functions-----------------
-void		parse_command(t_command *cmd, char **envp);
+void		parse_command(t_command *cmd, char **envp, bool need_exit);
 void		parse_input(char *input, char **envp);
 //---------Shell  Built-in-functions--------------
 void		cd_function(t_command *cmd, char **envp);
@@ -52,6 +52,8 @@ void		echo_function(t_command *cmd, char **envp);
 bool		is_valid_var_name(char *input);
 void		identifier_msg(char *input, char *cmd, int fd);
 bool		is_valid_exit(t_command *cmd);
+bool		is_built_in(t_command *cmd);
+//void		execute_built_in(t_command *cmd, char **envp);
 //----------envp functions------------------------
 void		export_simple(char *input, char **envp);
 void		change_shl_lvl(char **envp, int change);

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/01 13:41:46 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:14:49 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,10 @@ static int	get_cmd_count(t_command **cmds)
 	return (i);
 }
 
-static void	parse_input_child(t_command **cmds, char **envp, t_token *lst)
+static void	parse_input_child(t_command **cmds, char **envp, \
+							t_token *lst, int cmd_cnt)
 {
-	int	cmd_cnt;
-
 	disable_signals();
-	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt > 1)
 	{
 		pipex(cmds, envp, cmd_cnt - 1);
@@ -58,7 +56,7 @@ static void	parse_input_child(t_command **cmds, char **envp, t_token *lst)
 		if (cmds[0]->heredocs)
 			heredoc_with_command(cmds[0], envp);
 		redirect(cmds[0], 0);
-		parse_command(cmds[0], envp);
+		parse_command(cmds[0], envp, true);
 	}
 	else
 	{
@@ -67,14 +65,13 @@ static void	parse_input_child(t_command **cmds, char **envp, t_token *lst)
 	}
 }
 
-static void	parse_input_parent(int pid, char **envp, t_command **cmds)
+static void	parse_input_parent(int pid, char **envp, \
+								t_command **cmds, int cmd_cnt)
 {
 	int				status;
 	struct termios	term_save;
-	int				cmd_cnt;
 
 	disable_signals();
-	cmd_cnt = get_cmd_count(cmds);
 	status = 0;
 	if ((cmd_cnt == 1 && cmds[0]->heredocs) || !cmd_cnt)
 	{
@@ -101,19 +98,26 @@ void	parse_input(char *input, char **envp)
 	t_token		*lst;
 	t_command	**cmds;
 	pid_t		pid;
+	int			cmd_cnt;
 
 	lst = lexer_lst(input, envp);
 	cmds = get_commands(lst, count_pipes(lst, envp) + 1, envp);
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("FORK");
-		return (set_return_value(envp, 1));
-	}
-	if (pid == 0)
-		parse_input_child(cmds, envp, lst);
+	cmd_cnt = get_cmd_count(cmds);
+	if (cmd_cnt == 1 && is_built_in(cmds[0]) && cmds[0]->heredocs == 0)
+		parse_command(cmds[0], envp, false);
 	else
-		parse_input_parent(pid, envp, cmds);
+	{
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("FORK");
+			return (set_return_value(envp, 1));
+		}
+		if (pid == 0)
+			parse_input_child(cmds, envp, lst, cmd_cnt);
+		else
+			parse_input_parent(pid, envp, cmds, cmd_cnt);
+	}
 	free_cmd_lst(cmds);
 	free_token_lst(&lst);
 }

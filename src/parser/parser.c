@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 16:57:28 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/28 16:23:06 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/02 10:09:41 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,9 @@
  * one of the built-in functions otherwise
  * it will send it to the execute input function.
  */
-void	parse_command(t_command *cmd, char **envp)
+void	parse_command(t_command *cmd, char **envp, bool need_exit)
 {
 	int						i;
-	int						len;
 	const t_cmd				function[] = {
 	{"cd", &cd_function},
 	{"pwd", &pwd_function},
@@ -37,12 +36,13 @@ void	parse_command(t_command *cmd, char **envp)
 	i = 0;
 	while (function[i].comand != 0)
 	{
-		len = ft_strlen(function[i].comand);
-		if (ft_strncmp(cmd->cmds[0], function[i].comand, len) == 0 && \
-			(cmd->cmds[0][len] == '\0' || cmd->cmds[0][len] == ' '))
+		if (cmd && cmd->cmds && !ft_strcmp(cmd->cmds[0], function[i].comand))
 		{
 			function[i].t_function_pointer(cmd, envp);
-			exit(ft_atoi(envp[0]));
+			if (need_exit)
+				exit(ft_atoi(envp[0]));
+			else
+				return ;
 		}
 		i++;
 	}

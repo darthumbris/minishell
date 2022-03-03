@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 12:32:32 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 14:11:11 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,6 @@ static void	parse_input_parent(int pid, char **envp, \
 		set_return_value(envp, 1);
 		return ;
 	}
-	if (cmd_cnt == 1 && WIFEXITED(status) && is_valid_exit(cmds[0]))
-		exit(WEXITSTATUS(status));
 	set_return_value(envp, WEXITSTATUS(status));
 }
 

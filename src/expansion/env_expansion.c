@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 15:07:53 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 15:31:11 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,12 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
 {
 	char	*begin;
 	char	*env_expand;
+	char	doll;
 
 	begin = ft_substr(*str, 0, i);
-	if (!ft_isalnum(*(*str + i + 1)) && *(*str + i + 1) != '_' && \
-					*(*str + i + 1) != '"')
+	doll = *(*str + i + 1);
+	if (!ft_isalnum(doll) && doll != '_' && doll != '"' && doll != '?' && \
+					doll != '\'')
 		env_expand = ft_strdup(*str + ft_strlen(begin));
 	else if (is_heredoc(lst))
 		env_expand = ft_strdup(*str);

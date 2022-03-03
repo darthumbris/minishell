@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 13:03:11 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 11:38:50 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,15 +104,7 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
 	else
 		env_expand = expand_env_variable(*str + i + 1, envp);
 	if (env_expand == NULL)
-	{
-		free(env_expand);
-		if (ft_strlen(begin) == 0)
-		{
-			free(begin);
-			free((*str));
-			(*str) = NULL;
-		}
-	}
+		env_expansion_fail(str, &begin);
 	else
 	{
 		free(*str);

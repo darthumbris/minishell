@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/21 15:02:25 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 11:38:28 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,5 @@ int		len_until_char(char *str, int i, char c);
 int		len_until_quote(char *str, int i);
 void	check_for_env_expansion(char **str, char **envp, t_token *lst);
 char	*expand_env_variable(char *input, char **envp);
+void	env_expansion_fail(char **str, char **begin);
 #endif

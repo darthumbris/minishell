@@ -6,12 +6,28 @@
 /*   By: abba <abba@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:44:19 by abba          #+#    #+#                 */
-/*   Updated: 2022/03/02 11:42:24 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 11:38:09 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tokenizer.h"
 #include "quotes.h"
+
+void	env_expansion_fail(char **str, char **begin)
+{
+	free((*str));
+	if (ft_strlen((*begin)) == 0)
+	{
+		free((*begin));
+		(*begin) = NULL;
+		(*str) = NULL;
+	}
+	else
+	{
+		(*str) = ft_strdup((*begin));
+		free((*begin));
+	}
+}
 
 static char	*single_quote(char *input, int *i)
 {

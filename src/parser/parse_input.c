@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 10:31:56 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 11:17:55 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ static int	get_cmd_count(t_command **cmds)
 static void	parse_input_child(t_command **cmds, char **envp, \
 							t_token *lst, int cmd_cnt)
 {
-	disable_signals();
 	if (cmd_cnt > 1)
 	{
 		pipex(cmds, envp, cmd_cnt - 1);
@@ -59,12 +58,16 @@ static void	parse_input_child(t_command **cmds, char **envp, \
 	else if (cmd_cnt == 1)
 	{
 		if (cmds[0]->heredocs)
+		{
+			disable_signals();
 			heredoc_with_command(cmds[0], envp);
+		}
 		redirect(cmds[0], 0);
 		parse_command(cmds[0], envp, true);
 	}
 	else
 	{
+		disable_signals();
 		heredoc_function(lst, envp);
 		exit(0);
 	}

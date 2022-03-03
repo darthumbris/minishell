@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 11:11:26 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 11:20:06 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 
 static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 {
+	if (cmds[i] && cmds[i]->heredocs)
+		disable_signals();
 	if (cmds[i] && cmds[i]->heredocs)
 		heredoc_with_command(cmds[i], envp);
 	if (i == 0)

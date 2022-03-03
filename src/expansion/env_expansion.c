@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 12:54:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 15:07:53 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,18 @@
  * the env variable that is expanded to its value.
  * (needs to be properly freed afterwards).
  */
-static char	*normal_env_variable(char *input, char **envp, int len)
+static char	*normal_env_variable(char *input, char **envp, int len, int i)
 {
 	char	*env_str;
 	char	*env_expand;
 	char	*remain;
-	int		i;
 
-	i = 0;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
+	if (ft_isdigit(input[0]))
+		i = 1;
 	env_str = ft_substr(input, 0, i);
-	if (!ft_getenv(env_str, envp) && ft_strlen(env_str))
+	if (!ft_getenv(env_str, envp))
 	{
 		env_expand = ft_substr(input, ft_strlen(env_str), len);
 		free(env_str);
@@ -74,7 +74,7 @@ char	*expand_env_variable(char *input, char **envp)
 			env_expand = ft_strjoin(return_str, remain);
 		}
 		else
-			return (normal_env_variable(input, envp, ft_strlen(input)));
+			return (normal_env_variable(input, envp, ft_strlen(input), 0));
 		free(remain);
 		return (env_expand);
 	}
@@ -99,7 +99,8 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
 	char	*env_expand;
 
 	begin = ft_substr(*str, 0, i);
-	if (!ft_isalnum(*(*str + i + 1)) && *(*str + i + 1) != '_')
+	if (!ft_isalnum(*(*str + i + 1)) && *(*str + i + 1) != '_' && \
+					*(*str + i + 1) != '"')
 		env_expand = ft_strdup(*str + ft_strlen(begin));
 	else if (is_heredoc(lst))
 		env_expand = ft_strdup(*str);

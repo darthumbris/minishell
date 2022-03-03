@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:05:34 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 12:37:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 16:53:46 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,23 @@ void	free_cmds(t_command *cmd)
 	}
 	free(cmd);
 	cmd = NULL;
+}
+
+void	free_cmd_args(char **cmd_args)
+{
+	int	i;
+
+	i = 0;
+	if (cmd_args)
+	{
+		while (cmd_args[i])
+		{
+			free(cmd_args[i]);
+			i++;
+		}
+		free(cmd_args);
+	}
+	cmd_args = NULL;
 }
 
 void	free_cmd_lst(t_command ***cmds)

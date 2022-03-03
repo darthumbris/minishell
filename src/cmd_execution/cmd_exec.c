@@ -6,12 +6,13 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 15:08:25 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 16:56:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "built_in.h"
+#include "dirent.h"
 
 /*
  * This function will give the absolute path back
@@ -71,23 +72,27 @@ static void	command_exec(char **paths, char **cmd_args, char **envp)
 	free(cmd_slash);
 }
 
-void	free_cmd_args(char **cmd_args)
+static void	execute_error(char *input, int fd_error, char **paths)
 {
-	int	i;
-
-	i = 0;
-	if (cmd_args)
+	ft_putstr_fd("minishell: ", fd_error);
+	ft_putstr_fd(input, fd_error);
+	free(input);
+	if (paths && opendir(paths[0]) && input[0] != '/')
 	{
-		while (cmd_args[i])
-		{
-			free(cmd_args[i]);
-			i++;
-		}
-		free(cmd_args);
+		free_cmd_args(paths);
+		ft_putendl_fd(": command not found", fd_error);
+		exit(127);
 	}
-	cmd_args = NULL;
+	else if (paths && opendir(paths[0]))
+	{
+		free_cmd_args(paths);
+		ft_putendl_fd(": No such file or directory", fd_error);
+		exit(127);
+	}
+	else
+		ft_putendl_fd(": Not a directory", fd_error);
+	exit(126);
 }
-
 /*
  * 
  */
@@ -96,7 +101,7 @@ void	execute_input(t_command *cmd, char **envp)
 	char	**paths;
 	char	*input;
 
-	input = cmd->cmds[0];
+	input = ft_strdup(cmd->cmds[0]);
 	if (input && *input == '/')
 	{
 		paths = path_input(input);
@@ -109,11 +114,5 @@ void	execute_input(t_command *cmd, char **envp)
 		paths = get_path_str(envp);
 	if (paths)
 		command_exec(paths, cmd->cmds, envp);
-	ft_putstr_fd("minishell: ", cmd->fd_error);
-	ft_putstr_fd(cmd->cmds[0], cmd->fd_error);
-	if (paths)
-		ft_putendl_fd(": command not found", cmd->fd_error);
-	else
-		ft_putendl_fd(": No such file or directory", cmd->fd_error);
-	exit(127);
+	execute_error(input, cmd->fd_error, paths);
 }

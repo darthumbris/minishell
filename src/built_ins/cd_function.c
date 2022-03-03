@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 14:53:45 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 10:43:14 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 17:06:38 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,14 @@ static void	cd_dash(t_command *cmd, char **envp)
 		ft_putendl_fd("minishell: cd: OLDPWD not set", 2);
 }
 
+static void	cd_error(t_command *cmd, char **envp)
+{
+	ft_putstr_fd("minishell: ", cmd->fd_error);
+	ft_putstr_fd(cmd->cmds[1], cmd->fd_error);
+	ft_putendl_fd(": No such file or directory", cmd->fd_error);
+	set_return_value(envp, 1);
+}
+
 /*
  * The cd function will check the input 
  * and then try to change the directory with
@@ -99,10 +107,7 @@ void	cd_function(t_command *cmd, char **envp)
 		else if (*cmd->cmds[1] == '~')
 			cd_tilde(cmd, envp);
 		else if (chdir(cmd->cmds[1]) == -1)
-		{
-			perror("");
-			set_return_value(envp, 1);
-		}
+			cd_error(cmd, envp);
 		else
 			change_pwd_in_envp(envp);
 	}

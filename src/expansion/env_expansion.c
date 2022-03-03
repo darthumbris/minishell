@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 12:15:10 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 12:54:21 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*normal_env_variable(char *input, char **envp, int len)
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
 	env_str = ft_substr(input, 0, i);
-	if (!ft_getenv(env_str, envp))
+	if (!ft_getenv(env_str, envp) && ft_strlen(env_str))
 	{
 		env_expand = ft_substr(input, ft_strlen(env_str), len);
 		free(env_str);
@@ -99,7 +99,9 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
 	char	*env_expand;
 
 	begin = ft_substr(*str, 0, i);
-	if (is_heredoc(lst))
+	if (!ft_isalnum(*(*str + i + 1)) && *(*str + i + 1) != '_')
+		env_expand = ft_strdup(*str + ft_strlen(begin));
+	else if (is_heredoc(lst))
 		env_expand = ft_strdup(*str);
 	else
 		env_expand = expand_env_variable(*str + i + 1, envp);

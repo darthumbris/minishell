@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 11:17:55 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 12:32:32 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void	parse_input(char *input, char **envp)
 	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt == 1 && is_built_in(cmds[0]) && cmds[0]->heredocs == 0)
 		parse_command(cmds[0], envp, false);
-	else if (cmd_cnt == 0 || (cmds && lst && cmds[0]->cmds && cmds[0]->cmds[0]))
+	else if (cmds && (!cmd_cnt || (lst && cmds[0]->cmds && cmds[0]->cmds[0])))
 	{
 		pid = fork();
 		if (pid < 0)
@@ -125,6 +125,6 @@ void	parse_input(char *input, char **envp)
 		else
 			parse_input_parent(pid, envp, cmds, cmd_cnt);
 	}
-	free_cmd_lst(cmds);
+	free_cmd_lst(&cmds);
 	free_token_lst(&lst);
 }

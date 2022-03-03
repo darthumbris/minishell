@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 10:36:30 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 12:37:01 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 static char	**check_redirect_command(t_token **lst, char **envp, \
 									int *fd_in, char **delimiter)
 {
-	if ((*lst)->token_name[0] == '<')
+	if ((*lst)->token_name[0] == '<' && *fd_in >= 0)
 		*fd_in = redirect_parse((*lst), envp);
 	if ((*lst)->token_name[0] == 'h' && !delimiter)
 	{
@@ -84,7 +84,7 @@ static t_command	*get_next_command(t_token **lst, char **envp, \
 	while ((*lst))
 	{
 		delimiter = check_redirect_command(lst, envp, &fd_in, delimiter);
-		if ((*lst)->token_name[0] == '>')
+		if ((*lst)->token_name[0] == '>' && fd_out > 0)
 			fd_out = redirect_parse((*lst), envp);
 		if ((*lst)->token_name[0] == 'W')
 		{
@@ -103,17 +103,12 @@ static t_command	*get_next_command(t_token **lst, char **envp, \
 	return (NULL);
 }
 
-//Might need to change it so it stores the heredoc delimters in the cmd
-//and if there are no commands than check the token lst for heredocs and do
-//them then.
 t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp)
 {
 	t_command	**cmds;
 	t_token		*tmp;
 	int			i;
 
-	if (!lst)
-		return (NULL);
 	tmp = lst;
 	cmds = ft_calloc(cmd_cnt + 1, sizeof(t_command *));
 	if (!cmds)
@@ -124,9 +119,11 @@ t_command	**get_commands(t_token *lst, int cmd_cnt, char **envp)
 		cmds[i] = get_next_command(&tmp, envp, 0, 1);
 		check_redir_in(&tmp, envp, cmds[i]);
 		check_redir_out(&tmp, envp, cmds[i]);
-		if (check_heredoc(&tmp, cmds[i]))
+		if (cmds[i] && (cmds[i]->fd_in < 0 || cmds[i]->fd_out < 0))
+			free_cmd_lst(&cmds);
+		if (cmds && check_heredoc(&tmp, cmds[i]))
 			cmds[i]->fd_in = 0;
-		if (cmds[i] && cmds[i]->delimiter)
+		if (cmds && cmds[i] && cmds[i]->delimiter)
 			while (cmds[i]->delimiter[cmds[i]->heredocs])
 				cmds[i]->heredocs++;
 		i++;

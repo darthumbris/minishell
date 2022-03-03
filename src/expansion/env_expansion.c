@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 11:38:50 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 12:15:10 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*normal_env_variable(char *input, char **envp, int len)
 	int		i;
 
 	i = 0;
-	while (ft_isalnum(input[i]))
+	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
 	env_str = ft_substr(input, 0, i);
 	if (!ft_getenv(env_str, envp))
@@ -139,6 +139,8 @@ void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 		}
 		if ((*str)[i] == '\'' && !quote)
 			i = move_through_quotes(*str, i);
+		if ((*str)[i] == '\0')
+			break ;
 		i++;
 	}
 }

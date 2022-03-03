@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/25 13:41:02 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:56:05 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 17:08:05 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ static void	execute_error(char *input, int fd_error, char **paths)
 		ft_putendl_fd(": Not a directory", fd_error);
 	exit(126);
 }
+
 /*
  * 
  */

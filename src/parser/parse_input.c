@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 12:29:20 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 09:18:33 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,17 @@ void	parse_input(char *input, char **envp)
 	int			cmd_cnt;
 
 	lst = lexer_lst(input, envp);
+	if (lst == NULL || lst->next == NULL)
+		return (free_token_lst(&lst));
 	cmds = get_commands(lst, count_pipes(lst, envp) + 1, envp);
 	cmd_cnt = get_cmd_count(cmds);
 	if (cmd_cnt == 1 && is_built_in(cmds[0]) && cmds[0]->heredocs == 0)
 		parse_command(cmds[0], envp, false);
-	else if (cmds && lst && cmds[0]->cmds && cmds[0]->cmds[0])
+	else if (cmd_cnt == 0 || (cmds && lst && cmds[0]->cmds && cmds[0]->cmds[0]))
 	{
 		pid = fork();
 		if (pid < 0)
-		{
-			perror("FORK");
-			return (set_return_value(envp, 1));
-		}
+			return (set_return_value(envp, err_msg("FORK", 1)));
 		if (pid == 0)
 			parse_input_child(cmds, envp, lst, cmd_cnt);
 		else

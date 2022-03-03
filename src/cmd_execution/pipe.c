@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 10:49:09 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:52:21 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 10:18:32 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@ static void	pipex_child(int i, t_pipe *pipe, t_command **cmds, char **envp)
 	}
 	if (!cmds[i])
 		exit(1);
+	fprintf(stderr, "going closing pipes\n");
 	closing_pipes(pipe);
+	fprintf(stderr, "going to redirect\n");
 	redirect(cmds[i], 0);
+	fprintf(stderr, "going to parse command\n");
 	parse_command(cmds[i], envp, true);
 	exit(1);
 }
@@ -97,6 +100,7 @@ void	pipex(t_command **cmds, char **envp, int pipes)
 	int		i;
 	pid_t	pid;
 
+	fprintf(stderr, "got in pipex\n");
 	init_pipe_strct(&pipe, pipes);
 	if (pipe.fd == NULL || pipe.pids == NULL)
 		return ;

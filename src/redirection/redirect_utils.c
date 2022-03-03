@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/25 11:12:42 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:50:26 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 10:38:04 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static void	dup_and_close(int *fd, int std)
 {
 	if (*fd != std)
 	{
-		dup2(*fd, std);
 		close(*fd);
 		*fd = std;
 	}
@@ -25,7 +24,6 @@ static void	dup_and_close(int *fd, int std)
 
 void	dup_and_close_redirect(int *fd, int std, t_token **lst, char **envp)
 {
-	fprintf(stderr, "hey\n");
 	dup_and_close(fd, std);
 	*fd = redirect_parse((*lst), envp);
 }

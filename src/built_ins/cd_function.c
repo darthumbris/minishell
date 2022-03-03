@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/01 14:53:45 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 11:18:18 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/03 10:43:14 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	cd_function(t_command *cmd, char **envp)
 {
 	if (!cmd->cmds[1])
 	{
+		if (!ft_getenv("HOME", envp))
+			return (ft_putendl_fd("minishell: cd: HOME not set", 2));
 		if (chdir(ft_getenv("HOME", envp)) == -1)
 			perror("");
 		else

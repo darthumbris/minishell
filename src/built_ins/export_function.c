@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 11:47:20 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/04 10:55:08 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,6 @@ void	export_simple(char *input, char **envp)
 	export_function(temp, envp);
 	free_cmd_args(cmds);
 	free(temp);
-}
-
-/*
- * This function checks if the input
- * has an equal sign. 
- * because otherwise the export function
- * won't actually set it in the env.
- */
-static bool	has_equals(char *input)
-{
-	if (ft_strchr(input, '='))
-		return (true);
-	return (false);
 }
 
 /*
@@ -95,6 +82,18 @@ static	void	set_env(char **envp, char *input)
 	free(export_var);
 }
 
+static void	print_export(char **envp)
+{
+	int	i;
+
+	i = 2;
+	while (envp[i])
+	{
+		printf("declare -x %s\n", envp[i]);
+		i++;
+	}
+}
+
 /*
  * This function handles the export function
  * export can handle stuff like: export test=water like=bake
@@ -123,10 +122,12 @@ void	export_function(t_command *cmd, char **envp)
 				identifier_msg(cmd->cmds[i], cmd->cmds[0], cmd->fd_out);
 				error = 1;
 			}
-			else if (has_equals(cmd->cmds[i]))
+			else
 				set_env(envp, cmd->cmds[i]);
 			i++;
 		}
+		if (i == 1)
+			print_export(envp);
 	}
 	set_return_value(envp, error);
 }

@@ -6,11 +6,24 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/27 12:12:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:45:11 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/04 10:52:07 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_in.h"
+
+/*
+ * This function checks if the input
+ * has an equal sign. 
+ * because the env doesn't show it then
+ * but the export function does.
+ */
+static bool	has_equals(char *input)
+{
+	if (ft_strchr(input, '='))
+		return (true);
+	return (false);
+}
 
 /*
  * The env doesn't need to accept any options or arguments.
@@ -27,7 +40,8 @@ void	env_function(t_command *cmd, char **envp)
 		i = 2;
 		while (envp[i])
 		{
-			ft_putendl_fd(envp[i], cmd->fd_out);
+			if (has_equals(envp[i]))
+				ft_putendl_fd(envp[i], cmd->fd_out);
 			i++;
 		}
 		set_return_value(envp, 0);

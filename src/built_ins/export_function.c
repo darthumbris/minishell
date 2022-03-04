@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/04 11:33:36 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/04 11:48:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,13 +90,13 @@ static void	print_export(char **envp)
 	i = 2;
 	while (envp[i])
 	{
-		printf("declare -x ");
 		if (!has_equals(envp[i]))
-			printf("%s\n", envp[i]);
+			printf("declare -x %s\n", envp[i]);
 		else
 		{
 			var = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i] + 1);
-			printf("%s\"%s\"\n", var, ft_strchr(envp[i], '=') + 1);
+			if (ft_strcmp(var, "_="))
+				printf("declare -x %s\"%s\"\n", var, ft_strchr(envp[i], '=') + 1);
 			free(var);
 		}
 		i++;

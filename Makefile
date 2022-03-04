@@ -1,6 +1,6 @@
 NAME = minishell
 
-FLAGS = -Wall -Werror -Wextra -g 
+FLAGS = -Wall -Werror -Wextra -g
 SRC_DIR = src
 OBJ_DIR = obj
 INC_DIR = includes

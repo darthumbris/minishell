@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/04 10:55:08 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/04 11:33:36 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,21 @@ static	void	set_env(char **envp, char *input)
 
 static void	print_export(char **envp)
 {
-	int	i;
+	int		i;
+	char	*var;
 
 	i = 2;
 	while (envp[i])
 	{
-		printf("declare -x %s\n", envp[i]);
+		printf("declare -x ");
+		if (!has_equals(envp[i]))
+			printf("%s\n", envp[i]);
+		else
+		{
+			var = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i] + 1);
+			printf("%s\"%s\"\n", var, ft_strchr(envp[i], '=') + 1);
+			free(var);
+		}
 		i++;
 	}
 }
@@ -101,10 +110,6 @@ static void	print_export(char **envp)
  * need to check if there are no arguments given.
  * variable cant start with digit
  * and can only contain A-Z a-z 0-9 or _
- * can only export something when it is given a value
- * i.e. export a=b  will work
- * export a won't work
- * export a= will also work
  */
 void	export_function(t_command *cmd, char **envp)
 {

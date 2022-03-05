@@ -6,12 +6,11 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/04 12:01:41 by abba          ########   odam.nl         */
+/*   Updated: 2022/03/05 13:24:07 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "built_in.h"
-#include <string.h>
 
 void	export_simple(char *input, char **envp)
 {
@@ -83,61 +82,6 @@ static	void	set_env(char **envp, char *input)
 	free(export_var);
 }
 
-static void	swap(char **str1, char **str2)
-{
-	char	*tmp;
-
-	tmp = *str1;
-	*str1 = *str2;
-	*str2 = tmp;
-}
-
-static bool	is_sorted(char **envp, int i)
-{
-	while (envp[i + 1])
-	{
-		if (ft_strcmp(envp[i], envp[i + 1]) > 0)
-			return (false);
-		i++;
-	}
-	return (true);
-}
-
-static void	print_export(char **envp)
-{
-	int	i;
-	char	*var;
-
-	i = 2;
-	if (is_sorted(envp, i))
-	{
-		while (envp[i])
-		{
-			if (!has_equals(envp[i]))
-				printf("declare -x %s\n", envp[i]);
-			else
-			{
-				var = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i] + 1);
-				if (ft_strcmp(var, "_="))
-					printf("declare -x %s\"%s\"\n", var, ft_strchr(envp[i], '=') + 1);
-				free(var);
-			}
-			i++;
-		} 
-		return ;
-	}
-	else
-	{
-		while (envp[i + 1])
-		{
-			if (ft_strcmp(envp[i], envp[i + 1]) > 0)
-				swap(&envp[i], &envp[i + 1]);
-			i++;
-		}
-		print_export(envp);
-	}
-}
-
 /*
  * This function handles the export function
  * export can handle stuff like: export test=water like=bake
@@ -153,10 +97,8 @@ static void	print_export(char **envp)
 void	export_function(t_command *cmd, char **envp)
 {
 	int		i;
-	int		error;
-	char	**dup_envp;
 
-	error = 0;
+	cmd->exp.error = 0;
 	if (cmd && cmd->cmds)
 	{
 		i = 1;
@@ -165,7 +107,7 @@ void	export_function(t_command *cmd, char **envp)
 			if (!is_valid_var_name(cmd->cmds[i]))
 			{
 				identifier_msg(cmd->cmds[i], cmd->cmds[0], cmd->fd_out);
-				error = 1;
+				cmd->exp.error = 1;
 			}
 			else
 				set_env(envp, cmd->cmds[i]);
@@ -173,10 +115,10 @@ void	export_function(t_command *cmd, char **envp)
 		}
 		if (i == 1)
 		{
-			dup_envp = envp_duplicate(envp);
-			print_export(dup_envp);
-			free_cmd_args(dup_envp);
+			cmd->exp.dup_envp = envp_duplicate(envp);
+			print_export(cmd->exp.dup_envp);
+			free_cmd_args(cmd->exp.dup_envp);
 		}
 	}
-	set_return_value(envp, error);
+	set_return_value(envp, cmd->exp.error);
 }

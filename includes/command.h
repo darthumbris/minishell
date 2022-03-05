@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 10:25:17 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 12:32:03 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/05 13:24:16 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,21 @@
 
 # include "tokenizer.h"
 
+typedef struct s_export
+{
+	int		error;
+	char	**dup_envp;
+}				t_export;
+
 typedef struct s_command
 {
-	char	**cmds;
-	int		fd_in;
-	int		fd_out;
-	int		fd_error;
-	char	**delimiter;
-	int		heredocs;
+	char		**cmds;
+	int			fd_in;
+	int			fd_out;
+	int			fd_error;
+	char		**delimiter;
+	int			heredocs;
+	t_export	exp;
 }				t_command;
 
 //------------command struct functions----------

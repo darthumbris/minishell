@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/03/02 10:24:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/04 11:58:14 by abba          ########   odam.nl         */
+/*   Updated: 2022/03/05 13:25:52 by abba          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ bool		is_valid_var_name(char *input);
 void		identifier_msg(char *input, char *cmd, int fd);
 bool		is_valid_exit(t_command *cmd);
 bool		is_built_in(t_command *cmd);
-bool	    has_equals(char *input);
+bool		has_equals(char *input);
+void		print_export(char **envp);
 
 //----------envp functions------------------------
 void		export_simple(char *input, char **envp);

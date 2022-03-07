@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/08 12:25:01 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/04 11:48:22 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 10:39:57 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,27 +82,6 @@ static	void	set_env(char **envp, char *input)
 	free(export_var);
 }
 
-static void	print_export(char **envp)
-{
-	int		i;
-	char	*var;
-
-	i = 2;
-	while (envp[i])
-	{
-		if (!has_equals(envp[i]))
-			printf("declare -x %s\n", envp[i]);
-		else
-		{
-			var = ft_substr(envp[i], 0, ft_strchr(envp[i], '=') - envp[i] + 1);
-			if (ft_strcmp(var, "_="))
-				printf("declare -x %s\"%s\"\n", var, ft_strchr(envp[i], '=') + 1);
-			free(var);
-		}
-		i++;
-	}
-}
-
 /*
  * This function handles the export function
  * export can handle stuff like: export test=water like=bake
@@ -132,7 +111,7 @@ void	export_function(t_command *cmd, char **envp)
 			i++;
 		}
 		if (i == 1)
-			print_export(envp);
+			print_export(envp_duplicate(envp));
 	}
 	set_return_value(envp, error);
 }

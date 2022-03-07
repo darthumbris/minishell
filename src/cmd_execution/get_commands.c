@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 11:04:13 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 12:37:01 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 10:27:29 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ static void	set_current_command(t_command *cmd, t_token **lst, \
 		if ((*lst)->token_name[0] == 'W' && (*lst)->token_value)
 			cmds[i++] = ft_strdup((*lst)->token_value);
 		if ((*lst)->token_name[0] == '>' && cmd->fd_out != -1)
-			dup_and_close_redirect(&(cmd->fd_out), STDOUT_FILENO, lst, envp);
+			cmd->fd_out = redirect_parse((*lst), envp, cmd->fd_out);
 		else if ((*lst)->token_name[0] == '<' && cmd->fd_in != -1)
-			dup_and_close_redirect(&(cmd->fd_in), STDIN_FILENO, lst, envp);
+			cmd->fd_in = redirect_parse((*lst), envp, cmd->fd_in);
 		else if ((*lst)->token_name[0] == 'h' && !(cmd->delimiter))
 		{
 			cmd->delimiter = get_delimiter(*lst);
@@ -65,7 +65,7 @@ static char	**check_redirect_command(t_token **lst, char **envp, \
 									int *fd_in, char **delimiter)
 {
 	if ((*lst)->token_name[0] == '<' && *fd_in >= 0)
-		*fd_in = redirect_parse((*lst), envp);
+		*fd_in = redirect_parse((*lst), envp, *fd_in);
 	if ((*lst)->token_name[0] == 'h' && !delimiter)
 	{
 		delimiter = get_delimiter((*lst));
@@ -85,7 +85,7 @@ static t_command	*get_next_command(t_token **lst, char **envp, \
 	{
 		delimiter = check_redirect_command(lst, envp, &fd_in, delimiter);
 		if ((*lst)->token_name[0] == '>' && fd_out > 0)
-			fd_out = redirect_parse((*lst), envp);
+			fd_out = redirect_parse((*lst), envp, fd_out);
 		if ((*lst)->token_name[0] == 'W')
 		{
 			cmd = new_command(NULL);
@@ -100,6 +100,7 @@ static t_command	*get_next_command(t_token **lst, char **envp, \
 	}
 	if (delimiter)
 		free_delimiter(delimiter);
+	close_fdio(fd_in, fd_out);
 	return (NULL);
 }
 

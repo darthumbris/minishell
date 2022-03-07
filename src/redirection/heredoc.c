@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:11:49 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 11:02:33 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 09:34:27 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int	heredoc_function(t_token *lst, char **envp)
 
 	i = 0;
 	delimiter = get_delimiter(lst);
+	if (!delimiter)
+		return (-1);
 	while (true)
 	{
 		rl_on_new_line();

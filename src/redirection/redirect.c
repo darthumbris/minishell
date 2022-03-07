@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 12:56:39 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 11:11:31 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 10:20:22 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	redirect_output(t_token *lst, int append, char **envp)
  * or output function and will return
  * the fd they create. or -1 if it fails.
  */
-int	redirect_parse(t_token *lst, char **envp)
+int	redirect_parse(t_token *lst, char **envp, int fd)
 {
 	int	len;
 	int	i;
@@ -97,6 +97,8 @@ int	redirect_parse(t_token *lst, char **envp)
 	if (lst && lst->token_value)
 	{
 		i = 0;
+		if (fd > 2)
+			close(fd);
 		while (ft_isdigit(lst->token_value[i]))
 		i++;
 		len = i;

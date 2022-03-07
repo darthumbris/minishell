@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 15:03:21 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 11:38:28 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 09:31:44 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_token	*quote_expansion(t_token *lst);
 char	*check_for_expans(char *input);
 int		len_until_char(char *str, int i, char c);
 int		len_until_quote(char *str, int i);
-void	check_for_env_expansion(char **str, char **envp, t_token *lst);
+void	check_for_env_expansion(char **str, char **envp);
 char	*expand_env_variable(char *input, char **envp);
 void	env_expansion_fail(char **str, char **begin);
 #endif

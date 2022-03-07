@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/24 10:56:33 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 14:11:11 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 10:08:37 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ static void	parse_input_child(t_command **cmds, char **envp, \
 	}
 	else
 	{
+		redirect(cmds[0], 0);
 		disable_signals();
 		heredoc_function(lst, envp);
 		exit(0);

@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/02 13:05:34 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 16:53:46 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 10:29:15 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ void	free_cmd_lst(t_command ***cmds)
 		return ;
 	while ((*cmds)[i])
 	{
+		if ((*cmds)[i]->fd_out > 2)
+			close((*cmds)[i]->fd_out);
+		if ((*cmds)[i]->fd_in > 2)
+			close((*cmds)[i]->fd_in);
 		free_cmds((*cmds)[i]);
 		i++;
 	}

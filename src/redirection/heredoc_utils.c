@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/25 11:15:43 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/02 10:51:19 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 09:37:20 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	**get_delimiter(t_token *lst)
 
 	i = 0;
 	tmp = lst;
+	if (!count_heredocs(tmp))
+		return (NULL);
 	delimiter = ft_calloc(count_heredocs(tmp) + 1, sizeof(char *));
 	if (!delimiter)
 		return (NULL);

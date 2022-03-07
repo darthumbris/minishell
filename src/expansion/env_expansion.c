@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/02/07 12:53:52 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/03/03 15:31:11 by shoogenb      ########   odam.nl         */
+/*   Updated: 2022/03/07 09:31:35 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,18 +82,7 @@ char	*expand_env_variable(char *input, char **envp)
 	return (return_str);
 }
 
-static bool	is_heredoc(t_token *lst)
-{
-	while (lst)
-	{
-		if (!ft_strcmp(lst->token_name, "<"))
-			return (true);
-		lst = lst->next;
-	}
-	return (false);
-}
-
-static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
+static void	dollar_sign_handler(char **str, char **envp, int i)
 {
 	char	*begin;
 	char	*env_expand;
@@ -104,8 +93,6 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
 	if (!ft_isalnum(doll) && doll != '_' && doll != '"' && doll != '?' && \
 					doll != '\'')
 		env_expand = ft_strdup(*str + ft_strlen(begin));
-	else if (is_heredoc(lst))
-		env_expand = ft_strdup(*str);
 	else
 		env_expand = expand_env_variable(*str + i + 1, envp);
 	if (env_expand == NULL)
@@ -125,7 +112,7 @@ static void	dollar_sign_handler(char **str, char **envp, int i, t_token *lst)
  * and then will expand it. 
  * (for heredoc delimiter if won't expand)
  */
-void	check_for_env_expansion(char **str, char **envp, t_token *lst)
+void	check_for_env_expansion(char **str, char **envp)
 {
 	size_t	i;
 	bool	quote;
@@ -138,7 +125,7 @@ void	check_for_env_expansion(char **str, char **envp, t_token *lst)
 			quote = !quote;
 		if ((*str)[i] == '$')
 		{
-			dollar_sign_handler(str, envp, i, lst);
+			dollar_sign_handler(str, envp, i);
 			if (!(*str) || ft_strlen((*str)) == 0)
 				break ;
 		}

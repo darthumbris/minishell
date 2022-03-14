@@ -6,7 +6,7 @@
 /*   By: shoogenb <shoogenb@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/01/17 16:07:10 by shoogenb      #+#    #+#                 */
-/*   Updated: 2022/02/07 15:26:16 by abba          ########   odam.nl         */
+/*   Updated: 2022/03/14 12:34:20 by shoogenb      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = 0;
 	if (s1 == 0 || s2 == 0)
 		return (NULL);
-	joined = ft_calloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1), 1);
+	joined = ft_calloc((ft_strlen(s1) + ft_strlen(s2) + 1), sizeof(char));
 	if (joined == 0)
 		return (NULL);
 	while (s1[i])

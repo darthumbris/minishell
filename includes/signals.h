@@ -13,6 +13,10 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+
 //------------Signal Functions---------------
 void		set_signals(void);
 void		disable_signals(void);
